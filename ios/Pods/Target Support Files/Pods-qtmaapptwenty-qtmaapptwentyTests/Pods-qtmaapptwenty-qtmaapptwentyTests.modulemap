@@ -1,0 +1,6 @@
+module Pods_qtmaapptwenty_qtmaapptwentyTests {
+  umbrella header "Pods-qtmaapptwenty-qtmaapptwentyTests-umbrella.h"
+
+  export *
+  module * { export * }
+}
