@@ -15,7 +15,7 @@ class AuthScreen extends Component {
 
   onAuthStateChanged = (user) => {
     if (user !== null) {
-      
+      console.log(user);
     }
   }
 
@@ -37,5 +37,4 @@ class AuthScreen extends Component {
   }
 }
 
-
-export default AuthScreen;
+export default AuthScreen

@@ -8,6 +8,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 
 import LoginScreen from './src/screens/Authentication/AuthScreen';
+import AuthScreen from './src/screens/Authentication/AuthScreen';
 
 
 import { NavigationContainer } from '@react-navigation/native';
