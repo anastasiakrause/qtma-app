@@ -16,8 +16,8 @@ export const styles = StyleSheet.create({
     flex: 1,
     margin: 25,
   },
-  authInput: {marginTop: 5},
-  authButton: {marginTop: 20},
+  authInput: {marginTop: 5, marginLeft: 10, marginRight:10},
+  authButton: {color : "#1e90ff", marginTop: 20, marginLeft: 10, marginRight:10},
   authSwitch: {
     marginTop: 15,
     alignItems: 'center',
