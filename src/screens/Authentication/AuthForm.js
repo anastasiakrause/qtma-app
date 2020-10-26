@@ -18,21 +18,30 @@ const signUpValidationSchema = yup.object().shape({
   email: yup
   .string()
   .label('Email')
-  .email()
-  .required(),
-  password: yup
+  .email('Invalid email')
+  .required('Email required'),
+  displayName: yup
   .string()
-  .label('Password')
-  .required()
-  .min(2, 'seems a bit short...')
-  .max(15, 'alright lets calm down')
+  .required('Name required.')
+  .matches(/^[a-zA-Z]/, 'Valid letters only.'),
+  password: yup
+    .string()
+    .required('Please enter valid password')
+    .matches(
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+      "Insecure password"
+    ),
+  confirmPassword: yup
+    .string()
+    .required('Please reenter password.')
+    .oneOf([yup.ref("password"), null], "Passwords must match")
 });
 
 const AuthForm = (props) => {
   displayLogin = (
     <Formik
       initialValues= {{email: '', password: ''}}
-      onSubmit = { () => props.handleSubmit() }
+      onSubmit = { values =>  props.authMode === 'login' ? props.login(values) : props.signup(values) }
     >
       {({handleChange, handleSubmit, values}) => (
         <View>
@@ -73,15 +82,16 @@ const AuthForm = (props) => {
           <Button
             style={styles.authButton}
             mode="outlined"
-            onPress={handleSubmit} 
-            title = "Login" />
+            onPress={handleSubmit}>
+              Login
+          </Button>
 
           <TouchableOpacity
             onPress={() => props.switchAuthMode()}
             style={styles.authSwitch}>
             <Text style={styles.signUpButton}>
               New to the boiler plate?{' '}
-              <Text style={{color: '#1e90ff'}}>SignUp</Text>
+              <Text style={{color: '#1e90ff'}}>Sign Up</Text>
             </Text>
           </TouchableOpacity>          
         </View>
@@ -95,7 +105,7 @@ const AuthForm = (props) => {
         validationSchema = {signUpValidationSchema}
         onSubmit = { values =>  props.authMode === 'login' ? props.login(values) : props.signup(values) }
       >
-        {({handleChange, handleSubmit, values}) => (
+        {({handleChange, handleSubmit, values, errors, setFieldTouched, touched, isValid}) => (
           <View>
             <Text style={styles.greeting}>{'QTMA Boiler Plate.'}</Text>
   
@@ -110,6 +120,8 @@ const AuthForm = (props) => {
               style={styles.authInput}
               mode="outlined"
               label="Name"
+              onChangeText={handleChange('displayName')}
+              onBlur={() => setFieldTouched('displayName')}
               theme={{
                 colors: {primary: '#1e90ff', underlineColor: 'transparent'},
               }}
@@ -117,11 +129,16 @@ const AuthForm = (props) => {
               value = {values.displayName}
               onChangeText={handleChange('displayName')}
             />
+            {touched.name && errors.name && 
+              <Text style={{ fontSize: 12, color: '#FF0d10', paddingLeft : 10 }} > {errors.name} </Text>
+            }
   
             <TextInput 
               style={styles.authInput}
               mode="outlined"
               label="Email"
+              onChangeText={handleChange('email')}
+              onBlur={() => setFieldTouched('email')}
               theme={{
                 colors: {primary: '#1e90ff', underlineColor: 'transparent'},
               }}
@@ -129,11 +146,17 @@ const AuthForm = (props) => {
               value = {values.email}
               onChangeText={handleChange('email')}
             />
+
+            {touched.email && errors.email &&
+              <Text style={{ fontSize: 12, color: '#FF0D10', paddingLeft : 10}}>{errors.email}</Text>
+            }
   
             <TextInput
               style={styles.authInput}
               mode="outlined"
               label="Password"
+              onChangeText={handleChange('password')}
+              onBlur={() => setFieldTouched('password')}
               theme={{
                 colors: {primary: '#1e90ff', underlineColor: 'transparent'},
               }}
@@ -143,10 +166,16 @@ const AuthForm = (props) => {
               onChangeText={handleChange('password')}
             />
 
+            {touched.password && errors.password &&
+              <Text style={{ fontSize: 12, color: '#FF0D10', paddingLeft : 10  }}>{errors.password}</Text>
+            }
+
             <TextInput
               style={styles.authInput}
               mode="outlined"
               label="Confirm Password"
+              onChangeText={handleChange('confirmPassword')}
+              onBlur={() => setFieldTouched('confirmPassword')}
               theme={{
                 colors: {primary: '#1e90ff', underlineColor: 'transparent'},
               }}
@@ -155,12 +184,17 @@ const AuthForm = (props) => {
               value = {values.confirmPassword}
               onChangeText={handleChange('confirmPassword')}
             />
+
+            {touched.confirmPassword && errors.confirmPassword &&
+              <Text style={{ fontSize: 12, color: '#FF0D10', paddingLeft : 10 }}>{errors.confirmPassword}</Text>
+            }
           
             <Button
               style={styles.authButton}
               mode="outlined"
-              onPress={handleSubmit}
-              title = "Login" />
+              onPress={handleSubmit}>
+                Sign Up
+            </Button>
   
             <TouchableOpacity
               onPress={() => props.switchAuthMode()}
@@ -169,7 +203,6 @@ const AuthForm = (props) => {
                 Already Have an Account? <Text style={{color: '#1e90ff'}}>Login</Text>
               </Text>
             </TouchableOpacity>
-
           </View>
         )}
       </Formik>
