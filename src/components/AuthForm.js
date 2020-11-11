@@ -11,7 +11,7 @@ import {
   Container,
 } from 'react-native';
 import * as yup from 'yup';
-import {styles} from '../../styles/styles';
+import { styles } from '../styles/styles';
 import {TextInput, Button} from 'react-native-paper';
 
 const signUpValidationSchema = yup.object().shape({
@@ -38,18 +38,16 @@ const signUpValidationSchema = yup.object().shape({
 });
 
 const AuthForm = (props) => {
-  displayLogin = (
+  let displayLogin = (
     <Formik
       initialValues= {{email: '', password: ''}}
       onSubmit = { values =>  props.authMode === 'login' ? props.login(values) : props.signup(values) }
     >
       {({handleChange, handleSubmit, values}) => (
         <View>
-          <Text style={styles.greeting}>{'QTMA Boiler Plate.'}</Text>
-
           <View style={styles.logo}>
             <Image
-              source={require('../../assets/QTMA_SB.png')}
+              source={require('../assets/Looplogo.png')}
               style={styles.image}
             />
           </View>
@@ -90,28 +88,26 @@ const AuthForm = (props) => {
             onPress={() => props.switchAuthMode()}
             style={styles.authSwitch}>
             <Text style={styles.signUpButton}>
-              New to the boiler plate?{' '}
+              New to Loop?{' '}
               <Text style={{color: '#1e90ff'}}>Sign Up</Text>
             </Text>
           </TouchableOpacity>          
         </View>
       )}
     </Formik>
-  )
+  );
 
-  displayRegister = (
+  let displayRegister = (
       <Formik
         initialValues= {{displayName: '', email: '', password: '', confirmPassword: ''}}
         validationSchema = {signUpValidationSchema}
         onSubmit = { values =>  props.authMode === 'login' ? props.login(values) : props.signup(values) }
       >
         {({handleChange, handleSubmit, values, errors, setFieldTouched, touched, isValid}) => (
-          <View>
-            <Text style={styles.greeting}>{'QTMA Boiler Plate.'}</Text>
-  
+          <View>  
             <View style={styles.logo}>
               <Image
-                source={require('../../assets/QTMA_SB.png')}
+                source={require('../assets/Looplogo.png')}
                 style={styles.image}
               />
             </View>
@@ -127,7 +123,6 @@ const AuthForm = (props) => {
               }}
               autoCapitalize="none"
               value = {values.displayName}
-              onChangeText={handleChange('displayName')}
             />
             {touched.name && errors.name && 
               <Text style={{ fontSize: 12, color: '#FF0d10', paddingLeft : 10 }} > {errors.name} </Text>
@@ -144,7 +139,6 @@ const AuthForm = (props) => {
               }}
               autoCapitalize="none"
               value = {values.email}
-              onChangeText={handleChange('email')}
             />
 
             {touched.email && errors.email &&
@@ -163,7 +157,6 @@ const AuthForm = (props) => {
               secureTextEntry={true}
               autoCapitalize="none"
               value = {values.password}
-              onChangeText={handleChange('password')}
             />
 
             {touched.password && errors.password &&
@@ -182,7 +175,6 @@ const AuthForm = (props) => {
               secureTextEntry={true}
               autoCapitalize="none"
               value = {values.confirmPassword}
-              onChangeText={handleChange('confirmPassword')}
             />
 
             {touched.confirmPassword && errors.confirmPassword &&

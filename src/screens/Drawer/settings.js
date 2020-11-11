@@ -12,15 +12,6 @@ class SettingsScreen extends Component {
       <View style={styles.form}>
         <View style={styles.row}>
           <Text style={styles.pageTitle}>{'Profile'}</Text>
-
-          {/* <Avatar.Text size={50} label="QRF" style={styles.avatar} /> */}
-
-          {/* <IconButton
-            icon="camera"
-            color="#1e90ff"
-            size={20}
-            onPress={() => console.log('Pressed')}
-          /> */}
         </View>
 
         <Button

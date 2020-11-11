@@ -1,28 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StatusBar } from 'react-native';
 import auth from '@react-native-firebase/auth';
-
-
-
 import { createStackNavigator } from '@react-navigation/stack';
-
-
-import LoginScreen from './src/screens/Authentication/AuthScreen';
-import AuthScreen from './src/screens/Authentication/AuthScreen';
-
-
 import { NavigationContainer } from '@react-navigation/native';
-
-import {MainStackNavigator} from './src/navigators/MainStackNavigator'
+import {MainStackNavigator} from './src/navigators/MainStackNavigator';
 import {AuthStackNavigator} from './src/navigators/AuthStackNavigator';
 
-import LoadingScreen from './src/screens/Drawer/loading';
-
-
-
+import {
+  Avatar,
+  StreamApp,
+  IconBadge,
+} from 'expo-activity-feed';
 
 const RootStack = createStackNavigator();
 
+import {
+  STREAM_API_KEY,
+  STREAM_APP_ID,
+  STREAM_API_TOKEN
+} from 'babel-dotenv';
 
 export default function App() {
   StatusBar.setBarStyle('light-content', false);
@@ -43,7 +39,7 @@ export default function App() {
 
   function renderScreens(){
     if (initializing) return (
-      <RootStack.Screen name="LoadingScreen" component={LoadingScreen}/>
+      <RootStack.Screen name="LoadingScreen" component={MainStackNavigator}/>
   );
 
     if (!user){
@@ -53,20 +49,28 @@ export default function App() {
     }
      return (
       <RootStack.Screen name="Home" component={MainStackNavigator}/>
-  );
+    );
   }
-
+  
   return(
-    
+    <StreamApp
+    apiKey={STREAM_API_KEY}
+    appId={STREAM_APP_ID}
+    token={STREAM_API_TOKEN}
+      defaultUserData={{
+        name: 'Batman',
+        url: 'batsignal.com',
+        desc: 'batmannnnn'
+      }}
+    >
     <NavigationContainer>
-      
       <RootStack.Navigator screenOptions={{
-              headerShown: false,
-              animationEnabled: false,
+          headerShown: false,
+          animationEnabled: false,
             }}>
         {renderScreens()}
       </RootStack.Navigator>
     </NavigationContainer>
-  )
-
+  </StreamApp>
+  );
 }

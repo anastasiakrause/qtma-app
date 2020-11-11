@@ -36,6 +36,6 @@ const writeUserData = (uid, email, displayName) => {
     name: displayName,
     email: email
   })
-  .then (item => onsole.log("successfully added user to collection" + item) )
+  .then (item => console.log("successfully added user to collection" + item) )
   .catch(err => { console.log(err); });
 };

@@ -4775,10 +4775,10 @@ getstream@^4.1.0:
     request "^2.88.0"
     whatwg-fetch "^2.0.4"
 
-getstream@^6.2.0:
-  version "6.2.0"
-  resolved "https://registry.yarnpkg.com/getstream/-/getstream-6.2.0.tgz#e0dafd667d0176c2e46608448b3ff1fc21557955"
-  integrity sha512-odkjxcLY1FWvUMv9akr/GofdjgJB2C5t4ePefbmK7GF8gitRcDgdptJ1ts+PKvmNkJ+16/A0I2pCwkYDYRonvA==
+getstream@^6.2.1:
+  version "6.2.1"
+  resolved "https://registry.yarnpkg.com/getstream/-/getstream-6.2.1.tgz#943cd871f5b29b840a2538e33ff916f596523bcc"
+  integrity sha512-sB+ruk0Pkip1U4zN9GX5H/5obB0TEkQNQAJ9rS4s/fR6h2vvOrGk/89LkJQxVcj4laWQvc0wcA5fUFey/P0wYw==
   dependencies:
     "@babel/runtime" "^7.11.2"
     "@types/jsonwebtoken" "^8.5.0"
