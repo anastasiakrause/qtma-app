@@ -1,6 +1,6 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
-import AuthScreen from '../screens/Authentication/AuthScreen';
+import AuthScreen from '../screens/AuthScreen';
 
 const AuthStack = createStackNavigator();
 

@@ -11,7 +11,6 @@ export default class HomeCard extends React.Component {
         </Card.Content>
         <Card.Cover
           source={{uri: 'https://picsum.photos/700'}}
-          style={(padding = 20)}
         />
         <Card.Actions>
           <Button>Cancel</Button>

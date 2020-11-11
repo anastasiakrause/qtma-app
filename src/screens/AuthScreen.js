@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import AuthForm from './AuthForm';
-import { login, signup, subscribeToAuthChanges } from '../../firebase/functions';
+import AuthForm from '../components/AuthForm';
+import { login, signup, subscribeToAuthChanges } from '../firebase/functions';
 
 
 class AuthScreen extends Component {
