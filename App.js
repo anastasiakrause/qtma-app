@@ -5,6 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import {MainStackNavigator} from './src/navigators/MainStackNavigator';
 import {AuthStackNavigator} from './src/navigators/AuthStackNavigator';
+import axios from 'axios';
 
 import {
   Avatar,
@@ -17,7 +18,6 @@ const RootStack = createStackNavigator();
 import {
   STREAM_API_KEY,
   STREAM_APP_ID,
-  STREAM_API_TOKEN
 } from 'babel-dotenv';
 
 export default function App() {
@@ -51,12 +51,19 @@ export default function App() {
       <RootStack.Screen name="Home" component={MainStackNavigator}/>
     );
   }
+
+  let userToken = "";
+  axios.get(`http://localhost:5001/qtmaapptwenty/us-central1/userToken`)
+    .then(res => {
+      console.log(res.data);
+      userToken = res.data;
+    })
   
   return(
     <StreamApp
     apiKey={STREAM_API_KEY}
     appId={STREAM_APP_ID}
-    token={STREAM_API_TOKEN}
+    token={userToken}
       defaultUserData={{
         name: 'Batman',
         url: 'batsignal.com',

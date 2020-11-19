@@ -1,25 +1,14 @@
 import * as functions from 'firebase-functions';
-import * as faker from 'faker';
-
-// // Start writing Firebase Functions
-// // https://firebase.google.com/docs/functions/typescript
-
-let posts: { name: any; price: any; }[] = [];
-const POSTLIMIT  = 20;
-
-for (let i=0; i < POSTLIMIT; i++)
-{
-    posts.push({
-        name: faker.commerce.productName(),
-        price: faker.commerce.price()
-    });
+import * as stream from 'getstream';
+let apiKey = functions.config().stream_api.key;
+let appId = functions.config().stream_app.id;
+let appSecret = functions.config().stream.secret;
+if (!apiKey || !appId || !appSecret) {
+    console.error ('Environemnt vars should be set');
 }
-
-//exports.listPosts = functions.https.onCall((data, context) => {
-//    return posts;
-//});
-
-export const listPosts = functions.https.onRequest((request, response) => {
-    functions.logger.info("Hello logs!", {structuredData: true});
-    response.send(posts);
+const client = stream.connect(apiKey, appSecret, appId);
+const firstuser = client.feed('user', '1');
+export const userToken = functions.https.onRequest((request, response) => {
+    let token = firstuser.token;
+    response.send(token);
 });
