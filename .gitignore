@@ -12,6 +12,7 @@ node_modules/
 npm-debug.log
 yarn-error.log
 yarn.lock # include if you are using yarn - don't use both npm and yarn
+package-lock.json
 
 # BUCK
 buck-out/
@@ -54,6 +55,7 @@ local.properties
 
 # CocoaPods
 /ios/Pods/
+/ios/Pods
 
 # Firebase
 /android/app/google-services.json

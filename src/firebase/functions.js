@@ -10,7 +10,7 @@ export function signup({ email, password, displayName }) {
   auth().createUserWithEmailAndPassword(email, password)
     .then((userInfo) => {
       console.log(userInfo)
-      writeUserData(userInfo.user.uid, email, displayName)
+      writeUserData(userInfo.user.uid, email, displayName, "usertoken")
       userInfo.user.updateProfile({ displayName: displayName.trim() })
         .then(() => { })
     })
@@ -29,12 +29,13 @@ export function signout(onSignedOut) {
     })
 }
 
-const writeUserData = (uid, email, displayName) => {
+const writeUserData = (uid, email, displayName, userToken) => {
   firestore().collection('users')
   .doc(uid)
   .set({
     name: displayName,
-    email: email
+    email: email,
+    token: userToken
   })
   .then (item => console.log("successfully added user to collection" + item) )
   .catch(err => { console.log(err); });

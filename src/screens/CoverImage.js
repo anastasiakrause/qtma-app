@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Image, StyleSheet } from 'react-native';
-import { LinearGradient as Gradient } from 'expo';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const CoverImage = ({ source, size }) => {
   return (
@@ -9,7 +9,7 @@ const CoverImage = ({ source, size }) => {
         style={[styles.profileCoverImage, { height: size ? size : 200 }]}
         source={{ uri: source }}
       />
-      <Gradient
+      <LinearGradient
         colors={[
           'rgba(0,0,0,1)',
           'rgba(0,0,0,0.0)',

@@ -6,7 +6,6 @@ import { SafeAreaView } from 'react-navigation';
 import { StreamApp } from 'expo-activity-feed';
 import Count from './Count';
 import { Avatar } from 'expo-activity-feed';
-import CoverImage from './CoverImage';
 import type { FollowCounts } from 'getstream';
 import type { AppCtx } from 'expo-activity-feed';
 import type { UserData } from '../types';
@@ -53,8 +52,6 @@ class ProfileHeaderInner extends React.Component<PropsInner, State> {
 
     return (
       <SafeAreaView style={[styles.profileHeader]}>
-        {coverImage ? <CoverImage source={coverImage} /> : null}
-
         <View style={[styles.mainSection]}>
           <View style={styles.userDetails}>
             <Text style={styles.userName}>{name}</Text>

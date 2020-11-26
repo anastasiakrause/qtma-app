@@ -1,25 +1,22 @@
 import * as functions from 'firebase-functions';
-import * as faker from 'faker';
+import * as stream from 'getstream';
 
-// // Start writing Firebase Functions
-// // https://firebase.google.com/docs/functions/typescript
+const apiKey = functions.config().stream.key;
+const appId = functions.config().stream.id;
+const appSecret = functions.config().stream.secret;
 
-let posts: { name: any; price: any; }[] = [];
-const POSTLIMIT  = 20;
-
-for (let i=0; i < POSTLIMIT; i++)
-{
-    posts.push({
-        name: faker.commerce.productName(),
-        price: faker.commerce.price()
-    });
+if (!apiKey || !appId || !appSecret ) {
+    console.error ('Environemnt vars should be set');
 }
+const client = stream.connect(apiKey, appSecret, appId);
+//const firstuser = client.feed('user', 'first'); // later: make '1' the UID generated on sign up
 
-//exports.listPosts = functions.https.onCall((data, context) => {
-//    return posts;
-//});
-
-export const listPosts = functions.https.onRequest((request, response) => {
-    functions.logger.info("Hello logs!", {structuredData: true});
-    response.send(posts);
+export const userToken = functions.https.onRequest((request: functions.Request, response: functions.Response) => {
+    const id = client.createUserToken("thiisID");
+    response.status(200);
+    response.type('jwt');
+    response.setHeader('user_id', id);
+    response.setHeader("alg" , "RS256");
+    response.setHeader("type", "JWT");
+    response.send({"user_id" : id });
 });
