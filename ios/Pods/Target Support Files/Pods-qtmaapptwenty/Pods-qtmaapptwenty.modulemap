@@ -1,6 +1,0 @@
-module Pods_qtmaapptwenty {
-  umbrella header "Pods-qtmaapptwenty-umbrella.h"
-
-  export *
-  module * { export * }
-}
