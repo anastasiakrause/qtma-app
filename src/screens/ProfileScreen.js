@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { ScrollView, StatusBar } from 'react-native';
-import ProfileHeader from '../ProfileHeader';
+import ProfileHeader from './ProfileHeader';
 import { FlatFeed } from 'expo-activity-feed';
 import {View, Text, ActivityIndicator} from 'react-native';
 import {styles} from '../../styles/styles.js';

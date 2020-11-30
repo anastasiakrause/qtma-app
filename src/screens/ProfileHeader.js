@@ -31,7 +31,7 @@ class ProfileHeaderInner extends React.Component<PropsInner, State> {
     super(props);
     this.state = {
       user: {
-        following_count: 0,
+        following_count: 3, // TODO: remove hard code
         followers_count: 0,
       },
     };

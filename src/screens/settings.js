@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {View, Text, ActivityIndicator} from 'react-native';
-import {styles} from '../../styles/styles.js';
-import signout from '../../firebase/functions';
+import {styles} from '../styles/styles.js';
+import signout from '../firebase/functions';
 import auth from '@react-native-firebase/auth';
 
 import {Avatar, Button, Title, Card, IconButton} from 'react-native-paper';
