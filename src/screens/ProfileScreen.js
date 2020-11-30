@@ -3,7 +3,7 @@ import { ScrollView, StatusBar } from 'react-native';
 import ProfileHeader from './ProfileHeader';
 import { FlatFeed } from 'expo-activity-feed';
 import {View, Text, ActivityIndicator} from 'react-native';
-import {styles} from '../../styles/styles.js';
+import {styles} from '../styles/styles.js';
 import {Avatar, Button, Title, Card, IconButton} from 'react-native-paper';
 import auth from '@react-native-firebase/auth';
 
