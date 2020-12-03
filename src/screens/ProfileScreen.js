@@ -1,18 +1,20 @@
+// Import UI components
 import React, {Component} from 'react';
 import { ScrollView, StatusBar } from 'react-native';
-import ProfileHeader from './ProfileHeader';
 import { FlatFeed } from 'expo-activity-feed';
-import {View, Text, ActivityIndicator} from 'react-native';
-import {styles} from '../styles/styles.js';
 import {Avatar, Button, Title, Card, IconButton} from 'react-native-paper';
+// Firebase auth
 import auth from '@react-native-firebase/auth';
-
+// Profile header UI
+import ProfileHeader from './ProfileHeader';
+// Import stylesheet
+import {styles} from '../styles/styles.js';
 
 
 class ProfileScreen extends Component {
   render() {
     return (
-      <ScrollView style={{ flex: 1 }}>
+      <ScrollView style={{ position: 'absolute', flex: 1 }}>
         <ProfileHeader />
         <FlatFeed feedGroup="user" />
         <Button

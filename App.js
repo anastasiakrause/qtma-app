@@ -90,16 +90,19 @@ export default function App() {
   }
 
   function renderScreens(){
+    // Function loads all appropriate app screens
+    // loading screen
     if (initializing) return (
       <RootStack.Screen name="LoadingScreen" component={MainStackNavigator}/>
-  );
-
+    );
+    // if no user logged in
     if (!user){
       return (
           <RootStack.Screen name="Auth" component={AuthStackNavigator}/>
       );
     }
-     return (
+    // if user logged in, take to activity feed / profile navigator
+    return (
       <RootStack.Screen name="Home" component={MainStackNavigator}/>
     );
   }

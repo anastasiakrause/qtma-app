@@ -38,10 +38,10 @@ export default class SinglePostScreen extends React.Component<Props> {
   });
 
   render() {
-    const { navigation } = this.props;
-    const activity = navigation.getParam('activity');
-    const feedGroup = navigation.getParam('feedGroup');
-    const userId = navigation.getParam('userId');
+    const { navigation } = this.props.navigation;
+    const activity = this.props.activity;
+    const feedGroup = this.props.feedGroup;
+    const userId = this.props.userId;
     return (
       <SafeAreaView style={styles.container}>
         <SinglePost
@@ -49,7 +49,7 @@ export default class SinglePostScreen extends React.Component<Props> {
           feedGroup={feedGroup}
           userId={userId}
           options={{ withOwnChildren: true }}
-          navigation={this.props.navigation}
+          navigation={this.props}
           Activity={(props) => (
             <React.Fragment>
               <Activity
