@@ -22,13 +22,13 @@ import { nullFormat } from 'numeral';
 class HomeScreen extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      showPost: false,
-    };
+    this.state = {};
   }
 
+  // Post onPress function
+  // Navigates to SinglePostScreen
   _onPressActivity = () => {
-    this.setState({showPost: true});
+    this.props.nav.navigate("Post")
   };
 
   render() {
