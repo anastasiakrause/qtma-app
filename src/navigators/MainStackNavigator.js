@@ -37,7 +37,7 @@ const Stack = createStackNavigator();
 
 export function MainStackNavigator() {
   return (
-    <Stack.Navigator initialRouteName="Home">
+    <Stack.Navigator initialRouteName="Home" screenOptions={{headerShown: false}}>
       <Stack.Screen name="Home" component={toHomeScreen} />
       <Stack.Screen name="Profile" component={toProfileScreen} />
       <Stack.Screen name="Post" component={toSinglePostScreen} />

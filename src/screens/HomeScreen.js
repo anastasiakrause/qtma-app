@@ -1,10 +1,9 @@
 // @flow
 import React, {Component} from 'react';
-import {View, Text, ScrollView} from 'react-native';
+import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import { StatusBar, Image, TouchableOpacity } from 'react-native';
 import SafeAreaView from 'react-native-safe-area-view';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import SinglePostScreen from '../screens/SinglePostScreen';
 
 import {
   Avatar,
@@ -28,8 +27,14 @@ class HomeScreen extends Component {
   // Post onPress function
   // Navigates to SinglePostScreen
   _onPressActivity = () => {
+    // props.nav is the navigation prop passed from MainStackNavigator
     this.props.nav.navigate("Post")
-  };
+  }
+
+  // Profile button onPress
+  toProfile = () => {
+    this.props.nav.navigate("Profile")
+  }
 
   render() {
     return (
@@ -65,15 +70,7 @@ class HomeScreen extends Component {
             </TouchableOpacity>
           )}
         />
-        {singlePost = this.state.showPost ? 
-          <SinglePostScreen 
-            navigation={null} 
-            activity={null} 
-            feedGroup={null} 
-            userId={null}
-          /> : 
-          null
-        }
+        <TouchableOpacity style={styles.profileButton} onPress={() => this.toProfile()}/>
       <StatusUpdateForm feedGroup="timeline" />
       </SafeAreaView>
     </SafeAreaProvider>
@@ -83,3 +80,16 @@ class HomeScreen extends Component {
 }
 
 export default HomeScreen;
+
+const styles = StyleSheet.create({
+  profileButton: {
+    position: 'absolute',
+    height: 50,
+    width: 50,
+    borderRadius: 25,
+    backgroundColor: 'white',
+    borderWidth: 1,
+    borderColor: 'black',
+    alignSelf: 'flex-end',
+  }
+});
