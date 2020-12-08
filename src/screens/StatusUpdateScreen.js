@@ -21,13 +21,30 @@ class StatusUpdateScreen extends Component {
       super(props);
       this.state = {};
     }
-  
+
+    // back button onPress
+    toFeed = () => {
+        this.props.nav.navigate("Home")
+    }
+    
     render() {
       return (
         <SafeAreaProvider>
         <SafeAreaView style={{flex: 1}} forceInset={{ top: 'always' }}>
 
-        <StatusUpdateForm feedGroup="timeline" />
+        <View style={styles.topBarBox}>
+        <View style={styles.topBar}>
+          <Text style={styles.feedTitle}>New Post</Text>
+          <TouchableOpacity style={styles.profileButton} onPress={() => this.toFeed()}>
+            <Text style={styles.plus}>{">"}</Text>
+          </TouchableOpacity>
+        </View>
+        </View>
+
+        <StatusUpdateForm 
+            feedGroup="timeline"
+            height={200} 
+        />
   
         </SafeAreaView>
       </SafeAreaProvider>
@@ -37,3 +54,41 @@ class StatusUpdateScreen extends Component {
   }
   
   export default StatusUpdateScreen;
+
+  const styles = StyleSheet.create({
+    topBarBox: {
+      width: '100%',
+      backgroundColor: '#FF9999',
+    },
+    topBar: {
+      width: '90%',
+      alignSelf: 'center',
+      height: 60,
+      alignItems: "center",
+      justifyContent: 'center',
+      flexDirection: 'column',
+    },
+    feedTitle: {
+      fontSize: 25,
+      fontWeight: 'bold',
+      color: 'white',
+      fontStyle: 'italic',
+    },
+    profileButton: {
+        position: 'absolute',
+        alignSelf: 'flex-end',
+        height: 40,
+        width: 40,
+        borderRadius: 20,
+        borderWidth: 1,
+        borderColor: 'white',
+    },
+    plus: {
+        fontSize: 30,
+        fontWeight: 'bold',
+        color: 'white',
+        textAlign: 'center',
+        alignSelf: 'center',
+        justifyContent: 'center',
+    },
+  })
