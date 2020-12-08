@@ -1,6 +1,6 @@
 // Import UI components
 import React, {Component} from 'react';
-import { ScrollView, StatusBar, StyleSheet, View, Text } from 'react-native';
+import { ScrollView, StatusBar, StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import { FlatFeed } from 'expo-activity-feed';
 import {Avatar, Button, Title, Card, IconButton} from 'react-native-paper';
 import SafeAreaView from 'react-native-safe-area-view';
@@ -14,6 +14,12 @@ import {styles} from '../styles/styles.js';
 
 
 class ProfileScreen extends Component {
+
+  // back button onPress
+  toFeed = () => {
+    this.props.nav.navigate("Home")
+  }
+
   render() {
     return (
       <SafeAreaProvider>
@@ -22,6 +28,9 @@ class ProfileScreen extends Component {
         <View style={localStyles.topBarBox}>
         <View style={localStyles.topBar}>
           <Text style={localStyles.feedTitle}>Your Profile</Text>
+          <TouchableOpacity style={localStyles.newPostButton} onPress={() => this.toFeed()}>
+            <Text style={localStyles.plus}>{"<"}</Text>
+          </TouchableOpacity>
         </View>
         </View>
 
@@ -64,5 +73,23 @@ const localStyles = StyleSheet.create({
     fontWeight: 'bold',
     color: 'white',
     fontStyle: 'italic',
-  }
+  }, 
+  newPostButton: {
+    position: 'absolute',
+    alignSelf: 'flex-start',
+    height: 40,
+    width: 40,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: 'white',
+    alignContent: 'center',
+  },
+  plus: {
+    fontSize: 30,
+    fontWeight: 'bold',
+    color: 'white',
+    textAlign: 'center',
+    alignSelf: 'center',
+    justifyContent: 'center',
+  },
 })
