@@ -73,7 +73,7 @@ class HomeScreen extends React.Component<PropsInner, State> {
 
         <View style={styles.topBarBox}>
         <View style={styles.topBar}>
-          <Text style={styles.feedTitle}>Your Feed</Text>
+          <Text style={styles.feedTitle}>LOOP</Text>
           <TouchableOpacity style={styles.profileButton} onPress={() => this.toProfile()}>
             <Avatar source={profileImage} size={40} />
           </TouchableOpacity>
