@@ -40,6 +40,17 @@ class HomeScreen extends Component {
     return (
       <SafeAreaProvider>
       <SafeAreaView style={{flex: 1}} forceInset={{ top: 'always' }}>
+
+        <View style={styles.topBarBox}>
+        <View style={styles.topBar}>
+          <Text style={styles.feedTitle}>Your Feed</Text>
+          <TouchableOpacity style={styles.profileButton} onPress={() => this.toProfile()}/>
+          <TouchableOpacity style={styles.newPostButton} onPress={() => Alert.alert("new post")}>
+            <Text style={styles.plus}>+</Text>
+          </TouchableOpacity>
+        </View>
+        </View>
+
         <FlatFeed
           feedGroup="timeline"
           options={{
@@ -70,8 +81,9 @@ class HomeScreen extends Component {
             </TouchableOpacity>
           )}
         />
-        <TouchableOpacity style={styles.profileButton} onPress={() => this.toProfile()}/>
+
       <StatusUpdateForm feedGroup="timeline" />
+
       </SafeAreaView>
     </SafeAreaProvider>
     );
@@ -84,12 +96,45 @@ export default HomeScreen;
 const styles = StyleSheet.create({
   profileButton: {
     position: 'absolute',
-    height: 50,
-    width: 50,
-    borderRadius: 25,
-    backgroundColor: 'white',
-    borderWidth: 1,
-    borderColor: 'black',
     alignSelf: 'flex-end',
+    height: 40,
+    width: 40,
+    borderRadius: 20,
+    backgroundColor: 'white',
+  },
+  newPostButton: {
+    position: 'absolute',
+    alignSelf: 'flex-start',
+    height: 40,
+    width: 40,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: 'white',
+    alignContent: 'center',
+  },
+  plus: {
+    fontSize: 30,
+    fontWeight: 'bold',
+    color: 'white',
+    textAlign: 'center',
+    alignSelf: 'center',
+    justifyContent: 'center',
+  },
+  topBarBox: {
+    width: '100%',
+    backgroundColor: '#FF9999',
+  },
+  topBar: {
+    width: '90%',
+    alignSelf: 'center',
+    height: 50,
+    alignItems: "center",
+    justifyContent: 'center',
+    flexDirection: 'column',
+  },
+  feedTitle: {
+    fontSize: 25,
+    fontWeight: 'bold',
+    color: 'white',
   }
 });
