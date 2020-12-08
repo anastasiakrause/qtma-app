@@ -44,6 +44,7 @@ class StatusUpdateScreen extends Component {
         <StatusUpdateForm 
             feedGroup="timeline"
             height={200} 
+            onSuccess={() => this.toFeed()}
         />
   
         </SafeAreaView>
