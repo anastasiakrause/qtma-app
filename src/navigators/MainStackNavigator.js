@@ -19,9 +19,9 @@ function toHomeScreen({ navigation }) {
   );
 }
 
-function toProfileScreen() {
+function toProfileScreen({ navigation }) {
   return (
-    <ProfileScreen/>
+    <ProfileScreen nav={ navigation }/>
   );
 }
 
@@ -31,9 +31,9 @@ function toSinglePostScreen() {
   );
 }
 
-function toStatusUpdateScreen() {
+function toStatusUpdateScreen({ navigation }) {
   return (
-    <StatusUpdateScreen/>
+    <StatusUpdateScreen nav={ navigation }/>
   );
 }
 
