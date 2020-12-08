@@ -47,6 +47,7 @@ class HomeScreen extends React.Component<PropsInner, State> {
   // Navigates to SinglePostScreen
   _onPressActivity = () => {
     // props.nav is the navigation prop passed from MainStackNavigator
+    // CURRENTLY NOT WORKING
     this.props.nav.navigate("Post")
   }
 

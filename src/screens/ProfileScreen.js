@@ -28,7 +28,7 @@ class ProfileScreen extends Component {
         <View style={localStyles.topBarBox}>
         <View style={localStyles.topBar}>
           <Text style={localStyles.feedTitle}>Your Profile</Text>
-          <TouchableOpacity style={localStyles.newPostButton} onPress={() => this.toFeed()}>
+          <TouchableOpacity style={localStyles.backButton} onPress={() => this.toFeed()}>
             <Text style={localStyles.plus}>{"<"}</Text>
           </TouchableOpacity>
         </View>
@@ -74,7 +74,7 @@ const localStyles = StyleSheet.create({
     color: 'white',
     fontStyle: 'italic',
   }, 
-  newPostButton: {
+  backButton: {
     position: 'absolute',
     alignSelf: 'flex-start',
     height: 40,

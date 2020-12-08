@@ -35,7 +35,7 @@ class StatusUpdateScreen extends Component {
         <View style={styles.topBarBox}>
         <View style={styles.topBar}>
           <Text style={styles.feedTitle}>New Post</Text>
-          <TouchableOpacity style={styles.profileButton} onPress={() => this.toFeed()}>
+          <TouchableOpacity style={styles.backButton} onPress={() => this.toFeed()}>
             <Text style={styles.plus}>{">"}</Text>
           </TouchableOpacity>
         </View>
@@ -74,7 +74,7 @@ class StatusUpdateScreen extends Component {
       color: 'white',
       fontStyle: 'italic',
     },
-    profileButton: {
+    backButton: {
         position: 'absolute',
         alignSelf: 'flex-end',
         height: 40,
