@@ -1,10 +1,12 @@
 // @flow
+
+// React and gui component imports
 import React, {Component} from 'react';
-import { View, Text, ScrollView, StyleSheet } from 'react-native';
-import { StatusBar, Image, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, StatusBar, Image, TouchableOpacity } from 'react-native';
 import SafeAreaView from 'react-native-safe-area-view';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
+// api imports
 import {
   Avatar,
   FlatFeed,
@@ -13,15 +15,32 @@ import {
   ReactionIcon,
   StatusUpdateForm
 } from 'expo-activity-feed';
+// COPIED FROM ProfileHeader.js
+import type { UserData } from '../types';
+import type { AppCtx } from 'expo-activity-feed';
 
+// image imports
 import PostIcon from '../assets/post.png';
 import ReplyIcon from '../assets/reply.png';
 import { nullFormat } from 'numeral';
 
-class HomeScreen extends Component {
-  constructor(props) {
+// COPIED FROM ProfileHeader.js to try to get the profile picture
+type Props = {};
+type PropsInner = Props & AppCtx<UserData>;
+
+class HomeScreen extends React.Component<PropsInner, State> {
+  constructor(props: PropsInner) {
     super(props);
-    this.state = {};
+    this.state = {
+      user: {},
+    };
+  }
+
+  // NO CLUE WHAT THIS DOES - copied from ProfileHeader.js
+  async componentDidMount() {
+    let data = await this.props.user.profile();
+    this.props.changedUserData();
+    this.setState({ user: data });
   }
 
   // Post onPress function
@@ -42,6 +61,11 @@ class HomeScreen extends Component {
   }
 
   render() {
+    // NO CLUE HOW TO USE THIS - needed for profileImage
+    // copied from profileHeader.js
+    let { name, url, desc, profileImage, coverImage } =
+      this.props.userData || {};
+      
     return (
       <SafeAreaProvider>
       <SafeAreaView style={{flex: 1}} forceInset={{ top: 'always' }}>
@@ -49,7 +73,9 @@ class HomeScreen extends Component {
         <View style={styles.topBarBox}>
         <View style={styles.topBar}>
           <Text style={styles.feedTitle}>Your Feed</Text>
-          <TouchableOpacity style={styles.profileButton} onPress={() => this.toProfile()}/>
+          <TouchableOpacity style={styles.profileButton} onPress={() => this.toProfile()}>
+            <Avatar source={profileImage} size={40} />
+          </TouchableOpacity>
           <TouchableOpacity style={styles.newPostButton} onPress={() => this.toStatusScreen()}>
             <Text style={styles.plus}>+</Text>
           </TouchableOpacity>
@@ -86,8 +112,6 @@ class HomeScreen extends Component {
             </TouchableOpacity>
           )}
         />
-
-      <StatusUpdateForm feedGroup="timeline" />
 
       </SafeAreaView>
     </SafeAreaProvider>
@@ -132,7 +156,7 @@ const styles = StyleSheet.create({
   topBar: {
     width: '90%',
     alignSelf: 'center',
-    height: 50,
+    height: 60,
     alignItems: "center",
     justifyContent: 'center',
     flexDirection: 'column',
@@ -141,5 +165,6 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontWeight: 'bold',
     color: 'white',
+    fontStyle: 'italic',
   }
 });
