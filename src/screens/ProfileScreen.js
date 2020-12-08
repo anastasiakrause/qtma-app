@@ -1,6 +1,6 @@
 // Import UI components
 import React, {Component} from 'react';
-import { ScrollView, StatusBar } from 'react-native';
+import { ScrollView, StatusBar, StyleSheet, View, Text } from 'react-native';
 import { FlatFeed } from 'expo-activity-feed';
 import {Avatar, Button, Title, Card, IconButton} from 'react-native-paper';
 import SafeAreaView from 'react-native-safe-area-view';
@@ -19,7 +19,13 @@ class ProfileScreen extends Component {
       <SafeAreaProvider>
       <SafeAreaView style={{flex: 1}} forceInset={{ top: 'always' }}>
 
-        <ScrollView style={{ position: 'absolute', flex: 1 }}>
+        <View style={localStyles.topBarBox}>
+        <View style={localStyles.topBar}>
+          <Text style={localStyles.feedTitle}>Your Profile</Text>
+        </View>
+        </View>
+
+        <ScrollView style={{ flex: 1 }}>
           <ProfileHeader />
           <FlatFeed feedGroup="user" />
           <Button
@@ -39,3 +45,24 @@ class ProfileScreen extends Component {
 }
 
 export default ProfileScreen;
+
+const localStyles = StyleSheet.create({
+  topBarBox: {
+    width: '100%',
+    backgroundColor: '#FF9999',
+  },
+  topBar: {
+    width: '90%',
+    alignSelf: 'center',
+    height: 60,
+    alignItems: "center",
+    justifyContent: 'center',
+    flexDirection: 'column',
+  },
+  feedTitle: {
+    fontSize: 25,
+    fontWeight: 'bold',
+    color: 'white',
+    fontStyle: 'italic',
+  }
+})
