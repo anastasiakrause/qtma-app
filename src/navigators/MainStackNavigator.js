@@ -8,6 +8,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from '../screens/HomeScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import SinglePostScreen from '../screens/SinglePostScreen';
+import StatusUpdateScreen from '../screens/StatusUpdateScreen';
 
 
 //===== Defining Screen Functions =====//
@@ -30,6 +31,12 @@ function toSinglePostScreen() {
   );
 }
 
+function toStatusUpdateScreen() {
+  return (
+    <StatusUpdateScreen/>
+  );
+}
+
 
 //===== Creating Navigation Stack =====//
 
@@ -41,6 +48,7 @@ export function MainStackNavigator() {
       <Stack.Screen name="Home" component={toHomeScreen} />
       <Stack.Screen name="Profile" component={toProfileScreen} />
       <Stack.Screen name="Post" component={toSinglePostScreen} />
+      <Stack.Screen name="Status" component={toStatusUpdateScreen} />
     </Stack.Navigator>
   );
 }
