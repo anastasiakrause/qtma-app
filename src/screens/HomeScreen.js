@@ -36,6 +36,11 @@ class HomeScreen extends Component {
     this.props.nav.navigate("Profile")
   }
 
+  // new post button onPress
+  toStatusScreen = () => {
+    this.props.nav.navigate("Status")
+  }
+
   render() {
     return (
       <SafeAreaProvider>
@@ -45,7 +50,7 @@ class HomeScreen extends Component {
         <View style={styles.topBar}>
           <Text style={styles.feedTitle}>Your Feed</Text>
           <TouchableOpacity style={styles.profileButton} onPress={() => this.toProfile()}/>
-          <TouchableOpacity style={styles.newPostButton} onPress={() => Alert.alert("new post")}>
+          <TouchableOpacity style={styles.newPostButton} onPress={() => this.toStatusScreen()}>
             <Text style={styles.plus}>+</Text>
           </TouchableOpacity>
         </View>
