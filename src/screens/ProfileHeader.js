@@ -58,7 +58,7 @@ class ProfileHeaderInner extends React.Component<PropsInner, State> {
             <Text style={styles.userUrl}>{url}</Text>
             <Text style={styles.userDesc}>{desc}</Text>
           </View>
-          <Avatar source={profileImage} size={150} />
+          <Avatar source={profileImage} size={130} />
         </View>
 
         <View style={styles.statSection}>
@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
   mainSection: {
     width: 100 + '%',
     height: 150,
-    marginTop: 90,
+    marginTop: 30,
     marginBottom: 30,
     paddingRight: 20,
     paddingLeft: 20,

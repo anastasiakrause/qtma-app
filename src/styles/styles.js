@@ -50,4 +50,9 @@ export const styles = StyleSheet.create({
   loading: {
     marginTop: 300,
   },
+  profileButton: {
+    height: 50,
+    width: 50,
+    borderRadius: 25,
+  }
 });
