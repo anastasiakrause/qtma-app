@@ -1,4 +1,6 @@
 import {StyleSheet} from 'react-native';
+import { Dimensions } from 'react-native';
+
 
 export const styles = StyleSheet.create({
   greeting: {
@@ -50,4 +52,7 @@ export const styles = StyleSheet.create({
   loading: {
     marginTop: 300,
   },
+  googleButton: {
+    marginTop: 20, marginLeft: 15, marginRight:0, width: Dimensions.get('window').width - 30
+  }
 });

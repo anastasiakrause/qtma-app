@@ -9,14 +9,9 @@ if (!apiKey || !appId || !appSecret ) {
     console.error ('Environemnt vars should be set');
 }
 const client = stream.connect(apiKey, appSecret, appId);
-//const firstuser = client.feed('user', 'first'); // later: make '1' the UID generated on sign up
+//const firstuser = client.feed('user', module.exports.uid); // later: make '1' the UID generated on sign up
 
-export const userToken = functions.https.onRequest((request: functions.Request, response: functions.Response) => {
-    const id = client.createUserToken("thiisID");
-    response.status(200);
-    response.type('jwt');
-    response.setHeader('user_id', id);
-    response.setHeader("alg" , "RS256");
-    response.setHeader("type", "JWT");
-    response.send({"user_id" : id });
+exports.createToken = functions.https.onCall((data, context) => {
+    const id = client.createUserToken(module.exports.uid);
+    return id;
 });
