@@ -1,4 +1,6 @@
 import {StyleSheet} from 'react-native';
+import { Dimensions } from 'react-native';
+
 
 export const styles = StyleSheet.create({
   greeting: {
@@ -53,6 +55,8 @@ export const styles = StyleSheet.create({
   profileButton: {
     height: 50,
     width: 50,
-    borderRadius: 25,
+    borderRadius: 25},
+  googleButton: {
+    marginTop: 20, marginLeft: 15, marginRight:0, width: Dimensions.get('window').width - 30
   }
 });

@@ -13,6 +13,19 @@ import {
 import * as yup from 'yup';
 import { styles } from '../styles/styles';
 import {TextInput, Button} from 'react-native-paper';
+import { GoogleSignin, GoogleSigninButton, statusCodes } from 'react-native-google-signin';
+import auth, { firebase } from '@react-native-firebase/auth';
+
+export async function _signIn() {
+  // Get the users ID token
+  const { idToken } = await GoogleSignin.signIn();
+
+  // Create a Google credential with the token
+  const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+
+  // Sign-in the user with the credential
+  return auth().signInWithCredential(googleCredential);
+};
 
 const signUpValidationSchema = yup.object().shape({
   email: yup
@@ -38,63 +51,74 @@ const signUpValidationSchema = yup.object().shape({
 });
 
 const AuthForm = (props) => {
+
+  
+
   let displayLogin = (
-    <Formik
-      initialValues= {{email: '', password: ''}}
-      onSubmit = { values =>  props.authMode === 'login' ? props.login(values) : props.signup(values) }
-    >
-      {({handleChange, handleSubmit, values}) => (
-        <View>
-          <View style={styles.logo}>
-            <Image
-              source={require('../assets/Looplogo.png')}
-              style={styles.image}
+    <View>
+      <Formik
+        initialValues= {{email: '', password: ''}}
+        onSubmit = { values =>  props.authMode === 'login' ? props.login(values) : props.signup(values) }
+      >
+        {({handleChange, handleSubmit, values, _signIn}) => (
+          <View>
+            <View style={styles.logo}>
+              <Image
+                source={require('../assets/Looplogo.png')}
+                style={styles.image}
+              />
+            </View>
+
+            <TextInput 
+              style={styles.authInput}
+              mode="outlined"
+              label="Email"
+              theme={{
+                colors: {primary: '#1e90ff', underlineColor: 'transparent'},
+              }}
+              autoCapitalize="none"
+              value = {values.email}
+              onChangeText={handleChange('email')}
             />
-          </View>
 
-          <TextInput 
-            style={styles.authInput}
-            mode="outlined"
-            label="Email"
-            theme={{
-              colors: {primary: '#1e90ff', underlineColor: 'transparent'},
-            }}
-            autoCapitalize="none"
-            value = {values.email}
-            onChangeText={handleChange('email')}
-          />
+            <TextInput
+              style={styles.authInput}
+              mode="outlined"
+              label="Password"
+              theme={{
+                colors: {primary: '#1e90ff', underlineColor: 'transparent'},
+              }}
+              secureTextEntry={true}
+              autoCapitalize="none"
+              value = {values.password}
+              onChangeText={handleChange('password')}
+            />
 
-          <TextInput
-            style={styles.authInput}
-            mode="outlined"
-            label="Password"
-            theme={{
-              colors: {primary: '#1e90ff', underlineColor: 'transparent'},
-            }}
-            secureTextEntry={true}
-            autoCapitalize="none"
-            value = {values.password}
-            onChangeText={handleChange('password')}
-          />
+            <Button
+              style={styles.authButton}
+              mode="outlined"
+              onPress={handleSubmit}>
+                Login
+            </Button>       
+            
+            <TouchableOpacity
+              onPress={() => props.switchAuthMode()}
+              style={styles.authSwitch}>
+              <Text style={styles.signUpButton}>
+                New to Loop?{' '}
+                <Text style={{color: '#1e90ff'}}>Sign Up</Text>
+              </Text>
+            </TouchableOpacity>   
+          </View>  
+        )}
+      </Formik>
 
-          <Button
-            style={styles.authButton}
-            mode="outlined"
-            onPress={handleSubmit}>
-              Login
-          </Button>
-
-          <TouchableOpacity
-            onPress={() => props.switchAuthMode()}
-            style={styles.authSwitch}>
-            <Text style={styles.signUpButton}>
-              New to Loop?{' '}
-              <Text style={{color: '#1e90ff'}}>Sign Up</Text>
-            </Text>
-          </TouchableOpacity>          
-        </View>
-      )}
-    </Formik>
+      <GoogleSigninButton 
+            style={styles.googleButton}
+            size={GoogleSigninButton.Size.Wide}
+            color={GoogleSigninButton.Color.Dark}
+            onPress={_signIn}/>
+    </View>
   );
 
   let displayRegister = (

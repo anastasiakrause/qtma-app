@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import AuthForm from '../components/AuthForm';
-import { login, signup, subscribeToAuthChanges } from '../firebase/functions';
-
+import { login, signup, subscribeToAuthChanges, _signIn} from '../firebase/functions';
+import auth from '@react-native-firebase/auth';
 
 class AuthScreen extends Component {
 
@@ -32,6 +32,7 @@ class AuthScreen extends Component {
         signup={signup}
         authMode={this.state.authMode}
         switchAuthMode={this.switchAuthMode}
+        _signIn={_signIn}
       />
     );
   }
