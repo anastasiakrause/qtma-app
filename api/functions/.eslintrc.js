@@ -19,6 +19,7 @@ module.exports = {
     "import",
   ],
   rules: {
+    "linebreak-style": 0,
     "@typescript-eslint/adjacent-overload-signatures": "error",
     "@typescript-eslint/no-empty-function": "error",
     "@typescript-eslint/no-empty-interface": "warn",

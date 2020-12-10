@@ -9,7 +9,7 @@ import { firebase } from '@react-native-firebase/functions';
 import firestore from '@react-native-firebase/firestore';
 import { AsyncStorage } from 'react-native';
 import * as stream from 'getstream';
-
+import { GoogleSignin } from 'react-native-google-signin';
 import {
   Avatar,
   StreamApp,
@@ -25,13 +25,17 @@ import {
 } from 'babel-dotenv';
 
 import { ThemeContext } from 'react-navigation';
-
 export default function App() {
   StatusBar.setBarStyle('light-content', false);
   // Set an initializing state whilst Firebase connects
   const [initializing, setInitializing] = useState(true);
   const [user, setUser] = useState();
   const [userToken, setUserToken] = useState("");
+
+
+  GoogleSignin.configure({
+    webClientId: '537506013381-01a1c33eghuc469peaone9cfu1q3v3e6.apps.googleusercontent.com',
+  });
 
   // Handle user state changes
   function onAuthStateChanged(user) {
@@ -52,6 +56,15 @@ export default function App() {
       getLocalUserToken();
     } 
   });
+
+  useEffect(() => {
+    GoogleSignin.configure({
+      scopes: ['email'], // what API you want to access on behalf of the user, default is email and profile
+      webClientId:
+        '537506013381-01a1c33eghuc469peaone9cfu1q3v3e6.apps.googleusercontent.com', // client ID of type WEB for your server (needed to verify user ID and offline access)
+      offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVE
+    });
+  }, []);
 
 
   async function setLocalUserToken() {
@@ -124,3 +137,6 @@ export default function App() {
   </StreamApp>
   );
 }
+
+
+

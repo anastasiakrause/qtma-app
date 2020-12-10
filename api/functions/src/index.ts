@@ -9,7 +9,7 @@ if (!apiKey || !appId || !appSecret ) {
     console.error ('Environemnt vars should be set');
 }
 const client = stream.connect(apiKey, appSecret, appId);
-//const firstuser = client.feed('user', 'first'); // later: make '1' the UID generated on sign up
+//const firstuser = client.feed('user', module.exports.uid); // later: make '1' the UID generated on sign up
 
 export const userToken = functions.https.onRequest((request: functions.Request, response: functions.Response) => {
     const id = client.createUserToken("thiisID");
