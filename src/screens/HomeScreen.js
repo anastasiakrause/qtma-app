@@ -12,12 +12,13 @@ import {
   FlatFeed,
   Activity,
   LikeButton,
-  ReactionIcon,
-  StatusUpdateForm
+  ReactionIcon
 } from 'expo-activity-feed';
 // COPIED FROM ProfileHeader.js
 import type { UserData } from '../types';
 import type { AppCtx } from 'expo-activity-feed';
+import { StreamApp } from 'expo-activity-feed';
+
 
 // image imports
 import PostIcon from '../assets/post.png';
@@ -28,7 +29,15 @@ import { nullFormat } from 'numeral';
 type Props = {};
 type PropsInner = Props & AppCtx<UserData>;
 
-class HomeScreen extends React.Component<PropsInner, State> {
+export default function HomeScreen(props: Props) {
+  return (
+    <StreamApp.Consumer>
+      {(appCtx) => <HomeInner {...props} {...appCtx} />}
+    </StreamApp.Consumer>
+  );
+}
+
+class HomeInner extends React.Component<PropsInner, State> {
   constructor(props: PropsInner) {
     super(props);
     this.state = {
@@ -38,27 +47,25 @@ class HomeScreen extends React.Component<PropsInner, State> {
 
   // NO CLUE WHAT THIS DOES - copied from ProfileHeader.js
   async componentDidMount() {
-    let data = await this.props.user.profile();
+    let data = await this.props.user.profile(); // error catch here
     this.props.changedUserData();
     this.setState({ user: data });
   }
 
   // Post onPress function
   // Navigates to SinglePostScreen
-  _onPressActivity = () => {
-    // props.nav is the navigation prop passed from MainStackNavigator
-    // CURRENTLY NOT WORKING
-    this.props.nav.navigate("Post")
-  }
+  _onPressActivity = activity => {
+    this.props.navigation.navigate("Post", { activity });
+  };
 
   // Profile button onPress
   toProfile = () => {
-    this.props.nav.navigate("Profile")
+    this.props.navigation.navigate("Profile")
   }
 
   // new post button onPress
   toStatusScreen = () => {
-    this.props.nav.navigate("Status")
+    this.props.navigation.navigate("Status")
   }
 
   render() {
@@ -92,7 +99,7 @@ class HomeScreen extends React.Component<PropsInner, State> {
           navigation={this.props.navigation}
           Activity={(props) => (
             <TouchableOpacity
-              onPress={() => this._onPressActivity()}
+              onPress={() => this._onPressActivity(props.activity)}
             >
               <Activity
                 {...props}
@@ -113,15 +120,12 @@ class HomeScreen extends React.Component<PropsInner, State> {
             </TouchableOpacity>
           )}
         />
-
       </SafeAreaView>
     </SafeAreaProvider>
     );
   }
 
 }
-
-export default HomeScreen;
 
 const styles = StyleSheet.create({
   profileButton: {

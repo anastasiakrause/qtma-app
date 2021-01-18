@@ -1,7 +1,7 @@
 // Import UI components
 import React, {Component} from 'react';
 import { ScrollView, StatusBar, StyleSheet, View, Text, TouchableOpacity } from 'react-native';
-import { FlatFeed } from 'expo-activity-feed';
+import { FlatFeed, BackButton } from 'expo-activity-feed';
 import {Avatar, Button, Title, Card, IconButton} from 'react-native-paper';
 import SafeAreaView from 'react-native-safe-area-view';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -17,7 +17,7 @@ class ProfileScreen extends Component {
 
   // back button onPress
   toFeed = () => {
-    this.props.nav.navigate("Home")
+    this.props.navigation.navigate("Home")
   }
 
   render() {
@@ -27,16 +27,14 @@ class ProfileScreen extends Component {
 
         <View style={localStyles.topBarBox}>
         <View style={localStyles.topBar}>
-          <Text style={localStyles.feedTitle}>Your Profile</Text>
-          <TouchableOpacity style={localStyles.backButton} onPress={() => this.toFeed()}>
-            <Text style={localStyles.plus}>{"<"}</Text>
+          <Text style={localStyles.feedTitle}>LOOP</Text>
+          <TouchableOpacity style = {localStyles.backButton} onPress={() => this.toFeed()}>
+            <BackButton white />
           </TouchableOpacity>
         </View>
         </View>
-
-        <ScrollView style={{ flex: 1 }}>
           <ProfileHeader />
-          <FlatFeed feedGroup="user" />
+          <FlatFeed feedGroup="timeline" />
           <Button
               style={styles.authButton}
               mode="outlined"
@@ -45,7 +43,6 @@ class ProfileScreen extends Component {
               compact={false}>
               Sign Out
           </Button>
-        </ScrollView>
 
       </SafeAreaView>
       </SafeAreaProvider>
@@ -77,10 +74,6 @@ const localStyles = StyleSheet.create({
   backButton: {
     position: 'absolute',
     alignSelf: 'flex-start',
-    height: 40,
-    width: 40,
-    borderRadius: 20,
-    borderWidth: 1,
     borderColor: 'white',
     alignContent: 'center',
   },

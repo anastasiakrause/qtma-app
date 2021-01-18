@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "init-data": "npx babel-node scripts/initData.js",
+    "demo-data": "npx babel-node scripts/demoData.js",
     "eslint": "eslint '**/*.js'",
     "flow": "flow"
   },
@@ -35,6 +36,7 @@
     "eslint-plugin-react": "^7.21.5",
     "expo": "^39.0.3",
     "expo-activity-feed": "^0.9.1",
+    "expo-permissions": "~9.3.0",
     "faker": "^5.1.0",
     "flow": "^0.2.3",
     "flow-bin": "^0.137.0",
@@ -53,6 +55,7 @@
     "react-native-dotenv": "^2.4.2",
     "react-native-gesture-handler": "^1.6.1",
     "react-native-google-signin": "^2.1.1",
+    "react-native-image-picker": "^3.0.1",
     "react-native-paper": "^3.10.1",
     "react-native-reanimated": "^1.8.0",
     "react-native-safe-area-context": "^3.1.8",

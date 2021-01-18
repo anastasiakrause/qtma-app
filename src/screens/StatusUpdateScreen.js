@@ -24,7 +24,7 @@ class StatusUpdateScreen extends Component {
 
     // back button onPress
     toFeed = () => {
-        this.props.nav.navigate("Home")
+        this.props.navigation.navigate("Home")
     }
     
     render() {
@@ -35,9 +35,6 @@ class StatusUpdateScreen extends Component {
         <View style={styles.topBarBox}>
         <View style={styles.topBar}>
           <Text style={styles.feedTitle}>New Post</Text>
-          <TouchableOpacity style={styles.backButton} onPress={() => this.toFeed()}>
-            <Text style={styles.plus}>{">"}</Text>
-          </TouchableOpacity>
         </View>
         </View>
 

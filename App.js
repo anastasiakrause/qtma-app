@@ -10,6 +10,8 @@ import firestore from '@react-native-firebase/firestore';
 import { AsyncStorage } from 'react-native';
 import * as stream from 'getstream';
 import { GoogleSignin } from 'react-native-google-signin';
+import * as Permissions from 'expo-permissions';
+
 import {
   Avatar,
   StreamApp,
@@ -23,6 +25,9 @@ import {
   STREAM_APP_ID,
   STREAM_TOKEN
 } from 'babel-dotenv';
+
+import { LogBox } from 'react-native';
+LogBox.ignoreAllLogs();//Ignore all log notifications
 
 import { ThemeContext } from 'react-navigation';
 export default function App() {
