@@ -54,39 +54,22 @@ class StatusUpdateScreen extends Component {
 export default StatusUpdateScreen;
 
 const styles = StyleSheet.create({
-topBarBox: {
-    width: '100%',
-    backgroundColor: '#FF9999',
-},
-topBar: {
-    width: '90%',
-    alignSelf: 'center',
-    height: 60,
-    alignItems: "center",
-    justifyContent: 'center',
-    flexDirection: 'column',
-},
-feedTitle: {
-    fontSize: 25,
-    fontWeight: 'bold',
-    color: 'white',
-    fontStyle: 'italic',
-},
-backButton: {
-    position: 'absolute',
-    alignSelf: 'flex-end',
-    height: 40,
-    width: 40,
-    borderRadius: 20,
-    borderWidth: 1,
-    borderColor: 'white',
-},
-plus: {
-    fontSize: 30,
-    fontWeight: 'bold',
-    color: 'white',
-    textAlign: 'center',
-    alignSelf: 'center',
-    justifyContent: 'center',
-},
+  topBarBox: {
+      width: '100%',
+      backgroundColor: '#FF9999',
+  },
+  topBar: {
+      width: '90%',
+      alignSelf: 'center',
+      height: 60,
+      alignItems: "center",
+      justifyContent: 'center',
+      flexDirection: 'column',
+  },
+  feedTitle: {
+      fontSize: 25,
+      fontWeight: 'bold',
+      color: 'white',
+      fontStyle: 'italic',
+  }
 })
