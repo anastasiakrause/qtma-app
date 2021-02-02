@@ -16,6 +16,34 @@ import Topbar from '../components/Topbar';
 // TODO: Convert to FC
 export default class NotificationScreen extends React.Component {
 
+  _renderGroup = ({ activityGroup, styles, ...props }: any) => {
+    const verb = activityGroup.activities[0].verb;
+    const activity = activityGroup.activities[0];
+    // Check console to see notification item json
+    console.log(activity)
+    if (verb === "follow") {
+      const name = activity.actor.data.name;
+      return (
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <Text>{name} followed you.</Text>
+        </View>
+      );
+    } else if (verb === "heart" || verb === "repost") {
+      return (
+        <Text>Liked</Text>
+      );
+    } else {
+      const name = activity.actor.data.name;
+      const content = activity.content;
+      return (
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <Text>{name} made a post: </Text>
+          <Text>{content}</Text>
+        </View>
+      );
+    }
+  };
+
   render() {
     return (
 
@@ -24,8 +52,9 @@ export default class NotificationScreen extends React.Component {
 
       <Topbar title="Notifications"/>
 
-      {/* <NotificationFeed
-      /> */}
+      <NotificationFeed
+        Group={this._renderGroup}
+      />
 
       <Navbar navigation={this.props.navigation}/>
 
