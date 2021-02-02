@@ -16,6 +16,9 @@ import {
   StatusUpdateForm
 } from 'expo-activity-feed';
 
+// Topbar
+import Topbar from '../components/Topbar';
+
 class StatusUpdateScreen extends Component {
     constructor(props) {
       super(props);
@@ -32,11 +35,7 @@ class StatusUpdateScreen extends Component {
         <SafeAreaProvider>
         <SafeAreaView style={{flex: 1}} forceInset={{ top: 'always' }}>
 
-        <View style={styles.topBarBox}>
-        <View style={styles.topBar}>
-          <Text style={styles.feedTitle}>New Post</Text>
-        </View>
-        </View>
+        <Topbar title="New Post"/>
 
         <StatusUpdateForm 
             feedGroup="timeline"

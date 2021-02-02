@@ -19,6 +19,9 @@ import type { NavigationScreen } from 'expo-activity-feed';
 
 import ReplyIcon from '../assets/reply.png';
 
+// Topbar
+import Topbar from '../components/Topbar';
+
 export const navigationOptions = ({ navigation }) => ({
   title: "POST DETAIL",
   headerLeft: () => (
@@ -46,6 +49,7 @@ export default class SinglePostScreen extends React.Component {
 
     return (
       <SafeAreaView style={styles.container}>
+        <Topbar title="Post" />
         <SinglePost
           activity={activity}
           feedGroup={feedGroup}

@@ -20,6 +20,8 @@ import type { AppCtx } from 'expo-activity-feed';
 import { StreamApp } from 'expo-activity-feed';
 
 import Navbar from '../components/Navbar';
+// Topbar
+import Topbar from '../components/Topbar';
 
 // image imports
 import PostIcon from '../assets/post.png';
@@ -69,11 +71,7 @@ class HomeInner extends React.Component<PropsInner, State> {
       <SafeAreaProvider>
       <SafeAreaView style={{flex: 1}} forceInset={{ top: 'always' }}>
 
-        <View style={styles.topBarBox}>
-        <View style={styles.topBar}>
-          <Text style={styles.feedTitle}>LOOP</Text>
-        </View>
-        </View>
+        <Topbar title="My Loop"/>
 
         <FlatFeed
           feedGroup="timeline"

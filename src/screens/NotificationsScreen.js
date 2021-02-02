@@ -10,6 +10,8 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 // Navbar
 import Navbar from '../components/Navbar';
+// Topbar
+import Topbar from '../components/Topbar';
 
 // TODO: Convert to FC
 export default class NotificationScreen extends React.Component {
@@ -20,14 +22,10 @@ export default class NotificationScreen extends React.Component {
       <SafeAreaProvider>
       <SafeAreaView style={{flex: 1}} forceInset={{ top: 'always' }}>
 
-      <View style={styles.topBarBox}>
-      <View style={styles.topBar}>
-        <Text style={styles.feedTitle}>Notifications</Text>
-      </View>
-      </View>
+      <Topbar title="Notifications"/>
 
-      <NotificationFeed
-      />
+      {/* <NotificationFeed
+      /> */}
 
       <Navbar navigation={this.props.navigation}/>
 

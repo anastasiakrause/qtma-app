@@ -11,6 +11,8 @@ import auth from '@react-native-firebase/auth';
 import ProfileHeader from './ProfileHeader';
 // Navbar
 import Navbar from '../components/Navbar';
+// Topbar
+import Topbar from '../components/Topbar';
 // Import stylesheet
 import {styles} from '../styles/styles.js';
 
@@ -22,11 +24,7 @@ class ProfileScreen extends Component {
       <SafeAreaProvider>
       <SafeAreaView style={{flex: 1}} forceInset={{ top: 'always' }}>
 
-        <View style={localStyles.topBarBox}>
-        <View style={localStyles.topBar}>
-          <Text style={localStyles.feedTitle}>Profile</Text>
-        </View>
-        </View>
+        <Topbar title="My Profile"/>
 
         <ProfileHeader />
         <FlatFeed feedGroup="user" />
