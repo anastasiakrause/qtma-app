@@ -31,20 +31,18 @@ export default Topbar;
 const styles = StyleSheet.create({
     topBarBox: {
         width: '100%',
-        backgroundColor: '#FF9999',
+        backgroundColor: 'white',
     },
     topBar: {
         width: '90%',
         alignSelf: 'center',
         height: 60,
-        alignItems: "center",
         justifyContent: 'center',
         flexDirection: 'column',
     },
     feedTitle: {
         fontSize: 25,
         fontWeight: 'bold',
-        color: 'white',
-        fontStyle: 'italic',
+        color: 'black',
     }
 });

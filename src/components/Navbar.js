@@ -78,7 +78,7 @@ const localstyles = StyleSheet.create({
     topBarBox: {
         width: '100%',
         height: 60,
-        backgroundColor: '#FF9999',
+        backgroundColor: 'white',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
@@ -95,7 +95,7 @@ const localstyles = StyleSheet.create({
         width: '25%',
         borderWidth: 1,
         borderRadius: 100,
-        borderColor: 'white',
+        borderColor: 'black',
         alignContent: 'center',
     },
     buttonText: {
@@ -104,18 +104,18 @@ const localstyles = StyleSheet.create({
         textAlignVertical: 'center',
         fontSize: 15,
         fontWeight: 'bold',
-        color: 'white',
+        color: 'black',
     },
     profileButton: {
         height: 40,
         width: 40,
         borderRadius: 20,
-        backgroundColor: 'white',
+        backgroundColor: 'black',
     },
     feedTitle: {
         fontSize: 25,
         fontWeight: 'bold',
-        color: 'white',
+        color: 'black',
         fontStyle: 'italic',
     }
 });
