@@ -71,7 +71,10 @@ class HomeInner extends React.Component<PropsInner, State> {
       <SafeAreaProvider>
       <SafeAreaView style={{flex: 1}} forceInset={{ top: 'always' }}>
 
-        <Topbar title="My Loop"/>
+        <Topbar 
+          title="My Loop"
+          navigation={this.props.navigation}
+        />
 
         <FlatFeed
           feedGroup="timeline"

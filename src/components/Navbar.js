@@ -28,11 +28,6 @@ class Navbar extends Component {
     toProfile = () => {
         this.props.navigation.navigate("Profile")
     }
-
-    // Alert button
-    toNotifs = () => {
-        this.props.navigation.navigate("Notifications")
-    }
   
     render() {
         let { name, url, desc, profileImage, coverImage } =
@@ -52,12 +47,6 @@ class Navbar extends Component {
                 style={localstyles.button} 
                 onPress={() => this.toHome()}>
                 <Text style={localstyles.buttonText}>Feed</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity 
-                style={localstyles.button} 
-                onPress={() => this.toNotifs()}>
-                <Text style={localstyles.buttonText}>Alerts</Text>
             </TouchableOpacity>
 
             <TouchableOpacity 

@@ -24,7 +24,7 @@ class ProfileScreen extends Component {
       <SafeAreaProvider>
       <SafeAreaView style={{flex: 1}} forceInset={{ top: 'always' }}>
 
-        <Topbar title="My Profile"/>
+        <Topbar title="My Profile" />
 
         <ProfileHeader />
         <FlatFeed feedGroup="user" />
