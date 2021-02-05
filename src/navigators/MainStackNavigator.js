@@ -8,6 +8,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from '../screens/HomeScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import StatusUpdateScreen from '../screens/StatusUpdateScreen';
+import NotificationScreen from '../screens/NotificationsScreen';
 import SinglePostScreen, { navigationOptions as singlePostNavigationOptions } from "../screens/SinglePostScreen";
 // TODO: add screen navigation options as done with SinglePostScreen
 
@@ -34,6 +35,10 @@ export function MainStackNavigator() {
       <Stack.Screen
         name="Status"
         component={StatusUpdateScreen}
+      />
+      <Stack.Screen
+        name="Notifications"
+        component={NotificationScreen}
       />
     </Stack.Navigator>
   );

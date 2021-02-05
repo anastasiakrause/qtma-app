@@ -9,40 +9,35 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import auth from '@react-native-firebase/auth';
 // Profile header UI
 import ProfileHeader from './ProfileHeader';
+// Navbar
+import Navbar from '../components/Navbar';
+// Topbar
+import Topbar from '../components/Topbar';
 // Import stylesheet
 import {styles} from '../styles/styles.js';
 
 
 class ProfileScreen extends Component {
 
-  // back button onPress
-  toFeed = () => {
-    this.props.navigation.navigate("Home")
-  }
-
   render() {
     return (
       <SafeAreaProvider>
       <SafeAreaView style={{flex: 1}} forceInset={{ top: 'always' }}>
 
-        <View style={localStyles.topBarBox}>
-        <View style={localStyles.topBar}>
-          <Text style={localStyles.feedTitle}>LOOP</Text>
-          <TouchableOpacity style = {localStyles.backButton} onPress={() => this.toFeed()}>
-            <BackButton white />
-          </TouchableOpacity>
-        </View>
-        </View>
-          <ProfileHeader />
-          <FlatFeed feedGroup="timeline" />
-          <Button
-              style={styles.authButton}
-              mode="outlined"
-              onPress={() => auth().signOut()}
-              color="#1e90ff"
-              compact={false}>
-              Sign Out
-          </Button>
+        <Topbar title="My Profile" />
+
+        <ProfileHeader />
+        <FlatFeed feedGroup="user" />
+        <Button
+            style={styles.authButton}
+            mode="outlined"
+            onPress={() => auth().signOut()}
+            color="#1e90ff"
+            compact={false}>
+            Sign Out
+        </Button>
+
+        <Navbar navigation={this.props.navigation}/>
 
       </SafeAreaView>
       </SafeAreaProvider>
@@ -70,19 +65,5 @@ const localStyles = StyleSheet.create({
     fontWeight: 'bold',
     color: 'white',
     fontStyle: 'italic',
-  }, 
-  backButton: {
-    position: 'absolute',
-    alignSelf: 'flex-start',
-    borderColor: 'white',
-    alignContent: 'center',
-  },
-  plus: {
-    fontSize: 30,
-    fontWeight: 'bold',
-    color: 'white',
-    textAlign: 'center',
-    alignSelf: 'center',
-    justifyContent: 'center',
-  },
+  }
 })

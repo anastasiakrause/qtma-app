@@ -16,6 +16,9 @@ import {
   StatusUpdateForm
 } from 'expo-activity-feed';
 
+// Topbar
+import Topbar from '../components/Topbar';
+
 class StatusUpdateScreen extends Component {
     constructor(props) {
       super(props);
@@ -32,11 +35,7 @@ class StatusUpdateScreen extends Component {
         <SafeAreaProvider>
         <SafeAreaView style={{flex: 1}} forceInset={{ top: 'always' }}>
 
-        <View style={styles.topBarBox}>
-        <View style={styles.topBar}>
-          <Text style={styles.feedTitle}>New Post</Text>
-        </View>
-        </View>
+        <Topbar title="New Post"/>
 
         <StatusUpdateForm 
             feedGroup="timeline"
@@ -54,39 +53,22 @@ class StatusUpdateScreen extends Component {
 export default StatusUpdateScreen;
 
 const styles = StyleSheet.create({
-topBarBox: {
-    width: '100%',
-    backgroundColor: '#FF9999',
-},
-topBar: {
-    width: '90%',
-    alignSelf: 'center',
-    height: 60,
-    alignItems: "center",
-    justifyContent: 'center',
-    flexDirection: 'column',
-},
-feedTitle: {
-    fontSize: 25,
-    fontWeight: 'bold',
-    color: 'white',
-    fontStyle: 'italic',
-},
-backButton: {
-    position: 'absolute',
-    alignSelf: 'flex-end',
-    height: 40,
-    width: 40,
-    borderRadius: 20,
-    borderWidth: 1,
-    borderColor: 'white',
-},
-plus: {
-    fontSize: 30,
-    fontWeight: 'bold',
-    color: 'white',
-    textAlign: 'center',
-    alignSelf: 'center',
-    justifyContent: 'center',
-},
+  topBarBox: {
+      width: '100%',
+      backgroundColor: '#FF9999',
+  },
+  topBar: {
+      width: '90%',
+      alignSelf: 'center',
+      height: 60,
+      alignItems: "center",
+      justifyContent: 'center',
+      flexDirection: 'column',
+  },
+  feedTitle: {
+      fontSize: 25,
+      fontWeight: 'bold',
+      color: 'white',
+      fontStyle: 'italic',
+  }
 })

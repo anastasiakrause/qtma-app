@@ -19,6 +19,9 @@ import type { UserData } from '../types';
 import type { AppCtx } from 'expo-activity-feed';
 import { StreamApp } from 'expo-activity-feed';
 
+import Navbar from '../components/Navbar';
+// Topbar
+import Topbar from '../components/Topbar';
 
 // image imports
 import PostIcon from '../assets/post.png';
@@ -58,16 +61,6 @@ class HomeInner extends React.Component<PropsInner, State> {
     this.props.navigation.navigate("Post", { activity });
   };
 
-  // Profile button onPress
-  toProfile = () => {
-    this.props.navigation.navigate("Profile")
-  }
-
-  // new post button onPress
-  toStatusScreen = () => {
-    this.props.navigation.navigate("Status")
-  }
-
   render() {
     // NO CLUE HOW TO USE THIS - needed for profileImage
     // copied from profileHeader.js
@@ -78,17 +71,10 @@ class HomeInner extends React.Component<PropsInner, State> {
       <SafeAreaProvider>
       <SafeAreaView style={{flex: 1}} forceInset={{ top: 'always' }}>
 
-        <View style={styles.topBarBox}>
-        <View style={styles.topBar}>
-          <Text style={styles.feedTitle}>LOOP</Text>
-          <TouchableOpacity style={styles.profileButton} onPress={() => this.toProfile()}>
-            <Avatar source={profileImage} size={40} />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.newPostButton} onPress={() => this.toStatusScreen()}>
-            <Text style={styles.plus}>+</Text>
-          </TouchableOpacity>
-        </View>
-        </View>
+        <Topbar 
+          title="My Loop"
+          navigation={this.props.navigation}
+        />
 
         <FlatFeed
           feedGroup="timeline"
@@ -120,6 +106,9 @@ class HomeInner extends React.Component<PropsInner, State> {
             </TouchableOpacity>
           )}
         />
+
+        <Navbar navigation={this.props.navigation}/>
+
       </SafeAreaView>
     </SafeAreaProvider>
     );
@@ -128,32 +117,6 @@ class HomeInner extends React.Component<PropsInner, State> {
 }
 
 const styles = StyleSheet.create({
-  profileButton: {
-    position: 'absolute',
-    alignSelf: 'flex-end',
-    height: 40,
-    width: 40,
-    borderRadius: 20,
-    backgroundColor: 'white',
-  },
-  newPostButton: {
-    position: 'absolute',
-    alignSelf: 'flex-start',
-    height: 40,
-    width: 40,
-    borderRadius: 20,
-    borderWidth: 1,
-    borderColor: 'white',
-    alignContent: 'center',
-  },
-  plus: {
-    fontSize: 30,
-    fontWeight: 'bold',
-    color: 'white',
-    textAlign: 'center',
-    alignSelf: 'center',
-    justifyContent: 'center',
-  },
   topBarBox: {
     width: '100%',
     backgroundColor: '#FF9999',
