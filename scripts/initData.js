@@ -1,19 +1,34 @@
-// @flow
+/* eslint-disable no-undef */
 
-import stream from 'getstream';
-import faker from 'faker';
-import dotenv from 'dotenv';
+const { connect, StreamApiError } = require('getstream');
+const faker = require('faker');
+const dotenv = require('dotenv');
+
 dotenv.config();
 
 async function main() {
   const apiKey = process.env.STREAM_API_KEY;
   const apiSecret = process.env.STREAM_API_SECRET;
   const appId = process.env.STREAM_APP_ID;
+  if (!apiKey) {
+    console.error('STREAM_API_KEY should be set');
+    return;
+  }
 
-  const serverClient = stream.connect(apiKey, apiSecret, appId);
+  if (!appId) {
+    console.error('STREAM_APP_ID should be set');
+    return;
+  }
+
+  if (!apiSecret) {
+    console.error('STREAM_API_SECRET should be set');
+    return;
+  }
+
+  const serverClient = connect(apiKey, apiSecret, appId);
 
   function createUserClient(userId) {
-    return stream.connect(apiKey, serverClient.createUserToken(userId), appId);
+    return connect(apiKey, serverClient.createUserToken(userId), appId);
   }
 
   const batman = createUserClient('batman');
@@ -21,8 +36,10 @@ async function main() {
   const league = createUserClient('justiceleague');
   const bowie = createUserClient('davidbowie');
 
+  console.log('================================================= \n');
   console.log('Add the following line to your .env file');
   console.log('STREAM_API_TOKEN=' + batman.userToken);
+  console.log('\n=================================================');
 
   await batman.currentUser.getOrCreate({
     name: 'Batman',
@@ -146,6 +163,7 @@ async function main() {
       content: 'filler number ' + i,
     });
   }
+
   await batman.feed('timeline').addActivities(activities);
   await batman.feed('notification').addActivities(activities);
   await batman.feed('timeline').get({
@@ -157,10 +175,15 @@ async function main() {
   await ignore409(() =>
     Promise.all(
       randomUsers.slice(5, 9).map((user, i) =>
-        user.reactions.add('heart', batmanActivity, {
-          id: `random-heart-batman-3-${i}`,
-          targetFeeds: [user.feed('notification', batman.currentUser.id)],
-        }),
+        user.reactions.add(
+          'heart',
+          batmanActivity.id,
+          {},
+          {
+            id: `random-heart-batman-3-${i}`,
+            targetFeeds: [user.feed('notification', batman.currentUser.id)],
+          },
+        ),
       ),
     ),
   );
@@ -168,13 +191,17 @@ async function main() {
   await ignore409(() =>
     Promise.all(
       randomUsers.slice(8, 17).map((user, i) =>
-        user.reactions.add('repost', batmanActivity, {
-          id: `random-repost-batman-3-${i}`,
-          data: {
+        user.reactions.add(
+          'repost',
+          batmanActivity,
+          {
             text: 'The Joker is so dumb, hahaha!!!!' + i,
           },
-          targetFeeds: [user.feed('notification', batman.currentUser.id)],
-        }),
+          {
+            id: `random-repost-batman-3-${i}`,
+            targetFeeds: [user.feed('notification', batman.currentUser.id)],
+          },
+        ),
       ),
     ),
   );
@@ -267,10 +294,7 @@ async function ignore409(asyncfn) {
   try {
     await asyncfn();
   } catch (e) {
-    if (
-      !(e instanceof stream.errors.StreamApiError) ||
-      e.response.statusCode !== 409
-    ) {
+    if (!(e instanceof StreamApiError) || e.response.status !== 409) {
       throw e;
     }
   }

@@ -51,9 +51,6 @@ const signUpValidationSchema = yup.object().shape({
 });
 
 const AuthForm = (props) => {
-
-  
-
   let displayLogin = (
     <View>
       <Formik
@@ -139,7 +136,7 @@ const AuthForm = (props) => {
             <TextInput 
               style={styles.authInput}
               mode="outlined"
-              label="Name"
+              label="User Handle"
               onChangeText={handleChange('displayName')}
               onBlur={() => setFieldTouched('displayName')}
               theme={{

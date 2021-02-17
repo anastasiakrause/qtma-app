@@ -5,26 +5,12 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import {MainStackNavigator} from './src/navigators/MainStackNavigator';
 import {AuthStackNavigator} from './src/navigators/AuthStackNavigator';
-import { firebase } from '@react-native-firebase/functions';
-import firestore from '@react-native-firebase/firestore';
-import { AsyncStorage } from 'react-native';
-import * as stream from 'getstream';
 import { GoogleSignin } from 'react-native-google-signin';
 import * as Permissions from 'expo-permissions';
 
-import {
-  Avatar,
-  StreamApp,
-  IconBadge,
-} from 'expo-activity-feed';
 
 const RootStack = createStackNavigator();
 
-import {
-  STREAM_API_KEY,
-  STREAM_APP_ID,
-  STREAM_TOKEN
-} from 'babel-dotenv';
 
 import { LogBox } from 'react-native';
 LogBox.ignoreAllLogs();//Ignore all log notifications
@@ -35,8 +21,6 @@ export default function App() {
   // Set an initializing state whilst Firebase connects
   const [initializing, setInitializing] = useState(true);
   const [user, setUser] = useState();
-  const [userToken, setUserToken] = useState("");
-
 
   GoogleSignin.configure({
     webClientId: '537506013381-01a1c33eghuc469peaone9cfu1q3v3e6.apps.googleusercontent.com',
@@ -53,14 +37,6 @@ export default function App() {
     return subscriber; // unsubscribe on unmount
   }, []);
 
-  useEffect( () => {
-    if (user){
-      console.log("state var before: ", userToken);
-      setLocalUserToken();
-      console.log("state var after: ", userToken);
-      getLocalUserToken();
-    } 
-  });
 
   useEffect(() => {
     GoogleSignin.configure({
@@ -71,54 +47,17 @@ export default function App() {
     });
   }, []);
 
-
-  async function setLocalUserToken() {
-      //set
-      var currentUser = firebase.auth().currentUser;
-      const uid = currentUser?.uid;
-    
-      const user = await firestore()
-        .collection('users')
-        .doc(uid)
-        .get();
-    
-      let userToken = user.get('token');
-      console.log("usertoken from local: ", userToken);
-      setUserToken(userToken); // add this later when migrate to login
-
-      try {
-        await AsyncStorage.setItem('userToken', userToken);
-        console.log("User token storage successful!");
-      } catch (error){
-        console.log("Unable to store User Token.");
-      }
-    }
-  async function getLocalUserToken() {
-    //get
-
-    try {
-      const userToken = await AsyncStorage.getItem('userToken');
-      if (userToken !== null) {
-        console.log("User token storage found!");
-        setUserToken(userToken);
-      }
-    } catch (error){
-      console.log("Unable to store User Token.");
-    }
-  }
-
   function renderScreens(){
     // Function loads all appropriate app screens
+    // if no user logged in
+    if (!user){ return (
+          <RootStack.Screen name="Auth" component={AuthStackNavigator}/>
+      );
+    }
     // loading screen
     if (initializing) return (
       <RootStack.Screen name="LoadingScreen" component={MainStackNavigator}/>
     );
-    // if no user logged in
-    if (!user){
-      return (
-          <RootStack.Screen name="Auth" component={AuthStackNavigator}/>
-      );
-    }
     // if user logged in, take to activity feed / profile navigator
     return (
       <RootStack.Screen name="Home" component={MainStackNavigator}/>
@@ -126,11 +65,6 @@ export default function App() {
   }
 
   return(
-    <StreamApp
-      apiKey={STREAM_API_KEY}
-      appId={STREAM_APP_ID}
-      token={STREAM_TOKEN}
-    >
     <NavigationContainer>
       <RootStack.Navigator screenOptions={{
           headerShown: false,
@@ -139,7 +73,6 @@ export default function App() {
         {renderScreens()}
       </RootStack.Navigator>
     </NavigationContainer>
-  </StreamApp>
   );
 }
 
