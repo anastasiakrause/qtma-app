@@ -1,7 +1,9 @@
-import React, { Component } from 'react';
-import AuthForm from '../components/AuthForm';
+import { Component } from 'react';
+import AuthForm from './AuthForm';
 import { login, signup, subscribeToAuthChanges, _signIn} from '../firebase/functions';
 import auth from '@react-native-firebase/auth';
+import React, { useState, useEffect, createContext } from 'react';
+
 
 class AuthScreen extends Component {
 
@@ -12,7 +14,7 @@ class AuthScreen extends Component {
   componentDidMount() {
     subscribeToAuthChanges(this.onAuthStateChanged)
   }
-
+  
   onAuthStateChanged = (user) => {
     if (user !== null) {
       console.log(user);
@@ -29,7 +31,7 @@ class AuthScreen extends Component {
     return (
       <AuthForm
         login={login}
-        signup={signup}
+        signup={signup} //handleSubmit
         authMode={this.state.authMode}
         switchAuthMode={this.switchAuthMode}
         _signIn={_signIn}
