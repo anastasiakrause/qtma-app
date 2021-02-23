@@ -26,7 +26,7 @@ export function AuthStackNavigator() {
     if (initializing) {
       return null;
     }
-    console.log("in auth stack", user);
+    
     return user ? (
         <MainStackNavigator/>
     ) : (

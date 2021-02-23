@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StatusBar } from 'react-native';
-import { createStackNavigator } from '@react-navigation/stack';
 import {AuthStackNavigator} from './src/navigators/AuthStackNavigator';
 import { GoogleSignin } from 'react-native-google-signin';
 

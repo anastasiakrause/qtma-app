@@ -39,7 +39,6 @@ export function signup({ email, password, displayName }) {
     throw new Error('Network response was not ok');
   })
   .then((data)=> {
-    console.log("in the second then");
     userToken = data.user_id;
   })
   .catch( (error) => {
@@ -55,6 +54,7 @@ export function signup({ email, password, displayName }) {
           .then(() => { })
       }
     })
+    .catch(err => console.log(err));
 }
 
 export function subscribeToAuthChanges(authStateChanged) {
