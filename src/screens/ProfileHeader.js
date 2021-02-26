@@ -10,6 +10,8 @@ import type { FollowCounts } from 'getstream';
 import type { AppCtx } from 'expo-activity-feed';
 import type { UserData } from '../types';
 
+import logo from '../assets/logo.png'
+
 type Props = {};
 
 export default function ProfileHeader(props: Props) {
@@ -58,19 +60,15 @@ class ProfileHeaderInner extends React.Component<PropsInner, State> {
             <Text style={styles.userUrl}>{url}</Text>
             <Text style={styles.userDesc}>{desc}</Text>
           </View>
-          <Avatar source={profileImage} size={130} />
+          <Avatar source={profileImage} size={130}/>
         </View>
 
-        <View style={styles.statSection}>
-          <Count num={following_count}>Followers</Count>
-          <Count num={followers_count}>Following</Count>
-        </View>
       </SafeAreaView>
     );
   }
 }
 
-const margin = 15;
+const margin = 0;
 
 const styles = StyleSheet.create({
   profileHeader: {
@@ -87,21 +85,19 @@ const styles = StyleSheet.create({
 
   mainSection: {
     width: 100 + '%',
-    height: 150,
-    marginTop: 30,
-    marginBottom: 30,
+    marginTop: 5,
+    marginBottom: 20,
     paddingRight: 20,
     paddingLeft: 20,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-end',
+    flexDirection: 'column',
+    alignItems: 'flex-start',
   },
   userDetails: {
     flex: 1,
   },
   userName: {
-    fontSize: 39,
-    fontWeight: '600',
+    fontSize: 16,
+    fontWeight: 'bold',
     color: '#364047',
   },
   userUrl: {
@@ -109,7 +105,7 @@ const styles = StyleSheet.create({
     color: '#364047',
   },
   userDesc: {
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: '500',
     color: '#364047',
     lineHeight: 19,
