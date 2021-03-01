@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StatusBar } from 'react-native';
 import {AuthStackNavigator} from './src/navigators/AuthStackNavigator';
 import { GoogleSignin } from 'react-native-google-signin';
+import auth from '@react-native-firebase/auth';
 
 import { LogBox } from 'react-native';
 LogBox.ignoreAllLogs();//Ignore all log notifications
@@ -22,6 +23,9 @@ export default function App() {
       offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVE
     });
   }, []);
+
+  // auth().signOut();
+
   return <AuthStackNavigator/>
 }
 
