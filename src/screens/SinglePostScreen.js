@@ -12,7 +12,13 @@ import {
   CommentList,
   CommentItem,
   LikeList,
+  ReactionToggleIcon,
 } from 'expo-activity-feed';
+
+import bookmark1 from '../assets/1.png';
+import bookmark2 from '../assets/11.png';
+import music1 from '../assets/4.png';
+import music2 from '../assets/44.png';
 
 import type { UserResponse } from '../types';
 import type { NavigationScreen } from 'expo-activity-feed';
@@ -64,6 +70,31 @@ export default class SinglePostScreen extends React.Component {
                   <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <LikeButton reactionKind="heart" {...props} />
 
+                    <ReactionToggleIcon
+                      {...props}
+                      activeIcon={music2}
+                      inactiveIcon={music1}
+                      kind={'music'}
+                      reactionKind="music"
+                      own_reactions={props.activity.own_reactions}
+                      counts={props.activity.reaction_counts}
+                      onPress = { async (e) => {
+                        props.onToggleReaction("music", props.activity, {},{});
+                      } }
+                    />
+
+                    <ReactionToggleIcon
+                      {...props}
+                      activeIcon={bookmark2}
+                      inactiveIcon={bookmark1}
+                      own_reactions={props.activity.own_reactions}
+                      counts={props.activity.reaction_counts}
+                      kind={'bookmark'}
+                      reactionKind="bookmark"
+                      onPress = { async (e) => {
+                        props.onToggleReaction("bookmark", props.activity, {},{});
+                      } }
+                    />
                     <ReactionIcon
                       icon={ReplyIcon}
                       labelSingle="comment"

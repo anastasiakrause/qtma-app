@@ -63,3 +63,6 @@ local.properties
 
 #env 
 .env
+
+#randomscripts
+scripts/initializeTestUsers.js

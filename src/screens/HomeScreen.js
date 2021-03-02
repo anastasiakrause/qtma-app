@@ -12,7 +12,8 @@ import {
   FlatFeed,
   Activity,
   LikeButton,
-  ReactionIcon
+  ReactionIcon,
+  ReactionToggleIcon,
 } from 'expo-activity-feed';
 // COPIED FROM ProfileHeader.js
 import type { UserData } from '../types';
@@ -27,6 +28,10 @@ import Topbar from '../components/Topbar';
 import PostIcon from '../assets/post.png';
 import ReplyIcon from '../assets/reply.png';
 import { nullFormat } from 'numeral';
+import bookmark1 from '../assets/1.png';
+import bookmark2 from '../assets/11.png';
+import music1 from '../assets/4.png';
+import music2 from '../assets/44.png';
 
 // COPIED FROM ProfileHeader.js to try to get the profile picture
 type Props = {};
@@ -75,7 +80,7 @@ class HomeInner extends React.Component<PropsInner, State> {
           title="My Loop"
           navigation={this.props.navigation}
         />
-
+        
         <FlatFeed
           feedGroup="timeline"
           options={{
@@ -92,6 +97,32 @@ class HomeInner extends React.Component<PropsInner, State> {
                 Footer={
                   <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <LikeButton reactionKind="heart" {...props} />
+
+                    <ReactionToggleIcon
+                      {...props}
+                      activeIcon={music2}
+                      inactiveIcon={music1}
+                      own_reactions={props.activity.own_reactions}
+                      counts={props.activity.reaction_counts}
+                      kind={'music'}
+                      reactionKind="music"
+                      onPress = { async (e) => {
+                        props.onToggleReaction("music", props.activity, {},{});
+                      } }
+                    />
+
+                    <ReactionToggleIcon
+                      {...props}
+                      activeIcon={bookmark2}
+                      inactiveIcon={bookmark1}
+                      own_reactions={props.activity.own_reactions}
+                      counts={props.activity.reaction_counts}
+                      kind={'bookmark'}
+                      reactionKind="bookmark"
+                      onPress = { async (e) => {
+                        props.onToggleReaction("bookmark", props.activity, {},{});
+                      } }
+                    />
 
                     <ReactionIcon
                       icon={ReplyIcon}
