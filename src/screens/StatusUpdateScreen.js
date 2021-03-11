@@ -23,6 +23,7 @@ import Topbar from '../components/Topbar';
 import Navbar from '../components/Navbar';
 // screens
 import NewPost from './NewPostScreen';
+import NewLoop from './NewLoopScreen';
 
 const Stack = createStackNavigator();
 
@@ -48,7 +49,10 @@ class StatusUpdateScreen extends Component {
         >
           <Text style={[styles.buttonText, {color: 'white'}]}>New Post!</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.loopButton}>
+        <TouchableOpacity 
+          style={styles.loopButton}
+          onPress={() => navigation.navigate("NewLoop")}
+        >
           <Text style={styles.buttonText}>~New Loop~</Text>
         </TouchableOpacity>
         </View>
@@ -69,6 +73,10 @@ class StatusUpdateScreen extends Component {
             <Stack.Screen
               name="NewPost"
               component={NewPost}
+            />
+            <Stack.Screen
+              name="NewLoop"
+              component={NewLoop}
             />
           </Stack.Navigator>
         </NavigationContainer>
