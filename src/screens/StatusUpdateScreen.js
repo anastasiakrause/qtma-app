@@ -41,7 +41,7 @@ class StatusUpdateScreen extends Component {
     chooseScreen({ navigation }){
       return(
         <View style={{flex: 1, backgroundColor: 'white'}}>
-        <Topbar title="Create" center={true}/>
+        <Topbar title="Create" center/>
         <Text style={styles.subhead}>What do you want to create?</Text>
         <TouchableOpacity 
           style={styles.postButton}
@@ -81,7 +81,7 @@ class StatusUpdateScreen extends Component {
           </Stack.Navigator>
         </NavigationContainer>
 
-        <Navbar navigation={this.props.navigation}/>
+        <Navbar navigation={this.props.navigation} newsc/>
   
         </SafeAreaView>
       </SafeAreaProvider>
