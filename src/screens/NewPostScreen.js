@@ -39,10 +39,12 @@ class NewPost extends Component {
 
     // adds or removes selected loops to this.state.selected_ids
     addSendLoop = ( id ) => {
+        // adding
         if(!this.state.selected_ids.includes(parseInt(id))) {
             this.setState({
                 selected_ids: this.state.selected_ids.concat(parseInt(id))
             })
+        // removing
         } else {
             var array = [...this.state.selected_ids]; // make a separate copy of the array
             var index = array.indexOf(parseInt(id))
@@ -55,12 +57,14 @@ class NewPost extends Component {
 
     // renders all loops in this.state.loops
     renderLoops() {
+        // casting dict to a list
         var loopslist = []
         for (var key in this.state.loops) {
             if (this.state.loops.hasOwnProperty(key)) {
                 loopslist.push( [ key, this.state.loops[key] ] );
             }
         }
+        // for loop - looping through list
         return loopslist.map(loop => {
             return (
                 <TouchableOpacity 
@@ -93,6 +97,7 @@ class NewPost extends Component {
         </View>
 
         <Text style={styles.subhead}>Make your post:</Text>
+        {/* TODO: Connect this.state.selected_ids to update form */}
         <StatusUpdateForm 
             feedGroup="timeline"
             height={200} 
