@@ -47,7 +47,7 @@ class StatusUpdateScreen extends Component {
           style={styles.postButton}
           onPress={() => navigation.navigate("NewPost")}
         >
-          <Text style={[styles.buttonText, {color: 'white'}]}>New Post!</Text>
+          <Text style={styles.buttonText}>New Post!</Text>
         </TouchableOpacity>
         <TouchableOpacity 
           style={styles.loopButton}
@@ -107,6 +107,7 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     paddingVertical: 10,
     borderRadius: 50,
+    borderWidth: 1
   },
   loopButton: {
     width: '50%',
@@ -115,8 +116,8 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderWidth: 0,
     borderRadius: 50,
-    borderColor: '#C4C4C4',
-    backgroundColor: '#99E2FF'
+    backgroundColor: '#99E2FF',
+    borderWidth: 1
   },
   buttonText: {
     textAlign: 'center',
