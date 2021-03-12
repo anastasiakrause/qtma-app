@@ -5,6 +5,7 @@ import React, {Component} from 'react';
 import { View, Text, ScrollView, StyleSheet, StatusBar, Image, TouchableOpacity } from 'react-native';
 import SafeAreaView from 'react-native-safe-area-view';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { StreamApp } from "expo-activity-feed";
 
 // api imports
 import {
@@ -19,19 +20,27 @@ import {
 // Topbar
 import Topbar from '../components/Topbar';
 
-class NewPost extends Component {
+export default function NewPostScreen(props) {
+    return (
+      <StreamApp.Consumer>
+        {appCtx => <NewPost {...props} {...appCtx} />}
+      </StreamApp.Consumer>
+    );
+  }
+
+class NewPost extends React.Component {
     constructor(props) {
       super(props);
       this.state = {
-          loops: {
-              1: "My Loops",
-              2: "Buddies",
-              3: "Soccer"
-          },
           selected_ids: [1]
       };
     }
 
+    async componentDidMount() {
+        const data = await this.props.user.profile();
+        this.props.changedUserData();
+        this.setState({ user: data });
+      }
     // back button onPress
     toFeed = () => {
         this.props.navigation.navigate("Home")
@@ -59,9 +68,10 @@ class NewPost extends Component {
     renderLoops() {
         // casting dict to a list
         var loopslist = []
-        for (var key in this.state.loops) {
-            if (this.state.loops.hasOwnProperty(key)) {
-                loopslist.push( [ key, this.state.loops[key] ] );
+        //for (var key in this.state.loops) {
+        for (var key in this.props.userData.loop_ids) {
+            if (this.props.userData.loop_ids.hasOwnProperty(key)) {
+                loopslist.push( [ key, this.props.userData.loop_ids[key] ] );
             }
         }
         // for loop - looping through list
@@ -110,8 +120,6 @@ class NewPost extends Component {
   
   }
   
-export default NewPost;
-
 const styles = StyleSheet.create({
     subhead: {
         fontWeight: 'bold',

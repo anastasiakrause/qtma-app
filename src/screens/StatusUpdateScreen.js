@@ -7,7 +7,7 @@ import SafeAreaView from 'react-native-safe-area-view';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import AvailableLoops from '../components/availableLoops';
+import { StreamApp } from "expo-activity-feed";
 
 // api imports
 import {
@@ -28,11 +28,11 @@ import NewLoop from './NewLoopScreen';
 
 const Stack = createStackNavigator();
 
-class StatusUpdateScreen extends React.Component {
+export default class StatusUpdateScreen extends React.Component {
     constructor(props) {
       super(props);
       this.state = {};
-      }
+    }
 
     // back button onPress
     toFeed = () => {
@@ -61,8 +61,6 @@ class StatusUpdateScreen extends React.Component {
     }
     
     render() {
-    //  const {loop_ids} = this.props.userData || {};
-      //console.log(loop_ids);
       return (
         <SafeAreaProvider>
         <SafeAreaView style={{flex: 1}} forceInset={{ top: 'always' }}>
@@ -92,7 +90,6 @@ class StatusUpdateScreen extends React.Component {
   
   }
   
-export default StatusUpdateScreen;
 
 const styles = StyleSheet.create({
   subhead: {
