@@ -38,19 +38,19 @@ class Navbar extends Component {
             <View style={localstyles.topBar}>
 
             <TouchableOpacity 
-                style={localstyles.button} 
-                onPress={() => this.toStatusScreen()}>
-                <Text style={localstyles.buttonText}>New Post</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity 
-                style={localstyles.button} 
+                style={[localstyles.button, this.props.homesc ? {backgroundColor: 'black'}:null]} 
                 onPress={() => this.toHome()}>
-                <Text style={localstyles.buttonText}>Feed</Text>
+                <Text style={[localstyles.buttonText, this.props.homesc ? {color: 'white'}:null]}>L</Text>
             </TouchableOpacity>
 
             <TouchableOpacity 
-                style={localstyles.profileButton} 
+                style={[localstyles.button, this.props.newsc ? {backgroundColor: 'black'}:null]} 
+                onPress={() => this.toStatusScreen()}>
+                <Text style={[localstyles.buttonText, this.props.newsc ? {color: 'white'}:null]}>+</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity 
+                style={[localstyles.profileButton, this.props.profsc ? {borderWidth: 1}:null]} 
                 onPress={() => this.toProfile()}>
                 <Avatar source={profileImage} size={40} />
             </TouchableOpacity>
@@ -81,7 +81,7 @@ const localstyles = StyleSheet.create({
     },
     button: {
         height: 40,
-        width: '25%',
+        width: 40,
         borderWidth: 1,
         borderRadius: 100,
         borderColor: 'black',
@@ -96,8 +96,8 @@ const localstyles = StyleSheet.create({
         color: 'black',
     },
     profileButton: {
-        height: 40,
-        width: 40,
+        minHeight: 40,
+        minWidth: 40,
         borderRadius: 20,
         backgroundColor: 'black',
     },

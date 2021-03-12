@@ -138,7 +138,7 @@ class HomeInner extends React.Component<PropsInner, State> {
           )}
         />
 
-        <Navbar navigation={this.props.navigation}/>
+        <Navbar navigation={this.props.navigation} homesc/>
 
       </SafeAreaView>
     </SafeAreaProvider>

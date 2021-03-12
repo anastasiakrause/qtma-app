@@ -25,13 +25,13 @@ class Topbar extends Component {
             <View style={styles.topBarBox}>
             <View style={styles.topBar}>
 
-                <Text style={styles.feedTitle}>{this.props.title}</Text>
+                <Text style={[styles.feedTitle, this.props.center ? {flex: 1} : null]}>{this.props.title}</Text>
 
-                {this.props.navigation ? 
+                {this.props.back ? 
                 <TouchableOpacity 
                     style={styles.button} 
-                    onPress={() => this.toNotifs()}>
-                    <Text style={styles.buttonText}>!</Text>
+                    onPress={() => this.props.navigation.goBack()}>
+                    <Text style={styles.buttonText}>Back</Text>
                 </TouchableOpacity>
                 : null }
 
@@ -52,6 +52,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     topBar: {
+        marginTop: 15,
         width: '90%',
         alignSelf: 'center',
         height: 60,
@@ -61,24 +62,26 @@ const styles = StyleSheet.create({
         fontSize: 25,
         fontWeight: 'bold',
         color: 'black',
-        alignSelf: 'center'
+        alignSelf: 'center',
+        textAlign: 'center',
     },
     button: {
-        height: 30,
-        width: 30,
-        borderWidth: 1,
+        paddingVertical: 3,
+        paddingHorizontal: 10,
+        borderWidth: 0,
         borderRadius: 100,
         borderColor: 'black',
         alignContent: 'center',
         alignSelf: 'center',
         marginLeft: 'auto',
+        position: 'absolute',
+        backgroundColor: '#C4C4C4',
     },
     buttonText: {
         height: '100%',
         textAlign: 'center',
         textAlignVertical: 'center',
-        fontSize: 15,
-        fontWeight: 'bold',
+        fontSize: 14,
         color: 'black',
     },
 });

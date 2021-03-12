@@ -105,7 +105,7 @@ class ProfileScreen extends Component {
             Sign Out
         </Button>
 
-        <Navbar navigation={this.props.navigation}/>
+        <Navbar navigation={this.props.navigation} profsc/>
 
       </SafeAreaView>
       </SafeAreaProvider>
