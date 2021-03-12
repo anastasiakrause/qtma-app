@@ -5,12 +5,17 @@ import {
     StatusBar, 
     StyleSheet, 
     View, Text, 
-    TouchableOpacity } from 'react-native';
+    TouchableOpacity,
+    Image } from 'react-native';
 import { Avatar } from 'expo-activity-feed';
 // Firebase auth
 import auth from '@react-native-firebase/auth';
 // Import stylesheet
 import {styles} from '../styles/styles.js';
+
+// Import icon components
+import home from '../assets/home.png';
+import homeo from '../assets/home-outline.png';
 
 class Navbar extends Component {
 
@@ -38,9 +43,10 @@ class Navbar extends Component {
             <View style={localstyles.topBar}>
 
             <TouchableOpacity 
-                style={[localstyles.button, this.props.homesc ? {backgroundColor: 'black'}:null]} 
+                style={[localstyles.button]} 
                 onPress={() => this.toHome()}>
-                <Text style={[localstyles.buttonText, this.props.homesc ? {color: 'white'}:null]}>L</Text>
+                {/* <Text style={[localstyles.buttonText, this.props.homesc ? {color: 'white'}:null]}>L</Text> */}
+                <Image source={this.props.homesc ? home : homeo} style={{ height: 30, width: 30, alignSelf: 'center',  }}/>
             </TouchableOpacity>
 
             <TouchableOpacity 
@@ -80,11 +86,7 @@ const localstyles = StyleSheet.create({
         flexDirection: 'row',
     },
     button: {
-        height: 40,
         width: 40,
-        borderWidth: 1,
-        borderRadius: 100,
-        borderColor: 'black',
         alignContent: 'center',
     },
     buttonText: {
