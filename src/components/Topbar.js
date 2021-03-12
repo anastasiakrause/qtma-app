@@ -37,7 +37,7 @@ class Topbar extends Component {
 
                 {this.props.addfriend ? 
                 <TouchableOpacity 
-                    style={styles.button} 
+                    style={styles.friend_button} 
                     onPress={() => this.props.addfriend()}>
                     <Text style={styles.buttonText}>+</Text>
                 </TouchableOpacity>
@@ -91,5 +91,15 @@ const styles = StyleSheet.create({
         textAlignVertical: 'center',
         fontSize: 14,
         color: 'black',
+    },
+    friend_button: {
+        height: 30,
+        width: 30,
+        borderWidth: 1,
+        borderRadius: 100,
+        borderColor: 'black',
+        alignContent: 'center',
+        alignSelf: 'center',
+        marginLeft: 'auto',
     },
 });
