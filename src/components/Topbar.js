@@ -35,6 +35,14 @@ class Topbar extends Component {
                 </TouchableOpacity>
                 : null }
 
+                {this.props.addfriend ? 
+                <TouchableOpacity 
+                    style={styles.button} 
+                    onPress={() => this.props.addfriend()}>
+                    <Text style={styles.buttonText}>+</Text>
+                </TouchableOpacity>
+                : null }
+
             </View>
             </View>
       );
