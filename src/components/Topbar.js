@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         marginLeft: 'auto',
         position: 'absolute',
-        backgroundColor: '#C4C4C4',
+        backgroundColor: '#009BCB',
     },
     buttonText: {
         height: '100%',
