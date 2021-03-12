@@ -15,10 +15,12 @@ import {
   ReactionToggleIcon,
 } from 'expo-activity-feed';
 
-import bookmark1 from '../assets/1.png';
-import bookmark2 from '../assets/11.png';
-import music1 from '../assets/4.png';
-import music2 from '../assets/44.png';
+import happyclicked from '../assets/HappyClicked.png';
+import happyunclicked from '../assets/HappyUnclicked.png';
+import heartclicked from '../assets/HeartClicked.png';
+import heartunclicked from '../assets/HeartUnclicked.png';
+import sadclicked from '../assets/SadClicked.png';
+import sadunclicked from '../assets/SadUnclicked.png';
 
 import type { UserResponse } from '../types';
 import type { NavigationScreen } from 'expo-activity-feed';
@@ -72,8 +74,8 @@ export default class SinglePostScreen extends React.Component {
 
                     <ReactionToggleIcon
                       {...props}
-                      activeIcon={music2}
-                      inactiveIcon={music1}
+                      activeIcon={happyclicked}
+                      inactiveIcon={happyunclicked}
                       kind={'music'}
                       reactionKind="music"
                       own_reactions={props.activity.own_reactions}
@@ -85,14 +87,26 @@ export default class SinglePostScreen extends React.Component {
 
                     <ReactionToggleIcon
                       {...props}
-                      activeIcon={bookmark2}
-                      inactiveIcon={bookmark1}
+                      activeIcon={sadclicked}
+                      inactiveIcon={sadunclicked}
                       own_reactions={props.activity.own_reactions}
                       counts={props.activity.reaction_counts}
                       kind={'bookmark'}
                       reactionKind="bookmark"
                       onPress = { async (e) => {
                         props.onToggleReaction("bookmark", props.activity, {},{});
+                      } }
+                    />
+                    <ReactionToggleIcon
+                      {...props}
+                      activeIcon={heartclicked}
+                      inactiveIcon={heartunclicked}
+                      own_reactions={props.activity.own_reactions}
+                      counts={props.activity.reaction_counts}
+                      kind={'hearteyes'}
+                      reactionKind="hearteyes"
+                      onPress = { async (e) => {
+                        props.onToggleReaction("hearteyes", props.activity, {},{});
                       } }
                     />
                     <ReactionIcon

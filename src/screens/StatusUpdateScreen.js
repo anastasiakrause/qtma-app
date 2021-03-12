@@ -1,12 +1,13 @@
 // @flow
 
 // React native and gui component imports
-import React, {Component} from 'react';
+import React, {Component, useEffect } from 'react';
 import { View, Text, ScrollView, StyleSheet, StatusBar, Image, TouchableOpacity } from 'react-native';
 import SafeAreaView from 'react-native-safe-area-view';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import AvailableLoops from '../components/availableLoops';
 
 // api imports
 import {
@@ -27,11 +28,11 @@ import NewLoop from './NewLoopScreen';
 
 const Stack = createStackNavigator();
 
-class StatusUpdateScreen extends Component {
+class StatusUpdateScreen extends React.Component {
     constructor(props) {
       super(props);
       this.state = {};
-    }
+      }
 
     // back button onPress
     toFeed = () => {
@@ -60,6 +61,8 @@ class StatusUpdateScreen extends Component {
     }
     
     render() {
+    //  const {loop_ids} = this.props.userData || {};
+      //console.log(loop_ids);
       return (
         <SafeAreaProvider>
         <SafeAreaView style={{flex: 1}} forceInset={{ top: 'always' }}>
@@ -81,8 +84,7 @@ class StatusUpdateScreen extends Component {
           </Stack.Navigator>
         </NavigationContainer>
 
-        <Navbar navigation={this.props.navigation} newsc/>
-  
+        <Navbar navigation={this.props.navigation} newsc/>  
         </SafeAreaView>
       </SafeAreaProvider>
       );

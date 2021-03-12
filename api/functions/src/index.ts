@@ -25,12 +25,11 @@ export const userToken = functions.https.onRequest(async (request: functions.Req
 
     await serverClient.user(userH).getOrCreate({
         name: userH,
-        url: 'qtma.ca',
-        desc: 'loop sample user!',
         profileImage:
         'https://bit.ly/3bh6wgq',
         coverImage:
         'https://bit.ly/3bh6wgq',
+        loop_data: {},
       });
     
 
@@ -41,6 +40,9 @@ export const userToken = functions.https.onRequest(async (request: functions.Req
     });
 
     const userFeed = serverClient.feed('user', userH, id);
+    
+    // personal timeline feed follows user timeline
+    await userClient.feed('timeline').follow('user', userH);
 
     // Add the activity to the feed
     // TODO: format schema for activity
@@ -48,7 +50,7 @@ export const userToken = functions.https.onRequest(async (request: functions.Req
         actor: 'SU:' + userH,
         tweet: 'Hello world', 
         verb: 'post', 
-        object: 1,
+        object: "first post!",
     });
 
     response.status(200);
