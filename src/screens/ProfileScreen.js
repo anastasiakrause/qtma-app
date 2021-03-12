@@ -1,8 +1,8 @@
 // Import UI components
 import React, {Component} from 'react';
-import { ScrollView, StatusBar, StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import { ScrollView, StatusBar, StyleSheet, View, Text, TouchableOpacity, Alert } from 'react-native';
 import { FlatFeed, BackButton } from 'expo-activity-feed';
-import {Avatar, Button, Title, Card, IconButton} from 'react-native-paper';
+import {Avatar, Button, Title, Card, IconButton, TextInput} from 'react-native-paper';
 import SafeAreaView from 'react-native-safe-area-view';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 // Firebase auth
@@ -21,7 +21,7 @@ class ProfileScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      show: 'feed',
+      show: 'friends',
       friends: [
         "Steven",
         "Jo Jo",
@@ -53,26 +53,53 @@ class ProfileScreen extends Component {
   renderFriends() {
     return this.state.friends.map(friend => {
          return (
-             <Text key={friend} style={localStyles.friend_list}>{friend}</Text>
+            <View key={friend} style={localStyles.friend_box}>
+              <View style={localStyles.friend_circle}/>
+              <Text style={localStyles.friend_list}>{friend}</Text>
+              <TouchableOpacity 
+                style={localStyles.remove_button}
+                onPress={() => this.removeFriend(friend)}
+              >
+                <Text style={{
+                  fontSize: 10, 
+                color: 'white', 
+                textAlign: 'center', 
+                textAlignVertical: 'center'
+                }}>
+                  Remove
+                </Text>
+              </TouchableOpacity>
+            </View>
          );
      });
+  }
+
+  addFriend = () => {
+    // Onpress for add friend button
+    Alert.alert("friend")
+  }
+
+  removeFriend = (name) => {
+    // Onpress for when remove button is pressed
+    // Name is name of friend
+    Alert.alert("remove "+name)
   }
 
   render() {
 
     // Dynamic border color on posts / friends buttons
     const posts_color = {
-      borderColor: this.state.show == "feed" ? "#4F4F4F" : '#D3D3D3'
+      borderColor: this.state.show == "feed" ? "#99E2FF" : '#D3D3D3'
     }
     const friends_color = {
-      borderColor: this.state.show == "friends" ? "#4F4F4F" : '#D3D3D3'
+      borderColor: this.state.show == "friends" ? "#99E2FF" : '#D3D3D3'
     }
 
     return (
       <SafeAreaProvider>
       <SafeAreaView style={{flex: 1}} forceInset={{ top: 'always' }}>
 
-        <Topbar title="My Profile" />
+        <Topbar title="My Profile" addfriend={this.addFriend}/>
 
         <ProfileHeader />
 
@@ -92,7 +119,7 @@ class ProfileScreen extends Component {
         {this.state.show == "feed" ?
         <FlatFeed feedGroup="user" />
         :
-        <ScrollView style={{flex: 1, marginTop: 15}}>
+        <ScrollView style={{flex: 1, paddingTop: 0, backgroundColor: 'white'}}>
           {this.renderFriends()}
         </ScrollView> }
 
@@ -141,6 +168,7 @@ const localStyles = StyleSheet.create({
     alignItems: 'center',
     alignContent: 'space-around',
     justifyContent: 'space-evenly',
+    backgroundColor: 'white'
   },
   profile_nav_button: {
     height: '100%',
@@ -154,10 +182,32 @@ const localStyles = StyleSheet.create({
     textAlignVertical: 'center',
     fontWeight: 'bold'
   },
-  friend_list: {
+  friend_box: {
     width: '100%',
+    height: 45,
+    paddingHorizontal: 20,
+    flexDirection: 'row',
+  },
+  friend_circle: {
+    width: 30,
+    height: 30,
+    alignSelf: 'center',
+    backgroundColor: '#009BCB',
+    borderRadius: 200
+  },
+  friend_list: {
     fontSize: 15,
-    textAlign: 'center',
     marginVertical: 5,
+    marginLeft: 10,
+    textAlignVertical: 'center',
+    fontWeight: 'bold'
+  },
+  remove_button: {
+    backgroundColor: '#BCBCBC',
+    width: 50,
+    paddingVertical: 2,
+    marginLeft: 'auto',
+    alignSelf: 'center',
+    borderRadius: 5,
   }
 })
