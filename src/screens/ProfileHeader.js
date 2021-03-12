@@ -55,15 +55,7 @@ class ProfileHeaderInner extends React.Component<PropsInner, State> {
     return (
       <SafeAreaView style={[styles.profileHeader]}>
         <View style={[styles.mainSection]}>
-          {/* REPLACE WITH REAL AVATAR */}
-          <View style={{
-            height: 80,
-            width: 80,
-            backgroundColor: '#99E2FF',
-            borderRadius: 100,
-            marginBottom: 5,
-          }} />
-          {/* <Avatar source={profileImage} size={130}/> */}
+          <Avatar source={profileImage} size={80}/>
           <View style={styles.userDetails}>
             <Text style={styles.userName}>{name}</Text>
             <Text style={styles.userUrl}>{url}</Text>
