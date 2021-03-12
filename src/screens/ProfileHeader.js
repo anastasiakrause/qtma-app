@@ -55,12 +55,20 @@ class ProfileHeaderInner extends React.Component<PropsInner, State> {
     return (
       <SafeAreaView style={[styles.profileHeader]}>
         <View style={[styles.mainSection]}>
+          {/* REPLACE WITH REAL AVATAR */}
+          <View style={{
+            height: 80,
+            width: 80,
+            backgroundColor: '#99E2FF',
+            borderRadius: 100,
+            marginBottom: 5,
+          }} />
+          {/* <Avatar source={profileImage} size={130}/> */}
           <View style={styles.userDetails}>
             <Text style={styles.userName}>{name}</Text>
             <Text style={styles.userUrl}>{url}</Text>
             <Text style={styles.userDesc}>{desc}</Text>
           </View>
-          <Avatar source={profileImage} size={130}/>
         </View>
 
       </SafeAreaView>
@@ -75,6 +83,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     paddingBottom: margin,
     width: 100 + '%',
+    paddingHorizontal: 10,
   },
   profileHeaderShadow: {
     shadowColor: '#000',
@@ -93,21 +102,21 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
   },
   userDetails: {
-    flex: 1,
+    position: 'relative'
   },
   userName: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#364047',
+    color: 'black',
   },
   userUrl: {
     fontSize: 12,
-    color: '#364047',
+    color: 'black',
   },
   userDesc: {
     fontSize: 16,
     fontWeight: '500',
-    color: '#364047',
+    color: 'black',
     lineHeight: 19,
     marginTop: 7,
   },
