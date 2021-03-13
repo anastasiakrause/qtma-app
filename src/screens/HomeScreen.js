@@ -2,7 +2,7 @@
 
 // React and gui component imports
 import React, {Component} from 'react';
-import { View, Text, ScrollView, StyleSheet, StatusBar, Image, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, StatusBar, Image, TouchableOpacity, Alert, TextInput } from 'react-native';
 import SafeAreaView from 'react-native-safe-area-view';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
@@ -63,7 +63,9 @@ class HomeInner extends React.Component<PropsInner, State> {
         "Person Three",
         "Person Four",
         "John Smith"
-      ]
+      ],
+      addLoopPopup: false,
+      loopName: '',
     };
   }
 
@@ -157,6 +159,13 @@ class HomeInner extends React.Component<PropsInner, State> {
     // Onpress for when remove button is pressed
     // Name is name of friend
     Alert.alert("remove "+name)
+  }
+
+  addLoop = () => {
+    // TODO: add loop by code
+    Alert.alert("Added new loop "+this.state.loopName);
+    this.setState({addLoopPopup: false});
+    this.showLoopsList( true ); // toggles loops list
   }
 
   render() {
@@ -279,11 +288,43 @@ class HomeInner extends React.Component<PropsInner, State> {
             width: '100%',
             marginTop: 75, // topbar height + top margin
             paddingBottom: 10,
-            }}>
-          {this.renderLoops()}
+          }}>
+            <TouchableOpacity 
+              style={{
+                width: '100%',
+                marginBottom: 15,
+              }}
+              onPress={() => this.setState({addLoopPopup: true})}
+            >
+              <Text style={[styles.loop_list_item, {color: "#BCBCBC"}]}>Join a new Loop +</Text>
+            </TouchableOpacity>
+            {this.renderLoops()}
           </View>  
 
           </>
+          :
+          null
+        }
+
+        {
+          this.state.addLoopPopup ?
+          <View style={styles.add_friend_popup}>
+            <Text style={styles.aftext}>Enter Loop code:</Text>
+            <TextInput 
+              style={styles.afinput}
+              onChangeText={text => this.setState({loopName: text})}
+            />
+            <View style={styles.afbbox}>
+              <TouchableOpacity onPress={() => this.setState({addLoopPopup: false})}>
+                <Text 
+                  style={styles.afbut}>Cancel</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => this.addLoop()}>
+                <Text 
+                  style={[styles.afbut, {backgroundColor: '#FF9999'}]}>Add</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
           :
           null
         }
@@ -329,5 +370,37 @@ const styles = StyleSheet.create({
     marginLeft: 'auto',
     alignSelf: 'center',
     borderRadius: 5,
+  },
+  add_friend_popup: {
+    position: 'absolute',
+    width: "80%",
+    alignSelf: 'center',
+    marginTop: '25%',
+    backgroundColor: 'white',
+    borderRadius: 25,
+    borderWidth: 1,
+    padding: 20,
+  },
+  aftext: {
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
+  afinput: {
+    borderBottomWidth: 1,
+    height: 40,
+    marginTop: 10,
+  },
+  afbbox: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginTop: 25,
+  },
+  afbut: {
+    paddingVertical: 5,
+    width: 80,
+    textAlign: 'center',
+    textAlignVertical: 'center',
+    borderRadius: 100,
+    borderWidth: 1
   },
 });
