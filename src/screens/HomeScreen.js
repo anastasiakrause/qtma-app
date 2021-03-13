@@ -306,6 +306,8 @@ class HomeInner extends React.Component<PropsInner, State> {
           null
         }
 
+        {/* Add new loop popup - copied from add friend popup in profile screen */}
+        {/* Sets the state variable loopName */}
         {
           this.state.addLoopPopup ?
           <View style={styles.add_friend_popup}>
