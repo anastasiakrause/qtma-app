@@ -57,6 +57,13 @@ class HomeInner extends React.Component<PropsInner, State> {
       currentLoopName: 'My Loop', // Will contain current loop name
       currentLoopId: 'user_id', // Will contain current loop id to pass to Flatfeed
       showFriends: false,
+      loopMembers: [
+        "Person One",
+        "Person Two",
+        "Person Three",
+        "Person Four",
+        "John Smith"
+      ]
     };
   }
 
@@ -82,6 +89,9 @@ class HomeInner extends React.Component<PropsInner, State> {
     // TODO implement changeloop functionality
     this.setState({currentLoopName: loop});
     this.setState({currentLoopId: loop});
+    if (loop == "My Loop"){
+      this.setState({showFriends: false});
+    }
     this.showLoopsList( true );
   }
 
@@ -117,14 +127,16 @@ class HomeInner extends React.Component<PropsInner, State> {
     this.setState({ showFriends: !this.state.showFriends });
   }
 
+  // Renders memebers of current loop (sorry for bad name)
+  // TODO: Connect with getstream, Should update on loop change
   renderFriends() {
-    return this.state.friends.map(friend => {
+    return this.state.loopMembers.map(friend => {
          return (
-            <View key={friend} style={localStyles.friend_box}>
-              <View style={localStyles.friend_circle}/>
-              <Text style={localStyles.friend_list}>{friend}</Text>
+            <View key={friend} style={styles.friend_box}>
+              <View style={styles.friend_circle}/>
+              <Text style={styles.friend_list}>{friend}</Text>
               <TouchableOpacity 
-                style={localStyles.remove_button}
+                style={styles.remove_button}
                 onPress={() => this.removeFriend(friend)}
               >
                 <Text style={{
@@ -141,12 +153,13 @@ class HomeInner extends React.Component<PropsInner, State> {
      });
   }
 
+  removeFriend = (name) => {
+    // Onpress for when remove button is pressed
+    // Name is name of friend
+    Alert.alert("remove "+name)
+  }
+
   render() {
-    // NO CLUE HOW TO USE THIS - needed for profileImage
-    // copied from profileHeader.js
-    let { name, url, desc, profileImage, coverImage } =
-      this.props.userData || {};
-      
     return (
       <SafeAreaProvider>
       <SafeAreaView style={{flex: 1}} forceInset={{ top: 'always' }}>
@@ -288,5 +301,33 @@ const styles = StyleSheet.create({
   loop_list_item: {
     fontWeight: 'bold',
     fontSize: 16
-  }
+  },
+  friend_box: {
+    width: '100%',
+    height: 45,
+    paddingHorizontal: 20,
+    flexDirection: 'row',
+  },
+  friend_circle: {
+    width: 30,
+    height: 30,
+    alignSelf: 'center',
+    backgroundColor: '#009BCB',
+    borderRadius: 200
+  },
+  friend_list: {
+    fontSize: 15,
+    marginVertical: 5,
+    marginLeft: 10,
+    textAlignVertical: 'center',
+    fontWeight: 'bold'
+  },
+  remove_button: {
+    backgroundColor: '#BCBCBC',
+    width: 50,
+    paddingVertical: 2,
+    marginLeft: 'auto',
+    alignSelf: 'center',
+    borderRadius: 5,
+  },
 });
