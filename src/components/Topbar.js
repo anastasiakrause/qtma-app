@@ -13,6 +13,8 @@ import down from '../assets/chevron-down.png';
 import up from '../assets/chevron-up.png';
 import people from '../assets/people.png';
 import peopleo from '../assets/people-outline.png';
+import add from '../assets/person-add.png';
+import addo from '../assets/person-add-outline.png';
 
 
 class Topbar extends Component {
@@ -57,7 +59,7 @@ class Topbar extends Component {
                 <TouchableOpacity 
                     style={styles.friend_button} 
                     onPress={() => this.props.addfriend()}>
-                    <Text style={styles.buttonText}>+</Text>
+                    <Image source={this.props.addFriendOpen ? add : addo} style={{ height: 25, width: 25, alignSelf: 'center',  }}/>
                 </TouchableOpacity>
                 : null }
 

@@ -107,7 +107,11 @@ class ProfileScreen extends Component {
       <SafeAreaProvider>
       <SafeAreaView style={{flex: 1}} forceInset={{ top: 'always' }}>
 
-        <Topbar title="My Profile" addfriend={this.toggleAddFriendPopup}/>
+        <Topbar 
+          title="My Profile" 
+          addfriend={this.toggleAddFriendPopup}
+          addFriendOpen={this.state.addFriendPopup}
+        />
 
         <ProfileHeader />
 
