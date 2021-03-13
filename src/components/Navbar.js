@@ -16,6 +16,10 @@ import {styles} from '../styles/styles.js';
 // Import icon components
 import home from '../assets/home.png';
 import homeo from '../assets/home-outline.png';
+import plus from '../assets/plus-square.png';
+import pluso from '../assets/plus-square-outline.png';
+import guy from '../assets/person.png';
+import guyo from '../assets/person-outline.png';
 
 class Navbar extends Component {
 
@@ -45,20 +49,19 @@ class Navbar extends Component {
             <TouchableOpacity 
                 style={[localstyles.button]} 
                 onPress={() => this.toHome()}>
-                {/* <Text style={[localstyles.buttonText, this.props.homesc ? {color: 'white'}:null]}>L</Text> */}
-                <Image source={this.props.homesc ? home : homeo} style={{ height: 30, width: 30, alignSelf: 'center',  }}/>
+                <Image source={this.props.homesc ? home : homeo} style={{ height: 25, width: 25, alignSelf: 'center',  }}/>
             </TouchableOpacity>
 
             <TouchableOpacity 
-                style={[localstyles.button, this.props.newsc ? {backgroundColor: 'black'}:null]} 
+                style={localstyles.button} 
                 onPress={() => this.toStatusScreen()}>
-                <Text style={[localstyles.buttonText, this.props.newsc ? {color: 'white'}:null]}>+</Text>
+                <Image source={this.props.newsc ? plus : pluso} style={{ height: 25, width: 25, alignSelf: 'center',  }}/>
             </TouchableOpacity>
 
             <TouchableOpacity 
-                style={[localstyles.profileButton, this.props.profsc ? {borderWidth: 1}:null]} 
+                style={localstyles.button} 
                 onPress={() => this.toProfile()}>
-                <Avatar source={profileImage} size={40} />
+                <Image source={this.props.profsc ? guy : guyo} style={{ height: 25, width: 25, alignSelf: 'center',  }}/>
             </TouchableOpacity>
 
             </View>
@@ -98,8 +101,8 @@ const localstyles = StyleSheet.create({
         color: 'black',
     },
     profileButton: {
-        minHeight: 40,
-        minWidth: 40,
+        minHeight: 30,
+        minWidth: 30,
         borderRadius: 20,
         backgroundColor: 'black',
     },
