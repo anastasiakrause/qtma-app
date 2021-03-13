@@ -5,19 +5,29 @@ import {
     StatusBar, 
     StyleSheet, 
     View, Text, 
+    Image,
     TouchableOpacity } from 'react-native';
+
+// icons
+import down from '../assets/chevron-down.png';
+import up from '../assets/chevron-up.png';
+import people from '../assets/people.png';
+import peopleo from '../assets/people-outline.png';
 
 
 class Topbar extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-        };
+        this.state = {};
     }
 
     // Alert button
     toNotifs = () => {
         this.props.navigation.navigate("Notifications")
+    }
+
+    toggleList = () => {
+        this.props.showlist(this.props.shown);
     }
     
     render() {
@@ -26,6 +36,14 @@ class Topbar extends Component {
             <View style={styles.topBar}>
 
                 <Text style={[styles.feedTitle, this.props.center ? {flex: 1} : null]}>{this.props.title}</Text>
+
+                {this.props.loopsdown ? 
+                <TouchableOpacity 
+                    style={styles.loops_dropdown} 
+                    onPress={() => this.toggleList()}>
+                    <Image source={this.props.shown ? up : down} style={{ height: 25, width: 25, alignSelf: 'center',  }}/>
+                </TouchableOpacity>
+                : null }
 
                 {this.props.back ? 
                 <TouchableOpacity 
@@ -40,6 +58,14 @@ class Topbar extends Component {
                     style={styles.friend_button} 
                     onPress={() => this.props.addfriend()}>
                     <Text style={styles.buttonText}>+</Text>
+                </TouchableOpacity>
+                : null }
+
+                {this.props.showfriendsbutton ? 
+                <TouchableOpacity 
+                    style={styles.friend_button} 
+                    onPress={() => this.props.showFriendsList()}>
+                    <Image source={this.props.showfriends ? people : peopleo} style={{ height: 25, width: 25, alignSelf: 'center',  }}/>
                 </TouchableOpacity>
                 : null }
 
@@ -73,6 +99,11 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         textAlign: 'center',
     },
+    loops_dropdown: {
+        alignContent: 'center',
+        alignSelf: 'center',
+        marginTop: 3,
+    },
     button: {
         paddingVertical: 3,
         paddingHorizontal: 10,
@@ -95,11 +126,10 @@ const styles = StyleSheet.create({
     friend_button: {
         height: 30,
         width: 30,
-        borderWidth: 1,
-        borderRadius: 100,
         borderColor: 'black',
         alignContent: 'center',
         alignSelf: 'center',
         marginLeft: 'auto',
+        marginRight: 20,
     },
 });
