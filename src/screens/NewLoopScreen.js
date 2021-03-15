@@ -5,6 +5,7 @@ import React, {Component} from 'react';
 import { View, Text, ScrollView, StyleSheet, TextInput, TouchableOpacity, Alert } from 'react-native';
 import SafeAreaView from 'react-native-safe-area-view';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { StreamApp } from "expo-activity-feed";
 
 // api imports
 import {
@@ -20,7 +21,15 @@ import {
 import Topbar from '../components/Topbar';
 // import { styles } from '../styles/styles';
 
-class NewLoop extends Component {
+export default function NewLoopScreen(props) {
+    return (
+      <StreamApp.Consumer>
+        {appCtx => <NewLoop {...props} {...appCtx} />}
+      </StreamApp.Consumer>
+    );
+  }
+
+class NewLoop extends React.Component {
     constructor(props) {
       super(props);
       this.state = {
@@ -30,10 +39,38 @@ class NewLoop extends Component {
       };
     }
 
+    async componentDidMount() {
+        const data = await this.props.user.profile();
+        this.props.changedUserData();
+        this.setState({ user: data });
+      }
+
     createLoop = () => {
         // add create loop functionality
         if(this.state.loop_name){
-            this.setState({done: true})
+            this.setState({done: true});
+            const tokenEndpoint = 'https://us-central1-qtmaapptwenty.cloudfunctions.net/createLoop';
+            let data = {
+                method: 'POST',
+                headers: {
+                'Accept': 'application/json, text/plain, */*',
+                'Content-Type': 'application/json'
+                },
+                body: JSON.stringify ({
+                  userHandle : this.props.userData.name,
+                  loopName : this.state.loop_name,
+                }) 
+            };
+            fetch(tokenEndpoint, data) 
+            .then(response => {
+                if(response.ok) return response.json()
+                throw new Error('Network response was not ok');
+            }).then((data)=> {
+              console.log(data.loop_id);
+              this.state.loop_code = data.loop_id;
+            }).catch( (error) => {
+                console.error(error);
+            });
         } else {
             Alert.alert("Loop name cannot be blank!")
         }
@@ -52,9 +89,9 @@ class NewLoop extends Component {
 
         {this.state.done ?
         <>
-            <Text style={styles.subhead}>Your Loop Code is:</Text>
-            <Text style={styles.loopCode}>{this.state.loop_code}</Text>
-            <Text style={styles.loopCodeSub}>Your friends can use this code to join the loop.</Text>
+          <Text style={styles.subhead}>Your Loop Code is:</Text>
+          <Text style={styles.loopCode}>{this.state.loop_code}</Text>
+          <Text style={styles.loopCodeSub}>Your friends can use this code to join the loop.</Text>
         </>
         :
         <>
@@ -75,6 +112,7 @@ class NewLoop extends Component {
         </TouchableOpacity>
 
         </>
+        
         }
 
         </View>
@@ -83,8 +121,6 @@ class NewLoop extends Component {
   
   }
   
-export default NewLoop;
-
 const styles = StyleSheet.create({
     subhead: {
         fontWeight: 'bold',

@@ -66,3 +66,4 @@ local.properties
 
 #randomscripts
 scripts/initializeTestUsers.js
+scripts/createLoop.js
