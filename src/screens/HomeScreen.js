@@ -312,7 +312,28 @@ class HomeInner extends React.Component<PropsInner, State> {
 
   addLoop = () => {
     // TODO: add loop by code
-    Alert.alert("Added new loop "+this.state.loopName);
+    const tokenEndpoint = 'https://us-central1-qtmaapptwenty.cloudfunctions.net/joinLoop';
+    let data = {
+        method: 'POST',
+        headers: {
+        'Accept': 'application/json, text/plain, */*',
+        'Content-Type': 'application/json'
+        },
+        body: JSON.stringify ({
+          loopCode : this.state.loopName,
+          userHandle : this.props.userData.name,
+        }) 
+    };
+    fetch(tokenEndpoint, data) 
+    .then(response => {
+        if(response.ok) return response.json()
+        throw new Error('Network response was not ok');
+    }).then( () => {
+      Alert.alert("Added new loop "+ this.props.userData.loop_ids[this.state.loopName])
+    }).catch( (error) => {
+        console.error(error);
+    });
+
     this.setState({addLoopPopup: false});
     this.showLoopsList( true ); // toggles loops list
   }

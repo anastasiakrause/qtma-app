@@ -4,6 +4,7 @@ import { View, Text, ScrollView, StyleSheet, TextInput, TouchableOpacity, Alert 
 import SafeAreaView from 'react-native-safe-area-view';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { StreamApp } from "expo-activity-feed";
+import firestore from '@react-native-firebase/firestore';
 
 // api imports
 import {
@@ -63,9 +64,16 @@ class NewLoop extends React.Component {
                 if(response.ok) return response.json()
                 throw new Error('Network response was not ok');
             }).then((data)=> {
-              console.log(data.loop_id);
               this.setState({loop_code: data.loop_id});
+              this.setState({loop_name: data.loop_name})
               this.setState({done: true});
+            }).then(() => {
+              // write to firestore
+              firestore().collection('loops')
+                  .doc(String(this.state.loop_code))
+                  .set({ name: this.state.loop_name })
+                  .then (() => console.log("added loop to collection"))
+                  .catch(err => console.log(err))
             }).catch( (error) => {
                 console.error(error);
             });

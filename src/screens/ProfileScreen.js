@@ -26,15 +26,6 @@ class ProfileScreen extends Component {
         "Steven",
         "Jo Jo",
         "Mario",
-        "Steven",
-        "Jo Jo",
-        "Mario",
-        "Steven",
-        "Jo Jo",
-        "Mario",
-        "Steven",
-        "Jo Jo",
-        "Mario",
       ],
       addFriendPopup: false, // toggles add friend popup
       friendName: ''

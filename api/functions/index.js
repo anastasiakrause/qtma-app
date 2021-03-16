@@ -1,9 +1,10 @@
 const functions = require('firebase-functions');
 const stream = require("getstream");
-
 const apiKey = functions.config().stream.key;
 const appId = functions.config().stream.id;
 const appSecret = functions.config().stream.secret;
+const admin = require('firebase-admin');
+admin.initializeApp(functions.config().firebase);
 
 if (!apiKey || !appId || !appSecret) {
     console.error('Environemnt vars should be set');
@@ -57,6 +58,7 @@ exports.userToken = functions.https.onRequest(async (request, response) => {
     response.send({ "user_id": id });
 });
 
+// TODO: write to firebase {id:name}
 exports.createLoop = functions.https.onRequest(async (request, response) => {
     const serverClient = stream.connect(apiKey, appSecret, appId);
     const incomingData = request.body;
@@ -66,7 +68,7 @@ exports.createLoop = functions.https.onRequest(async (request, response) => {
     serverClient.feed('loop', loopN);
 
     // create a following relationship between loop user creator and loop timeline
-    const userFeed = serverClient.feed('user', userH);
+    const userFeed = serverClient.feed('timeline', userH);
     await userFeed.follow('loop', loopN);
 
     const userData = serverClient.user(userH).get();
@@ -76,13 +78,51 @@ exports.createLoop = functions.https.onRequest(async (request, response) => {
         newUserData = result.data;
     }).then(function () {
         const newLoopID = (Math.floor(100000 + Math.random() * 900000));
-        nummy = newLoopID
+        nummy = newLoopID;
         newUserData.loop_ids[newLoopID] = loopN;
     }).then(function () {
         serverClient.user(userH).update(newUserData);
     }).then(function() {
         response.status(200);
         response.setHeader("type", "JSON");
-        response.send({"loop_id": nummy});
+        response.send({"loop_id": nummy, "loop_name": loopN});
     })
+});
+
+exports.joinLoop = functions.https.onRequest(async (request, response) => {
+    const serverClient = stream.connect(apiKey, appSecret, appId);
+    const incomingData = request.body;
+    const loopCode = incomingData.loopCode;
+    const userH = incomingData.userHandle;
+
+    // create a following relationship between loop user creator and loop timeline
+    const userFeed = serverClient.feed('user', userH);
+
+    // get user information
+    const userData = serverClient.user(userH).get();
+    let newUserData = {};
+    
+    // get name of loop from code
+    let loopName;
+    const db = admin.firestore();
+    const docRef = db.collection('loops').doc(loopCode);
+    const getDoc = docRef.get()
+        .then(doc => {
+            loopName = doc.data().name;
+        }).then(() => {
+            serverClient.feed('timeline', userH).follow('loop', loopName);
+        }).then(() => {
+            userData.then(function (result) {
+                newUserData = result.data;
+            }).then( function () {
+                newUserData.loop_ids[loopCode] = loopName;
+            }).then(function () {
+                serverClient.user(userH).update(newUserData);
+            }).then(function() {
+                response.status(200);
+                response.setHeader("type", "JSON");
+                response.send({"status": "success"});
+            })
+        }).catch (err => console.log(err)
+    ); 
 });
