@@ -367,11 +367,12 @@ class HomeInner extends React.Component<PropsInner, State> {
             height: '100%',
             width: '100%',
           }} />
-          <View style={{ 
+          <ScrollView style={{ 
             backgroundColor: 'white',
             paddingHorizontal: 20, 
             position: 'absolute',
             width: '100%',
+            maxHeight: '70%',
             marginTop: 75, // topbar height + top margin
             paddingBottom: 10,
           }}>
@@ -385,7 +386,7 @@ class HomeInner extends React.Component<PropsInner, State> {
               <Text style={[styles.loop_list_item, {color: "#BCBCBC"}]}>Join a new Loop +</Text>
             </TouchableOpacity>
             {this.renderLoops()}
-          </View>  
+          </ScrollView>  
 
           </>
           :
