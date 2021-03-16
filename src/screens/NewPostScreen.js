@@ -49,14 +49,18 @@ class NewPost extends React.Component {
     addSendLoop = ( id , lName) => {
         // adding
         if(!this.state.selected_ids.includes(id)) {
-            this.state.selected_ids.push(id);
+            const idlist = this.state.selected_ids;
+            idlist.push(id);
+            this.setState({ selected_ids: idlist }); // I think rerender needs a setState to be called
             this.state.selected_names.push(lName);
         // removing
         } else {
-            this.state.selected_ids = this.state.selected_ids.filter(e => e !== id);
+            const idlist = this.state.selected_ids;
+            idlist.pop(id);
+            this.setState({ selected_ids: idlist });
             this.state.selected_names = this.state.selected_names.filter(e=> e !== lName);
         }
-        console.log(this.state.selected_names.map(el=>'loop:' + el));// this.state.selected_ids);
+        // console.log(this.state.selected_names.map(el=>'loop:' + el));// this.state.selected_ids);
     }
 
     // renders all loops in this.state.loops
