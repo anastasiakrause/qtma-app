@@ -11,7 +11,6 @@ import auth from '@react-native-firebase/auth';
 // App screens
 import HomeScreen from '../screens/HomeScreen';
 import ProfileScreen from '../screens/ProfileScreen';
-import StatusUpdateScreen from '../screens/StatusUpdateScreen';
 import NotificationScreen from '../screens/NotificationsScreen';
 import SinglePostScreen, { navigationOptions as singlePostNavigationOptions } from "../screens/SinglePostScreen";
 import {
@@ -73,10 +72,6 @@ export function MainStackNavigator() {
               name="Post"
               component={SinglePostScreen}
               options={singlePostNavigationOptions}
-            />
-            <Stack.Screen
-              name="Status"
-              component={StatusUpdateScreen}
             />
             <Stack.Screen
               name="Notifications"

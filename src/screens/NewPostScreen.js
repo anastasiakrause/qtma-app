@@ -88,6 +88,11 @@ class NewPost extends React.Component {
             );
         });
     }
+
+    // runs on post success
+    gotoHome = () => {
+        this.props.navigation.navigate("Home");
+    }
     
     render() {
         return (
@@ -115,6 +120,7 @@ class NewPost extends React.Component {
             feedGroup="user"
             height={200} 
             modifyActivityData = {(data) => ({...data, to: this.state.selected_names.map(el => 'loop:' + el)})}
+            onSuccess={() => this.gotoHome()}
         />
 
         </View>
