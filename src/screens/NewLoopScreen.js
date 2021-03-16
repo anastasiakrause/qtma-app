@@ -46,7 +46,6 @@ class NewLoop extends React.Component {
     createLoop = () => {
         // add create loop functionality
         if(this.state.loop_name){
-            this.setState({done: true});
             const tokenEndpoint = 'https://us-central1-qtmaapptwenty.cloudfunctions.net/createLoop';
             let data = {
                 method: 'POST',
@@ -65,7 +64,8 @@ class NewLoop extends React.Component {
                 throw new Error('Network response was not ok');
             }).then((data)=> {
               console.log(data.loop_id);
-              this.state.loop_code = data.loop_id;
+              this.setState({loop_code: data.loop_id});
+              this.setState({done: true});
             }).catch( (error) => {
                 console.error(error);
             });

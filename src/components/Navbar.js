@@ -22,15 +22,32 @@ import guy from '../assets/person.png';
 import guyo from '../assets/person-outline.png';
 
 class Navbar extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            showCreationTab: false
+        };
+    }
+
+    // New post button
+    toggleCreationTab = () => {
+        this.setState({showCreationTab: !this.state.showCreationTab});
+    }
 
     // Feed button
     toHome = () => {
       this.props.navigation.navigate("Home")
     }
 
-    // New post button
-    toStatusScreen = () => {
-        this.props.navigation.navigate("Status")
+    // to new post screen
+    toNewPost = () => {
+        this.props.navigation.navigate("NewPost")
+        this.setState({showCreationTab: false})
+    }
+
+    toNewLoop = () => {
+        this.props.navigation.navigate("NewLoop")
+        this.setState({showCreationTab: false})
     }
 
     // Profile button
@@ -43,6 +60,8 @@ class Navbar extends Component {
         this.props.userData || {};
 
         return (
+            <>
+
             <View style={localstyles.topBarBox}>
             <View style={localstyles.topBar}>
 
@@ -54,8 +73,8 @@ class Navbar extends Component {
 
             <TouchableOpacity 
                 style={localstyles.button} 
-                onPress={() => this.toStatusScreen()}>
-                <Image source={this.props.newsc ? plus : pluso} style={{ height: 25, width: 25, alignSelf: 'center',  }}/>
+                onPress={() => this.toggleCreationTab()}>
+                <Image source={this.state.showCreationTab ? plus : pluso} style={{ height: 25, width: 25, alignSelf: 'center',  }}/>
             </TouchableOpacity>
 
             <TouchableOpacity 
@@ -66,6 +85,28 @@ class Navbar extends Component {
 
             </View>
             </View>
+            
+            { this.state.showCreationTab ?
+            <View style={localstyles.creation_menu}>
+                <Text style={localstyles.subhead}>What do you want to create?</Text>
+                <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+                    <TouchableOpacity 
+                    style={localstyles.postButton}
+                    onPress={() => this.toNewPost()}
+                    >
+                    <Text style={localstyles.buttonText}>New Post!</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity 
+                    style={localstyles.loopButton}
+                    onPress={() => this.toNewLoop()}
+                    >
+                    <Text style={localstyles.buttonText}>~New Loop~</Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
+            : null
+            }
+            </>
       );
     }
   }
@@ -111,5 +152,44 @@ const localstyles = StyleSheet.create({
         fontWeight: 'bold',
         color: 'black',
         fontStyle: 'italic',
+    },
+    creation_menu: {
+        position: 'absolute',
+        width: '100%',
+        bottom: 60,
+        backgroundColor: 'white',
+        alignContent: 'space-around',
+    },
+    subhead: {
+        fontWeight: 'bold',
+        fontSize: 16,
+        textAlign: 'center',
+        marginTop: 10,
+        marginBottom: 10,
+    },
+    postButton: {
+        width: '30%',
+        alignSelf: 'center',
+        backgroundColor: '#99E2FF',
+        paddingVertical: 5,
+        borderRadius: 50,
+        borderWidth: 1,
+        marginRight: 10,
+    },
+    loopButton: {
+        width: '30%',
+        alignSelf: 'center',
+        paddingVertical: 5,
+        borderWidth: 0,
+        borderRadius: 50,
+        backgroundColor: 'transparent',
+        borderWidth: 1,
+        marginLeft: 10,
+    },
+    buttonText: {
+        textAlign: 'center',
+        textAlignVertical: 'center',
+        fontWeight: 'bold',
+        fontSize: 14,
     }
 });

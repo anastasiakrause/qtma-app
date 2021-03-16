@@ -101,9 +101,13 @@ class NewPost extends React.Component {
         />
 
         <Text style={styles.subhead}>Share to:</Text>
-        <View style={styles.loopsbox}>
+        <ScrollView 
+            horizontal={true} 
+            style={styles.loopsbox}
+            showsHorizontalScrollIndicator={false}
+        >
             {this.renderLoops()}
-        </View>
+        </ScrollView>
 
         <Text style={styles.subhead}>Make your post:</Text>
         {/* TODO: Connect this.state.selected_ids to update form */}
@@ -131,6 +135,8 @@ const styles = StyleSheet.create({
         marginBottom: 30,
         marginTop: 5,
         flexDirection: 'row',
+        paddingBottom: 10,
+        maxHeight: 34,
     },
     loopbutton: {
         paddingHorizontal: 5,
