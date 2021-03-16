@@ -11,12 +11,13 @@ import auth from '@react-native-firebase/auth';
 // App screens
 import HomeScreen from '../screens/HomeScreen';
 import ProfileScreen from '../screens/ProfileScreen';
-import StatusUpdateScreen from '../screens/StatusUpdateScreen';
 import NotificationScreen from '../screens/NotificationsScreen';
 import SinglePostScreen, { navigationOptions as singlePostNavigationOptions } from "../screens/SinglePostScreen";
 import {
   StreamApp,
 } from 'expo-activity-feed';
+import NewPostScreen from '../screens/NewPostScreen';
+import NewLoopScreen from '../screens/NewLoopScreen';
 
 import { STREAM_API_KEY, STREAM_APP_ID } from "@env";
 import AuthForm from '../screens/AuthForm';
@@ -73,12 +74,16 @@ export function MainStackNavigator() {
               options={singlePostNavigationOptions}
             />
             <Stack.Screen
-              name="Status"
-              component={StatusUpdateScreen}
-            />
-            <Stack.Screen
               name="Notifications"
               component={NotificationScreen}
+            />
+            <Stack.Screen
+              name="NewPost"
+              component={NewPostScreen}
+            />
+            <Stack.Screen
+              name="NewLoop"
+              component={NewLoopScreen}
             />
           </Stack.Navigator>
         </NavigationContainer>

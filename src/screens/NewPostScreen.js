@@ -49,14 +49,18 @@ class NewPost extends React.Component {
     addSendLoop = ( id , lName) => {
         // adding
         if(!this.state.selected_ids.includes(id)) {
-            this.state.selected_ids.push(id);
+            const idlist = this.state.selected_ids;
+            idlist.push(id);
+            this.setState({ selected_ids: idlist }); // I think rerender needs a setState to be called
             this.state.selected_names.push(lName);
         // removing
         } else {
-            this.state.selected_ids = this.state.selected_ids.filter(e => e !== id);
+            const idlist = this.state.selected_ids;
+            idlist.pop(id);
+            this.setState({ selected_ids: idlist });
             this.state.selected_names = this.state.selected_names.filter(e=> e !== lName);
         }
-        console.log(this.state.selected_names.map(el=>'loop:' + el));// this.state.selected_ids);
+        // console.log(this.state.selected_names.map(el=>'loop:' + el));// this.state.selected_ids);
     }
 
     // renders all loops in this.state.loops
@@ -84,6 +88,11 @@ class NewPost extends React.Component {
             );
         });
     }
+
+    // runs on post success
+    gotoHome = () => {
+        this.props.navigation.navigate("Home");
+    }
     
     render() {
         return (
@@ -97,9 +106,13 @@ class NewPost extends React.Component {
         />
 
         <Text style={styles.subhead}>Share to:</Text>
-        <View style={styles.loopsbox}>
+        <ScrollView 
+            horizontal={true} 
+            style={styles.loopsbox}
+            showsHorizontalScrollIndicator={false}
+        >
             {this.renderLoops()}
-        </View>
+        </ScrollView>
 
         <Text style={styles.subhead}>Make your post:</Text>
         {/* TODO: Connect this.state.selected_ids to update form */}
@@ -107,6 +120,7 @@ class NewPost extends React.Component {
             feedGroup="user"
             height={200} 
             modifyActivityData = {(data) => ({...data, to: this.state.selected_names.map(el => 'loop:' + el)})}
+            onSuccess={() => this.gotoHome()}
         />
 
         </View>
@@ -127,6 +141,8 @@ const styles = StyleSheet.create({
         marginBottom: 30,
         marginTop: 5,
         flexDirection: 'row',
+        paddingBottom: 10,
+        maxHeight: 34,
     },
     loopbutton: {
         paddingHorizontal: 5,
