@@ -1,5 +1,3 @@
-// @flow
-
 // React native and gui component imports
 import React, {Component} from 'react';
 import { View, Text, ScrollView, StyleSheet, StatusBar, Image, TouchableOpacity } from 'react-native';
@@ -32,7 +30,8 @@ class NewPost extends React.Component {
     constructor(props) {
       super(props);
       this.state = {
-          selected_ids: [1]
+          selected_ids: [],
+          selected_names: [],  
       };
     }
 
@@ -47,21 +46,17 @@ class NewPost extends React.Component {
     }
 
     // adds or removes selected loops to this.state.selected_ids
-    addSendLoop = ( id ) => {
+    addSendLoop = ( id , lName) => {
         // adding
-        if(!this.state.selected_ids.includes(parseInt(id))) {
-            this.setState({
-                selected_ids: this.state.selected_ids.concat(parseInt(id))
-            })
+        if(!this.state.selected_ids.includes(id)) {
+            this.state.selected_ids.push(id);
+            this.state.selected_names.push(lName);
         // removing
         } else {
-            var array = [...this.state.selected_ids]; // make a separate copy of the array
-            var index = array.indexOf(parseInt(id))
-            if (index !== -1) {
-                array.splice(index, 1);
-                this.setState({selected_ids: array});
-            }
+            this.state.selected_ids = this.state.selected_ids.filter(e => e !== id);
+            this.state.selected_names = this.state.selected_names.filter(e=> e !== lName);
         }
+        console.log(this.state.selected_names.map(el=>'loop:' + el));// this.state.selected_ids);
     }
 
     // renders all loops in this.state.loops
@@ -79,10 +74,10 @@ class NewPost extends React.Component {
             return (
                 <TouchableOpacity 
                 style={[styles.loopbutton, 
-                    this.state.selected_ids.includes(parseInt(loop[0])) ? 
+                    this.state.selected_ids.includes(loop[0]) ? 
                     {backgroundColor: '#FF9999'} : 
                     null]}
-                onPress={() => this.addSendLoop(loop[0])}
+                onPress={() => this.addSendLoop(loop[0], loop[1])}
                 >
                 <Text style={styles.looptext}>{loop[1]}</Text>
                 </TouchableOpacity>
@@ -91,7 +86,7 @@ class NewPost extends React.Component {
     }
     
     render() {
-      return (
+        return (
         <View style={{flex: 1, backgroundColor: 'white'}}>
         
         <Topbar 
@@ -111,14 +106,13 @@ class NewPost extends React.Component {
         <StatusUpdateForm 
             feedGroup="user"
             height={200} 
-            onSuccess={() => this.toFeed()}
+            modifyActivityData = {(data) => ({...data, to: this.state.selected_names.map(el => 'loop:' + el)})}
         />
 
         </View>
-      );
+    );
     }
-  
-  }
+}
   
 const styles = StyleSheet.create({
     subhead: {

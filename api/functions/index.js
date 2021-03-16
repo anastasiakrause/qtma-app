@@ -63,11 +63,11 @@ exports.createLoop = functions.https.onRequest(async (request, response) => {
     const userH = incomingData.userHandle;
     const loopN = incomingData.loopName;
     
-    serverClient.feed('timeline', loopN);
+    serverClient.feed('loop', loopN);
 
     // create a following relationship between loop user creator and loop timeline
     const userFeed = serverClient.feed('user', userH);
-    await userFeed.follow('timeline', loopN);
+    await userFeed.follow('loop', loopN);
 
     const userData = serverClient.user(userH).get();
     let newUserData = {};

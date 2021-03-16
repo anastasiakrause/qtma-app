@@ -55,7 +55,7 @@ class HomeInner extends React.Component<PropsInner, State> {
       user: {},
       showList: false,
       currentLoopName: 'My Loop', // Will contain current loop name
-      currentLoopId: 'user_id', // Will contain current loop id to pass to Flatfeed
+      currentLoopId: '', // Will contain current loop id to pass to Flatfeed
       showFriends: false,
       loopMembers: [
         "Person One",
@@ -66,12 +66,12 @@ class HomeInner extends React.Component<PropsInner, State> {
       ],
       addLoopPopup: false,
       loopName: '',
+      forceFeedRefresh: false,
     };
   }
 
-  // NO CLUE WHAT THIS DOES - copied from ProfileHeader.js
   async componentDidMount() {
-    let data = await this.props.user.profile(); // error catch here
+    let data = await this.props.user.profile();
     this.props.changedUserData();
     this.setState({ user: data });
   }
@@ -88,9 +88,9 @@ class HomeInner extends React.Component<PropsInner, State> {
   }
 
   changeLoop = ( loop ) => {
-    // TODO implement changeloop functionality
-    this.setState({currentLoopName: loop});
-    this.setState({currentLoopId: loop});
+    this.state.currentLoopId = loop[0];
+    this.state.currentLoopName = loop[1];
+    this.state.forceFeedRefresh = true;
     if (loop == "My Loop"){
       this.setState({showFriends: false});
     }
@@ -98,15 +98,13 @@ class HomeInner extends React.Component<PropsInner, State> {
   }
 
   // renders list of loops dropdown
-  // TODO - Connect to get stream
   renderLoops() {
-    var loopslist = ["My Loop", "loop1", "loop2", "loop3"]
-    // //for (var key in this.state.loops) {
-    // for (var key in this.props.userData.loop_ids) {
-    //     if (this.props.userData.loop_ids.hasOwnProperty(key)) {
-    //         loopslist.push( [ key, this.props.userData.loop_ids[key] ] );
-    //     }
-    // }
+    var loopslist = [[this.props.userData.name, 'My Loop']];
+    for (var key in this.props.userData.loop_ids) {
+         if (this.props.userData.loop_ids.hasOwnProperty(key)) {
+             loopslist.push( [ key, this.props.userData.loop_ids[key] ] );
+         }
+     }
     return loopslist.map(loop => {
         if(loop != this.state.currentLoopName) {
           return (
@@ -118,7 +116,7 @@ class HomeInner extends React.Component<PropsInner, State> {
               }}
               onPress={() => this.changeLoop(loop)}
               >
-              <Text style={styles.loop_list_item}>{loop}</Text>
+              <Text style={styles.loop_list_item}>{loop[1]}</Text>
               </TouchableOpacity>
           );
         }
@@ -154,40 +152,16 @@ class HomeInner extends React.Component<PropsInner, State> {
          );
      });
   }
-
-  removeFriend = (name) => {
-    // Onpress for when remove button is pressed
-    // Name is name of friend
-    Alert.alert("remove "+name)
-  }
-
-  addLoop = () => {
-    // TODO: add loop by code
-    Alert.alert("Added new loop "+this.state.loopName);
-    this.setState({addLoopPopup: false});
-    this.showLoopsList( true ); // toggles loops list
-  }
-
-  render() {
+  // Renders selected loop
+  renderLoopFeed() {
+    this.state.forceFeedRefresh = false;
     return (
-      <SafeAreaProvider>
-      <SafeAreaView style={{flex: 1}} forceInset={{ top: 'always' }}>
-
-        <Topbar 
-          title={this.state.currentLoopName}
-          navigation={this.props.navigation}
-          loopsdown
-          showlist={this.showLoopsList}
-          shown={this.state.showList}
-          showfriendsbutton={this.state.currentLoopName != "My Loop"}
-          showfriends={this.state.showFriends}
-          showFriendsList={this.showFriendsList}
-        />
-        
-        <FlatFeed
-          feedGroup="timeline"
+    <FlatFeed
+          feedGroup="loop"
+          userId={this.state.currentLoopName}
           options={{
             limit: 10,
+            refresh: true,
           }}
           notify
           navigation={this.props.navigation}
@@ -252,7 +226,119 @@ class HomeInner extends React.Component<PropsInner, State> {
             </TouchableOpacity>
           )}
         />
+    )
+  }
 
+  // Renders user's timeline feed
+  renderTimelineFeed() {
+    this.state.forceFeedRefresh = false;
+    return (
+      <FlatFeed
+      feedGroup="timeline"
+      options={{
+        limit: 10,
+      }}
+      notify
+      navigation={this.props.navigation}
+      Activity={(props) => (
+        <TouchableOpacity
+          onPress={() => this._onPressActivity(props.activity)}
+        >
+          <Activity
+            {...props}
+            Footer={
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <LikeButton reactionKind="heart" {...props} />
+
+                <ReactionToggleIcon
+                  {...props}
+                  activeIcon={happyclicked}
+                  inactiveIcon={happyunclicked}
+                  own_reactions={props.activity.own_reactions}
+                  counts={props.activity.reaction_counts}
+                  kind={'music'}
+                  reactionKind="music"
+                  onPress = { async (e) => {
+                    props.onToggleReaction("music", props.activity, {},{});
+                  } }
+                />
+
+                <ReactionToggleIcon
+                  {...props}
+                  activeIcon={sadclicked}
+                  inactiveIcon={sadunclicked}
+                  own_reactions={props.activity.own_reactions}
+                  counts={props.activity.reaction_counts}
+                  kind={'bookmark'}
+                  reactionKind="bookmark"
+                  onPress = { async (e) => {
+                    props.onToggleReaction("bookmark", props.activity, {},{});
+                  } }
+                />
+                <ReactionToggleIcon
+                  {...props}
+                  activeIcon={heartclicked}
+                  inactiveIcon={heartunclicked}
+                  own_reactions={props.activity.own_reactions}
+                  counts={props.activity.reaction_counts}
+                  kind={'hearteyes'}
+                  reactionKind="hearteyes"
+                  onPress = { async (e) => {
+                    props.onToggleReaction("hearteyes", props.activity, {},{});
+                  } }
+                />
+
+                <ReactionIcon
+                  icon={ReplyIcon}
+                  labelSingle="comment"
+                  labelPlural="comments"
+                  counts={props.activity.reaction_counts}
+                  kind="comment"
+                />
+              </View>
+            }
+          />
+        </TouchableOpacity>
+      )}
+    />
+    )
+  }
+
+  removeFriend = (name) => {
+    // Onpress for when remove button is pressed
+    // Name is name of friend
+    Alert.alert("remove "+name)
+  }
+
+  addLoop = () => {
+    // TODO: add loop by code
+    Alert.alert("Added new loop "+this.state.loopName);
+    this.setState({addLoopPopup: false});
+    this.showLoopsList( true ); // toggles loops list
+  }
+
+  render() {
+    return (
+      <SafeAreaProvider>
+      <SafeAreaView style={{flex: 1}} forceInset={{ top: 'always' }}>
+
+        <Topbar 
+          title={this.state.currentLoopName}
+          navigation={this.props.navigation}
+          loopsdown
+          showlist={this.showLoopsList}
+          shown={this.state.showList}
+          showfriendsbutton={this.state.currentLoopName != "My Loop"}
+          showfriends={this.state.showFriends}
+          showFriendsList={this.showFriendsList}
+        />
+
+        {/* Feed dependent on whether loop selected */}
+        { this.state.currentLoopName == 'My Loop' ?  this.renderTimelineFeed() : null}
+        { this.state.forceFeedRefresh ? this.renderLoopFeed() :
+         this.state.currentLoopName == 'My Loop' ? null : <View style = {{flex:1}}></View>
+        }
+        
         {/* Toggleable friends list component */}
         {
           this.state.showFriends ? 

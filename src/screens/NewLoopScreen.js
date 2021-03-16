@@ -1,5 +1,3 @@
-// @flow
-
 // React native and gui component imports
 import React, {Component} from 'react';
 import { View, Text, ScrollView, StyleSheet, TextInput, TouchableOpacity, Alert } from 'react-native';
@@ -118,7 +116,6 @@ class NewLoop extends React.Component {
         </View>
       );
     }
-  
   }
   
 const styles = StyleSheet.create({
