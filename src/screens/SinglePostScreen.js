@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { SafeAreaView, View, StyleSheet } from 'react-native';
+import { SafeAreaView, View, StyleSheet, Text, ScrollView } from 'react-native';
 
 import {
   SinglePost,
@@ -13,6 +13,7 @@ import {
   CommentItem,
   LikeList,
   ReactionToggleIcon,
+  Avatar
 } from 'expo-activity-feed';
 
 import happyclicked from '../assets/HappyClicked.png';
@@ -24,6 +25,7 @@ import sadunclicked from '../assets/SadUnclicked.png';
 
 import type { UserResponse } from '../types';
 import type { NavigationScreen } from 'expo-activity-feed';
+import Dayjs from 'dayjs';
 
 import ReplyIcon from '../assets/reply.png';
 
@@ -49,6 +51,26 @@ type Props = {|
 
 export default class SinglePostScreen extends React.Component {
 
+  humanizeTimestamp(timestamp) {
+    // TAKEN FROM GETSTREAM EXAMPLE APP
+    // Return time elapsed from timestamp
+    let time;
+    if (
+      typeof timestamp === 'string' &&
+      timestamp[timestamp.length - 1].toLowerCase() === 'z'
+    ) {
+      time = Dayjs(timestamp);
+    } else {
+      time = Dayjs(timestamp).add(
+        Dayjs(timestamp).utcOffset(),
+        'minute',
+      ); // parse time as UTC
+    }
+
+    const now = Dayjs();
+    return time.from(now);
+  }
+
   render() {
     const { route } = this.props;
     const activity = route.params.activity;
@@ -68,23 +90,79 @@ export default class SinglePostScreen extends React.Component {
             <React.Fragment>
               <Activity
                 {...props}
-                Footer={
-                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <LikeButton reactionKind="heart" {...props} />
+                Header={
+                  <View>
+                    <View style={{
+                      width: '100%',
+                      paddingTop: 5,
+                      paddingBottom: 5,
+                      paddingHorizontal: 15,
+                      flexDirection: 'row',
+                      backgroundColor: 'white'
+                    }}>
+      
+                      <Avatar 
+                        source={props.activity.actor.data.profileImage}
+                        size={40}
+                      />
+      
+                      <View style={{marginLeft: 10, maxHeight: 40, justifyContent: 'center',}}>
+                        <Text style={{
+                          fontSize: 16,
+                          fontWeight: 'bold',
+                        }}>{props.activity.actor.data.name}</Text>
+                        <Text style={{
+                          fontSize: 10,
+                          color: "#6F7E82"
+                        }}>{this.humanizeTimestamp(props.activity.time)}</Text>
+                      </View>
+      
+                    </View>
 
+                    {/* Checking if activity has loops param */}
+                    {props.activity.loops ?
+                    <ScrollView style={styles.loop_tag_box}
+                      horizontal={true}
+                      showsHorizontalScrollIndicator={false}
+                    >
+                    {  props.activity.loops.map(loop => {
+                        return (
+                          <View style={styles.loop_tag}>
+                            <Text style={styles.loop_tag_text}>{loop}</Text> 
+                          </View>
+                        );
+                      })}
+                    </ScrollView>
+                    : 
+                    // If activity didn't have a loop param (old test posts - should never happen)
+                    <ScrollView style={styles.loop_tag_box}
+                      horizontal={true}
+                      showsHorizontalScrollIndicator={false}
+                    >
+                      <View style={styles.loop_tag}>
+                        <Text style={styles.loop_tag_text}>Loop name TBD</Text> 
+                      </View>
+                    </ScrollView>
+                    }
+
+                  </View>
+                }
+                Footer={
+                  <View style={{ flexDirection: 'row', backgroundColor: 'white'}}>
+    
                     <ReactionToggleIcon
                       {...props}
                       activeIcon={happyclicked}
                       inactiveIcon={happyunclicked}
-                      kind={'music'}
-                      reactionKind="music"
                       own_reactions={props.activity.own_reactions}
                       counts={props.activity.reaction_counts}
+                      kind={'music'}
+                      reactionKind="music"
                       onPress = { async (e) => {
                         props.onToggleReaction("music", props.activity, {},{});
                       } }
                     />
-
+    
                     <ReactionToggleIcon
                       {...props}
                       activeIcon={sadclicked}
@@ -109,6 +187,8 @@ export default class SinglePostScreen extends React.Component {
                         props.onToggleReaction("hearteyes", props.activity, {},{});
                       } }
                     />
+    
+                    <View style={{marginLeft: 'auto', marginRight: 15}}>
                     <ReactionIcon
                       icon={ReplyIcon}
                       labelSingle="comment"
@@ -116,6 +196,7 @@ export default class SinglePostScreen extends React.Component {
                       counts={props.activity.reaction_counts}
                       kind="comment"
                     />
+                    </View>
                   </View>
                 }
               />
@@ -160,4 +241,25 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#ffffff',
   },
+  loop_tag_box: {
+    flexDirection: 'row',
+    width: '95%',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    paddingBottom: 15,
+    overflow: 'hidden',
+  },
+  loop_tag: {
+    height: 16,
+    paddingHorizontal: 8,
+    backgroundColor: "#009BCB",
+    borderRadius: 5,
+    marginRight: 3,
+  },
+  loop_tag_text: {
+    fontSize: 10.5,
+    color: 'white',
+    textAlign: 'center',
+    textAlignVertical: 'center',
+  }
 });
