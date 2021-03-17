@@ -499,6 +499,7 @@ class HomeInner extends React.Component<PropsInner, State> {
           showfriends={this.state.showFriends}
           showFriendsList={this.showFriendsList}
           loopid={this.state.currentLoopName == "My Loop" ? null : this.state.currentLoopId}
+          shownotifbutton={this.state.currentLoopName == "My Loop"}
           showNotifications={this.toggleNotificationScreen}
           shownotif={this.state.showNotifications}
         />

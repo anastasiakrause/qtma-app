@@ -61,7 +61,7 @@ class Topbar extends Component {
                 </TouchableOpacity>
                 : null }
 
-                <View style={{ flex: 1, flexDirection: 'row-reverse' }}>
+                {!this.props.center ? <View style={{ flex: 1, flexDirection: 'row-reverse' }}>
 
                 {this.props.settings ? 
                 <TouchableOpacity 
@@ -87,7 +87,7 @@ class Topbar extends Component {
                 </TouchableOpacity>
                 : null }
 
-                {!this.props.showfriendsbutton ? 
+                {this.props.shownotifbutton ? 
                 <TouchableOpacity 
                     style={styles.friend_button} 
                     onPress={() => this.props.showNotifications()}>
@@ -95,7 +95,7 @@ class Topbar extends Component {
                 </TouchableOpacity>
                 : null }
 
-                </View>
+                </View> : null}
 
             </View>
             </View>
