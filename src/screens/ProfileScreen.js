@@ -1,8 +1,7 @@
 // Import UI components
 import React, {Component} from 'react';
 import { ScrollView, StatusBar, StyleSheet, View, Text, TouchableOpacity, Alert, TextInput } from 'react-native';
-import { FlatFeed, BackButton } from 'expo-activity-feed';
-import {Avatar, Button, Title, Card, IconButton } from 'react-native-paper';
+import {Button, Title, Card, IconButton } from 'react-native-paper';
 import SafeAreaView from 'react-native-safe-area-view';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 // Firebase auth
@@ -15,6 +14,16 @@ import Navbar from '../components/Navbar';
 import Topbar from '../components/Topbar';
 // Import stylesheet
 import {styles} from '../styles/styles.js';
+// api imports
+import {
+  Avatar,
+  FlatFeed,
+  Activity,
+  LikeButton,
+  ReactionIcon,
+  ReactionToggleIcon,
+} from 'expo-activity-feed';
+import Dayjs from 'dayjs';
 
 
 class ProfileScreen extends Component {
@@ -30,6 +39,26 @@ class ProfileScreen extends Component {
       addFriendPopup: false, // toggles add friend popup
       friendName: ''
     };
+  }
+
+  humanizeTimestamp(timestamp) {
+    // TAKEN FROM GETSTREAM EXAMPLE APP
+    // Return time elapsed from timestamp
+    let time;
+    if (
+      typeof timestamp === 'string' &&
+      timestamp[timestamp.length - 1].toLowerCase() === 'z'
+    ) {
+      time = Dayjs(timestamp);
+    } else {
+      time = Dayjs(timestamp).add(
+        Dayjs(timestamp).utcOffset(),
+        'minute',
+      ); // parse time as UTC
+    }
+
+    const now = Dayjs();
+    return time.from(now);
   }
 
   // switches active screen to feed view
@@ -124,7 +153,85 @@ class ProfileScreen extends Component {
           backgroundColor: 'white'
         }}>
         {this.state.show == "feed" ?
-        <FlatFeed feedGroup="user" />
+        <FlatFeed 
+          feedGroup="user" 
+          Activity={(props) => (
+            <Activity
+              {...props}
+              Header={
+                <View style={{
+                  width: '100%',
+                  paddingTop: 5,
+                  paddingBottom: 15,
+                  paddingHorizontal: 15,
+                  flexDirection: 'row',
+                  backgroundColor: 'white'
+                }}>
+  
+                  <Avatar 
+                    source={props.activity.actor.data.profileImage}
+                    size={40}
+                  />
+  
+                  <View style={{marginLeft: 10, maxHeight: 40, justifyContent: 'center',}}>
+                    <Text style={{
+                      fontSize: 16,
+                      fontWeight: 'bold',
+                    }}>{props.activity.actor.data.name}</Text>
+                    <Text style={{
+                      fontSize: 10,
+                      color: "#6F7E82"
+                    }}>{this.humanizeTimestamp(props.activity.time)}</Text>
+                  </View>
+  
+                    {/* Checking if activity has loops param */}
+                    {props.activity.loops ?
+                    // If activity has less than 2 loops to tag
+                    props.activity.loops.length < 2 ?
+                    <View style={localStyles.loop_tag_box}
+                      horizontal={true}
+                      showsHorizontalScrollIndicator={false}
+                    >
+                    {  props.activity.loops.map(loop => {
+                        return (
+                          <View style={localStyles.loop_tag}>
+                            <Text style={localStyles.loop_tag_text}>{loop}</Text> 
+                          </View>
+                        );
+                      })}
+                    </View>
+                    : 
+                    // If activity has more than 1 loops to tag
+                    <View style={localStyles.loop_tag_box}
+                      horizontal={true}
+                      showsHorizontalScrollIndicator={false}
+                    >
+                      <View style={[localStyles.loop_tag, {backgroundColor: 'transparent', marginLeft: -3, padding: 0}]}>
+                        <Text style={{
+                          fontSize: 10.5,
+                          color: 'black',
+                          textAlign: 'center',
+                          textAlignVertical: 'center',
+                        }}>+{props.activity.loops.length-1} more</Text> 
+                      </View>
+                      <View style={localStyles.loop_tag}>
+                        <Text style={localStyles.loop_tag_text}>
+                          {props.activity.loops[0]}
+                        </Text> 
+                      </View>
+                    </View>
+                    :
+                    // If activity didn't have a loop param (old test posts - should never happen)
+                    <View style={[localStyles.loop_tag, {marginLeft: 'auto'}]}>
+                      <Text style={localStyles.loop_tag_text}>Loop name TBD</Text> 
+                    </View>
+                    }
+  
+                </View>
+              }
+            />
+          )}
+        />
         :
         <ScrollView style={{flex: 1, paddingTop: 0, backgroundColor: 'white'}}>
           {this.renderFriends()}
@@ -290,5 +397,25 @@ const localStyles = StyleSheet.create({
     marginTop: '97%',
     width: 100,
     height: 30,
+  },
+  loop_tag_box: {
+    marginRight: 0,
+    marginLeft: 'auto',
+    flexDirection: 'row-reverse',
+    maxWidth: 250,
+    overflow: 'hidden'
+  },
+  loop_tag: {
+    height: 16,
+    paddingHorizontal: 8,
+    backgroundColor: "#CC99FF",
+    borderRadius: 5,
+    marginRight: 3,
+  },
+  loop_tag_text: {
+    fontSize: 10.5,
+    color: 'white',
+    textAlign: 'center',
+    textAlignVertical: 'center',
   }
 })
