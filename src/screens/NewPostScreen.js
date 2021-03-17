@@ -119,7 +119,7 @@ class NewPost extends React.Component {
         <StatusUpdateForm 
             feedGroup="user"
             height={200} 
-            modifyActivityData = {(data) => ({...data, to: this.state.selected_names.map(el => 'loop:' + el)})}
+            modifyActivityData = {(data) => ({...data, to: this.state.selected_names.map(el => 'loop:' + el), loops: this.state.selected_names})}
             onSuccess={() => this.gotoHome()}
         />
 
