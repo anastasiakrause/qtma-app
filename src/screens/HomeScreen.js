@@ -190,7 +190,6 @@ class HomeInner extends React.Component<PropsInner, State> {
             <TouchableOpacity
               onPress={() => this._onPressActivity(props.activity)}
             >
-              {console.log(props.activity)}
               <Activity
                 {...props}
                 Header={
@@ -294,7 +293,6 @@ class HomeInner extends React.Component<PropsInner, State> {
         <TouchableOpacity
           onPress={() => this._onPressActivity(props.activity)}
         >
-          {console.log(props.activity)}
           <Activity
             {...props}
             Header={
@@ -481,6 +479,7 @@ class HomeInner extends React.Component<PropsInner, State> {
           showfriendsbutton={this.state.currentLoopName != "My Loop"}
           showfriends={this.state.showFriends}
           showFriendsList={this.showFriendsList}
+          loopid={this.state.currentLoopName == "My Loop" ? null : this.state.currentLoopId}
         />
 
         {/* Feed dependent on whether loop selected */}
