@@ -31,6 +31,7 @@ class ProfileScreen extends Component {
     super(props);
     this.state = {
       show: 'feed', // 'feed' or 'friends'
+      showSaved: false,
       friends: [
         "Steven",
         "Jo Jo",
@@ -64,11 +65,17 @@ class ProfileScreen extends Component {
 
   // switches active screen to feed view
   gotoPosts = () => {
-    this.setState({show: "feed"})
+    this.setState({showSaved: false});
+    this.setState({show: "feed"});
   }
   // switches active screen to friends list
   gotoFriends = () => {
-    this.setState({show: "friends"})
+    this.setState({showSaved: false});
+    this.setState({show: "friends"});
+  }
+
+  gotoSaved = () => {
+    this.setState({showSaved: true});
   }
 
   // renders list of friends from "friends" state variable
@@ -118,15 +125,31 @@ class ProfileScreen extends Component {
     this.setState({showSignout: !this.state.showSignout});
   }
 
+  getRandomInt(max) {
+    return Math.floor(Math.random() * Math.floor(max));
+  }
+
+
   render() {
 
     // Dynamic border color on posts / friends buttons
     const posts_color = {
-      borderColor: this.state.show == "feed" ? "#99E2FF" : '#D3D3D3'
+      borderColor: !this.state.showSaved && this.state.show == "feed" ? "#99E2FF" : '#D3D3D3'
     }
     const friends_color = {
-      borderColor: this.state.show == "friends" ? "#99E2FF" : '#D3D3D3'
+      borderColor: !this.state.showSaved && this.state.show == "friends" ? "#99E2FF" : '#D3D3D3'
     }
+    const saved_color = {
+      borderColor: this.state.showSaved ? "#99E2FF" : '#D3D3D3'
+    }
+
+    const colors = [
+      "#99E2FF",
+      "#EDAE49",
+      "#CC99FF",
+      "#FF9999",
+      "#009BCB"
+    ]
 
     return (
       <SafeAreaProvider>
@@ -153,13 +176,19 @@ class ProfileScreen extends Component {
             onPress={this.gotoFriends}>
             <Text style={localStyles.profile_nav_button_text}>Friends</Text>
           </TouchableOpacity>
+          <TouchableOpacity 
+            style={[localStyles.profile_nav_button, saved_color]} 
+            onPress={this.gotoSaved}>
+            <Text style={localStyles.profile_nav_button_text}>Saved</Text>
+          </TouchableOpacity>
         </View>
 
         <View style={{
           flex: 1,
           backgroundColor: 'white'
         }}>
-        {this.state.show == "feed" ?
+        {this.state.showSaved ? 
+        // TODO: change to user saved posts feed
         <FlatFeed 
           feedGroup="user" 
           Activity={(props) => (
@@ -174,12 +203,12 @@ class ProfileScreen extends Component {
                   flexDirection: 'row',
                   backgroundColor: 'white'
                 }}>
-  
+
                   <Avatar 
                     source={props.activity.actor.data.profileImage}
                     size={40}
                   />
-  
+
                   <View style={{marginLeft: 10, maxHeight: 40, justifyContent: 'center',}}>
                     <Text style={{
                       fontSize: 16,
@@ -190,7 +219,7 @@ class ProfileScreen extends Component {
                       color: "#6F7E82"
                     }}>{this.humanizeTimestamp(props.activity.time)}</Text>
                   </View>
-  
+
                     {/* Checking if activity has loops param */}
                     {props.activity.loops ?
                     // If activity has less than 2 loops to tag
@@ -200,8 +229,9 @@ class ProfileScreen extends Component {
                       showsHorizontalScrollIndicator={false}
                     >
                     {  props.activity.loops.map(loop => {
+                        const i = this.getRandomInt(5);
                         return (
-                          <View style={localStyles.loop_tag}>
+                          <View style={[localStyles.loop_tag, {backgroundColor: colors[i]}]}>
                             <Text style={localStyles.loop_tag_text}>{loop}</Text> 
                           </View>
                         );
@@ -221,7 +251,7 @@ class ProfileScreen extends Component {
                           textAlignVertical: 'center',
                         }}>+{props.activity.loops.length-1} more</Text> 
                       </View>
-                      <View style={localStyles.loop_tag}>
+                      <View style={[localStyles.loop_tag, {backgroundColor: colors[this.getRandomInt(5)]}]}>
                         <Text style={localStyles.loop_tag_text}>
                           {props.activity.loops[0]}
                         </Text> 
@@ -233,16 +263,98 @@ class ProfileScreen extends Component {
                       <Text style={localStyles.loop_tag_text}>Loop name TBD</Text> 
                     </View>
                     }
-  
+
                 </View>
               }
             />
           )}
         />
         :
-        <ScrollView style={{flex: 1, paddingTop: 0, backgroundColor: 'white'}}>
-          {this.renderFriends()}
-        </ScrollView> }
+          this.state.show == "feed" ?
+          <FlatFeed 
+            feedGroup="user" 
+            Activity={(props) => (
+              <Activity
+                {...props}
+                Header={
+                  <View style={{
+                    width: '100%',
+                    paddingTop: 5,
+                    paddingBottom: 15,
+                    paddingHorizontal: 15,
+                    flexDirection: 'row',
+                    backgroundColor: 'white'
+                  }}>
+    
+                    <Avatar 
+                      source={props.activity.actor.data.profileImage}
+                      size={40}
+                    />
+    
+                    <View style={{marginLeft: 10, maxHeight: 40, justifyContent: 'center',}}>
+                      <Text style={{
+                        fontSize: 16,
+                        fontWeight: 'bold',
+                      }}>{props.activity.actor.data.name}</Text>
+                      <Text style={{
+                        fontSize: 10,
+                        color: "#6F7E82"
+                      }}>{this.humanizeTimestamp(props.activity.time)}</Text>
+                    </View>
+    
+                      {/* Checking if activity has loops param */}
+                      {props.activity.loops ?
+                      // If activity has less than 2 loops to tag
+                      props.activity.loops.length < 2 ?
+                      <View style={localStyles.loop_tag_box}
+                        horizontal={true}
+                        showsHorizontalScrollIndicator={false}
+                      >
+                      {  props.activity.loops.map(loop => {
+                          return (
+                            <View style={[localStyles.loop_tag, {backgroundColor: colors[this.getRandomInt(5)]}]}>
+                              <Text style={localStyles.loop_tag_text}>{loop}</Text> 
+                            </View>
+                          );
+                        })}
+                      </View>
+                      : 
+                      // If activity has more than 1 loops to tag
+                      <View style={localStyles.loop_tag_box}
+                        horizontal={true}
+                        showsHorizontalScrollIndicator={false}
+                      >
+                        <View style={[localStyles.loop_tag, {backgroundColor: 'transparent', marginLeft: -3, padding: 0}]}>
+                          <Text style={{
+                            fontSize: 10.5,
+                            color: 'black',
+                            textAlign: 'center',
+                            textAlignVertical: 'center',
+                          }}>+{props.activity.loops.length-1} more</Text> 
+                        </View>
+                        <View style={[localStyles.loop_tag, {backgroundColor: colors[this.getRandomInt(5)]}]}>
+                          <Text style={localStyles.loop_tag_text}>
+                            {props.activity.loops[0]}
+                          </Text> 
+                        </View>
+                      </View>
+                      :
+                      // If activity didn't have a loop param (old test posts - should never happen)
+                      <View style={[localStyles.loop_tag, {marginLeft: 'auto'}]}>
+                        <Text style={localStyles.loop_tag_text}>Loop name TBD</Text> 
+                      </View>
+                      }
+    
+                  </View>
+                }
+              />
+            )}
+          />
+          :
+          <ScrollView style={{flex: 1, paddingTop: 0, backgroundColor: 'white'}}>
+            {this.renderFriends()}
+          </ScrollView> 
+        }
 
         </View>
 
@@ -326,7 +438,7 @@ const localStyles = StyleSheet.create({
   },
   profile_nav_button: {
     height: '100%',
-    width: "50%",
+    width: '33.33%',
     borderBottomWidth: 2,
   },
   profile_nav_button_text: {

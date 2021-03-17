@@ -38,6 +38,8 @@ import heartclicked from '../assets/HeartClicked.png';
 import heartunclicked from '../assets/HeartUnclicked.png';
 import sadclicked from '../assets/SadClicked.png';
 import sadunclicked from '../assets/SadUnclicked.png';
+import bookmark from '../assets/bookmark.png';
+import bookmarko from '../assets/bookmark-outline.png';
 
 // COPIED FROM ProfileHeader.js to try to get the profile picture
 type Props = {};
@@ -177,6 +179,7 @@ class HomeInner extends React.Component<PropsInner, State> {
          );
      });
   }
+
   // Renders selected loop
   renderLoopFeed() {
     return (
@@ -264,13 +267,26 @@ class HomeInner extends React.Component<PropsInner, State> {
                       } }
                     />
     
-                    <View style={{marginLeft: 'auto', marginRight: 15}}>
+                    <View style={{marginLeft: 'auto', marginRight: 15, flexDirection: 'row'}}>
                     <ReactionIcon
                       icon={ReplyIcon}
                       labelSingle="comment"
                       labelPlural="comments"
                       counts={props.activity.reaction_counts}
                       kind="comment"
+                    />
+                    <ReactionToggleIcon // SAVE POST BUTTON
+                      {...props}
+                      activeIcon={bookmark}
+                      inactiveIcon={bookmarko}
+                      own_reactions={props.activity.own_reactions}
+                      counts={props.activity.reaction_counts}
+                      kind={'saved'}
+                      reactionKind="saved"
+                      onPress = { async (e) => {
+                        // TODO: edit this to do something w activity
+                        props.onToggleReaction("saved", props.activity, {},{});
+                      } }
                     />
                     </View>
                   </View>
@@ -422,14 +438,27 @@ class HomeInner extends React.Component<PropsInner, State> {
                   } }
                 />
 
-                <View style={{marginLeft: 'auto', marginRight: 15}}>
-                <ReactionIcon
-                  icon={ReplyIcon}
-                  labelSingle="comment"
-                  labelPlural="comments"
-                  counts={props.activity.reaction_counts}
-                  kind="comment"
-                />
+                <View style={{marginLeft: 'auto', marginRight: 15, flexDirection: 'row'}}>
+                  <ReactionIcon
+                    icon={ReplyIcon}
+                    labelSingle="comment"
+                    labelPlural="comments"
+                    counts={props.activity.reaction_counts}
+                    kind="comment"
+                  />
+                  <ReactionToggleIcon // SAVE POST BUTTON
+                    {...props}
+                    activeIcon={bookmark}
+                    inactiveIcon={bookmarko}
+                    own_reactions={props.activity.own_reactions}
+                    counts={props.activity.reaction_counts}
+                    kind={'saved'}
+                    reactionKind="saved"
+                    onPress = { async (e) => {
+                      // TODO: edit this to do something w activity
+                      props.onToggleReaction("saved", props.activity, {},{});
+                    } }
+                  />
                 </View>
               </View>
             }
