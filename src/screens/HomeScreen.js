@@ -111,7 +111,7 @@ class HomeInner extends React.Component<PropsInner, State> {
   changeLoop = ( loop ) => {
     this.state.currentLoopId = loop[0];
     this.state.currentLoopName = loop[1];
-    this.state.forceFeedRefresh = true;
+    this.setState({ forceFeedRefresh: false });
     if (loop == "My Loop"){
       this.setState({showFriends: false});
     }
@@ -176,7 +176,6 @@ class HomeInner extends React.Component<PropsInner, State> {
   }
   // Renders selected loop
   renderLoopFeed() {
-    this.state.forceFeedRefresh = false;
     return (
     <FlatFeed
           feedGroup="loop"
@@ -283,7 +282,6 @@ class HomeInner extends React.Component<PropsInner, State> {
 
   // Renders user's timeline feed
   renderTimelineFeed() {
-    this.state.forceFeedRefresh = false;
     return (
       <FlatFeed
       feedGroup="timeline"
@@ -465,7 +463,9 @@ class HomeInner extends React.Component<PropsInner, State> {
 
   render() {
     // quick check for when user exits then returns home screen
-    if (this.state.currentLoopName != "My Loop" && !this.state.forceFeedRefresh) {
+    if (this.state.currentLoopName != "My Loop" && 
+      !this.state.forceFeedRefresh &&
+      !this.state.showList) {
       this.setState({forceFeedRefresh: true});
     }
     return (
@@ -652,7 +652,7 @@ const styles = StyleSheet.create({
   loop_tag: {
     height: 16,
     paddingHorizontal: 8,
-    backgroundColor: "#CC99FF",
+    backgroundColor: "#009BCB",
     borderRadius: 5,
     marginRight: 3,
   },

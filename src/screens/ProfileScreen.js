@@ -408,7 +408,7 @@ const localStyles = StyleSheet.create({
   loop_tag: {
     height: 16,
     paddingHorizontal: 8,
-    backgroundColor: "#CC99FF",
+    backgroundColor: "#009BCB",
     borderRadius: 5,
     marginRight: 3,
   },
