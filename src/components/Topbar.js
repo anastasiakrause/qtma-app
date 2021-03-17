@@ -87,6 +87,14 @@ class Topbar extends Component {
                 </TouchableOpacity>
                 : null }
 
+                {!this.props.showfriendsbutton ? 
+                <TouchableOpacity 
+                    style={styles.friend_button} 
+                    onPress={() => this.props.showNotifications()}>
+                    <Image source={this.props.shownotif ? bell : bello} style={{ height: 25, width: 25, alignSelf: 'center',  }}/>
+                </TouchableOpacity>
+                : null }
+
                 </View>
 
             </View>
