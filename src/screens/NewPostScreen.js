@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 import { View, Text, ScrollView, StyleSheet, StatusBar, Image, TouchableOpacity } from 'react-native';
 import SafeAreaView from 'react-native-safe-area-view';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { StreamApp } from "expo-activity-feed";
+import { StreamApp } from 'react-native-activity-feed';
 
 // api imports
 import {
@@ -13,7 +13,7 @@ import {
   LikeButton,
   ReactionIcon,
   StatusUpdateForm
-} from 'expo-activity-feed';
+} from 'react-native-activity-feed';
 
 // Topbar
 import Topbar from '../components/Topbar';

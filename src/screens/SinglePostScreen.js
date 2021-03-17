@@ -14,7 +14,7 @@ import {
   LikeList,
   ReactionToggleIcon,
   Avatar
-} from 'expo-activity-feed';
+} from 'react-native-activity-feed';
 
 import happyclicked from '../assets/HappyClicked.png';
 import happyunclicked from '../assets/HappyUnclicked.png';
@@ -24,8 +24,8 @@ import sadclicked from '../assets/SadClicked.png';
 import sadunclicked from '../assets/SadUnclicked.png';
 
 import type { UserResponse } from '../types';
-import type { NavigationScreen } from 'expo-activity-feed';
-import Dayjs from 'dayjs';
+import type { NavigationScreen } from 'react-native-activity-feed';
+
 
 import ReplyIcon from '../assets/reply.png';
 import bookmark from '../assets/bookmark.png';
@@ -33,6 +33,11 @@ import bookmarko from '../assets/bookmark-outline.png';
 
 // Topbar
 import Topbar from '../components/Topbar';
+
+// Time
+var Dayjs = require('dayjs')
+var relativeTime = require('dayjs/plugin/relativeTime')
+Dayjs.extend(relativeTime)
 
 export const navigationOptions = ({ navigation }) => ({
   title: "POST DETAIL",
@@ -52,7 +57,7 @@ type Props = {|
 |};
 
 export default class SinglePostScreen extends React.Component {
-
+  
   humanizeTimestamp(timestamp) {
     // TAKEN FROM GETSTREAM EXAMPLE APP
     // Return time elapsed from timestamp
@@ -70,7 +75,7 @@ export default class SinglePostScreen extends React.Component {
     }
 
     const now = Dayjs();
-    return time.from(now);
+    return time.fromNow();
   }
 
   getRandomInt(max) {

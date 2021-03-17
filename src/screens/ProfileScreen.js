@@ -4,6 +4,10 @@ import { ScrollView, StatusBar, StyleSheet, View, Text, TouchableOpacity, Alert,
 import {Button, Title, Card, IconButton } from 'react-native-paper';
 import SafeAreaView from 'react-native-safe-area-view';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+// Time
+var Dayjs = require('dayjs')
+var relativeTime = require('dayjs/plugin/relativeTime')
+Dayjs.extend(relativeTime)
 // Firebase auth
 import auth from '@react-native-firebase/auth';
 // Profile header UI
@@ -23,7 +27,6 @@ import {
   ReactionIcon,
   ReactionToggleIcon,
 } from 'expo-activity-feed';
-import Dayjs from 'dayjs';
 
 
 class ProfileScreen extends Component {
@@ -60,7 +63,7 @@ class ProfileScreen extends Component {
     }
 
     const now = Dayjs();
-    return time.from(now);
+    return time.fromNow();
   }
 
   // switches active screen to feed view

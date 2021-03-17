@@ -15,7 +15,7 @@ import NotificationScreen from '../screens/NotificationsScreen';
 import SinglePostScreen, { navigationOptions as singlePostNavigationOptions } from "../screens/SinglePostScreen";
 import {
   StreamApp,
-} from 'expo-activity-feed';
+} from 'react-native-activity-feed';
 import NewPostScreen from '../screens/NewPostScreen';
 import NewLoopScreen from '../screens/NewLoopScreen';
 

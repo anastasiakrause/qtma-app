@@ -2,9 +2,8 @@
 
 import React from "react";
 import { View, StyleSheet, Text, ScrollView } from "react-native";
-import { NotificationFeed } from "expo-activity-feed";
+import { NotificationFeed } from "react-native-activity-feed";
 
-import { Activity, LikeButton, ReactionIcon } from "expo-activity-feed";
 import SafeAreaView from 'react-native-safe-area-view';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 

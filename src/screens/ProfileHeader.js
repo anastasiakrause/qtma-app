@@ -3,11 +3,11 @@
 import React from 'react';
 import { View, Text, StyleSheet, StatusBar } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
-import { StreamApp } from 'expo-activity-feed';
+import { StreamApp } from 'react-native-activity-feed';
 import Count from './Count';
-import { Avatar } from 'expo-activity-feed';
+import { Avatar } from 'react-native-activity-feed';
 import type { FollowCounts } from 'getstream';
-import type { AppCtx } from 'expo-activity-feed';
+import type { AppCtx } from 'react-native-activity-feed';
 import type { UserData } from '../types';
 
 import logo from '../assets/logo.png'

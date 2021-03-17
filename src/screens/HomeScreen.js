@@ -5,7 +5,10 @@ import React, {Component} from 'react';
 import { View, Text, ScrollView, StyleSheet, StatusBar, Image, TouchableOpacity, Alert, TextInput } from 'react-native';
 import SafeAreaView from 'react-native-safe-area-view';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import Dayjs from 'dayjs';
+// Time
+var Dayjs = require('dayjs')
+var relativeTime = require('dayjs/plugin/relativeTime')
+Dayjs.extend(relativeTime)
 
 // api imports
 import {
@@ -15,11 +18,12 @@ import {
   LikeButton,
   ReactionIcon,
   ReactionToggleIcon,
-} from 'expo-activity-feed';
+  UserBar,
+} from 'react-native-activity-feed';
 // COPIED FROM ProfileHeader.js
 import type { UserData } from '../types';
-import type { AppCtx } from 'expo-activity-feed';
-import { StreamApp } from 'expo-activity-feed';
+import type { AppCtx } from 'react-native-activity-feed';
+import { StreamApp } from 'react-native-activity-feed';
 
 import Navbar from '../components/Navbar';
 // Topbar
@@ -63,11 +67,8 @@ class HomeInner extends React.Component<PropsInner, State> {
       currentLoopId: '', // Will contain current loop id to pass to Flatfeed
       showFriends: false,
       loopMembers: [
-        "Person One",
-        "Person Two",
-        "Person Three",
-        "Person Four",
-        "John Smith"
+        "anastasiakrause",
+        "adamdolan"
       ],
       addLoopPopup: false,
       loopName: '',
@@ -81,7 +82,7 @@ class HomeInner extends React.Component<PropsInner, State> {
     this.props.changedUserData();
     this.setState({ user: data });
   }
-
+  
   humanizeTimestamp(timestamp) {
     // TAKEN FROM GETSTREAM EXAMPLE APP
     // Return time elapsed from timestamp
@@ -156,12 +157,15 @@ class HomeInner extends React.Component<PropsInner, State> {
 
   // Renders memebers of current loop (sorry for bad name)
   // TODO: Connect with getstream, Should update on loop change
+  // TODO: get data on all followers
   renderFriends() {
     return this.state.loopMembers.map(friend => {
          return (
             <View key={friend} style={styles.friend_box}>
-              <View style={styles.friend_circle}/>
-              <Text style={styles.friend_list}>{friend}</Text>
+              <UserBar
+                username={friend}
+                avatar={this.props.userData.profileImage}
+              />
               <TouchableOpacity 
                 style={styles.remove_button}
                 onPress={() => this.removeFriend(friend)}
@@ -552,7 +556,7 @@ class HomeInner extends React.Component<PropsInner, State> {
           this.state.showFriends ? 
           <View style={{
             position: 'absolute',
-            marginTop: 75, // topbar height + top margin
+            marginTop: 130, // topbar height + top margin (ios fix)
             backgroundColor: 'white',
             height: '100%',
             width: '100%',
@@ -642,8 +646,8 @@ const styles = StyleSheet.create({
   },
   friend_box: {
     width: '100%',
-    height: 45,
-    paddingHorizontal: 20,
+    height: 55, // ios adjustment
+    paddingHorizontal: 25, // ios adjustment
     flexDirection: 'row',
   },
   friend_circle: {
