@@ -279,8 +279,20 @@ class HomeInner extends React.Component<PropsInner, State> {
     )
   }
 
+  getRandomInt(max) {
+    return Math.floor(Math.random() * Math.floor(max));
+  }
+
   // Renders user's timeline feed
   renderTimelineFeed() {
+    // random loop tag colors
+    const colors = [
+      "#99E2FF",
+      "#EDAE49",
+      "#CC99FF",
+      "#FF9999",
+      "#009BCB"
+    ]
     return (
       <FlatFeed
       feedGroup="timeline"
@@ -331,7 +343,7 @@ class HomeInner extends React.Component<PropsInner, State> {
                   >
                   {  props.activity.loops.map(loop => {
                       return (
-                        <View style={styles.loop_tag}>
+                        <View style={[styles.loop_tag, {backgroundColor: colors[this.getRandomInt(5)]}]}>
                           <Text style={styles.loop_tag_text}>{loop}</Text> 
                         </View>
                       );
@@ -351,7 +363,7 @@ class HomeInner extends React.Component<PropsInner, State> {
                         textAlignVertical: 'center',
                       }}>+{props.activity.loops.length-1} more</Text> 
                     </View>
-                    <View style={styles.loop_tag}>
+                    <View style={[styles.loop_tag, {backgroundColor: colors[this.getRandomInt(5)]}]}>
                       <Text style={styles.loop_tag_text}>
                         {props.activity.loops[0]}
                       </Text> 

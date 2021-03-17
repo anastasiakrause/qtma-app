@@ -71,11 +71,24 @@ export default class SinglePostScreen extends React.Component {
     return time.from(now);
   }
 
+  getRandomInt(max) {
+    return Math.floor(Math.random() * Math.floor(max));
+  }
+
   render() {
     const { route } = this.props;
     const activity = route.params.activity;
     const feedGroup = route.params.feedGroup;
     const userId = route.params.userId;
+
+    // random loop tag colors
+    const colors = [
+      "#99E2FF",
+      "#EDAE49",
+      "#CC99FF",
+      "#FF9999",
+      "#009BCB"
+    ]
 
     return (
       <SafeAreaView style={styles.container}>
@@ -126,8 +139,9 @@ export default class SinglePostScreen extends React.Component {
                       showsHorizontalScrollIndicator={false}
                     >
                     {  props.activity.loops.map(loop => {
+                        const i = this.getRandomInt(5);
                         return (
-                          <View style={styles.loop_tag}>
+                          <View style={[styles.loop_tag, {backgroundColor: colors[i]}]}>
                             <Text style={styles.loop_tag_text}>{loop}</Text> 
                           </View>
                         );
@@ -135,14 +149,14 @@ export default class SinglePostScreen extends React.Component {
                     </ScrollView>
                     : 
                     // If activity didn't have a loop param (old test posts - should never happen)
-                    <ScrollView style={styles.loop_tag_box}
+                    <View style={styles.loop_tag_box}
                       horizontal={true}
                       showsHorizontalScrollIndicator={false}
                     >
                       <View style={styles.loop_tag}>
                         <Text style={styles.loop_tag_text}>Loop name TBD</Text> 
                       </View>
-                    </ScrollView>
+                    </View>
                     }
 
                   </View>
@@ -256,7 +270,6 @@ const styles = StyleSheet.create({
   loop_tag: {
     height: 16,
     paddingHorizontal: 8,
-    backgroundColor: "#009BCB",
     borderRadius: 5,
     marginRight: 3,
   },
