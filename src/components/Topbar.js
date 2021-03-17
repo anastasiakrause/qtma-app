@@ -36,12 +36,15 @@ class Topbar extends Component {
         return (
             <View style={styles.topBarBox}>
             <View style={styles.topBar}>
-
-                <Text style={[styles.feedTitle, this.props.center ? {flex: 1} : null]}>{this.props.title}</Text>
+                
+                <View style={[{justifyContent: 'center'}, this.props.center ? {flex: 1} : null]}>
+                    <Text style={[styles.feedTitle, this.props.center ? {flex: 1, textAlignVertical: 'center'} : null]}>{this.props.title}</Text>
+                    {this.props.loopid ? <Text style={{ fontSize: 12, color: '#6F7E82' }}>#{this.props.loopid}</Text> : null }
+                </View>
 
                 {this.props.loopsdown ? 
                 <TouchableOpacity 
-                    style={styles.loops_dropdown} 
+                    style={[styles.loops_dropdown, this.props.loopid ? {marginTop: -10} : {marginTop: 3}]} 
                     onPress={() => this.toggleList()}>
                     <Image source={this.props.shown ? up : down} style={{ height: 25, width: 25, alignSelf: 'center',  }}/>
                 </TouchableOpacity>
@@ -104,7 +107,6 @@ const styles = StyleSheet.create({
     loops_dropdown: {
         alignContent: 'center',
         alignSelf: 'center',
-        marginTop: 3,
     },
     button: {
         paddingVertical: 3,

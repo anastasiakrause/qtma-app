@@ -5,6 +5,7 @@ import React, {Component} from 'react';
 import { View, Text, ScrollView, StyleSheet, StatusBar, Image, TouchableOpacity, Alert, TextInput } from 'react-native';
 import SafeAreaView from 'react-native-safe-area-view';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import Dayjs from 'dayjs';
 
 // api imports
 import {
@@ -76,6 +77,26 @@ class HomeInner extends React.Component<PropsInner, State> {
     this.setState({ user: data });
   }
 
+  humanizeTimestamp(timestamp) {
+    // TAKEN FROM GETSTREAM EXAMPLE APP
+    // Return time elapsed from timestamp
+    let time;
+    if (
+      typeof timestamp === 'string' &&
+      timestamp[timestamp.length - 1].toLowerCase() === 'z'
+    ) {
+      time = Dayjs(timestamp);
+    } else {
+      time = Dayjs(timestamp).add(
+        Dayjs(timestamp).utcOffset(),
+        'minute',
+      ); // parse time as UTC
+    }
+
+    const now = Dayjs();
+    return time.from(now);
+  }
+
   // Post onPress function
   // Navigates to SinglePostScreen
   _onPressActivity = activity => {
@@ -90,7 +111,7 @@ class HomeInner extends React.Component<PropsInner, State> {
   changeLoop = ( loop ) => {
     this.state.currentLoopId = loop[0];
     this.state.currentLoopName = loop[1];
-    this.state.forceFeedRefresh = true;
+    this.setState({ forceFeedRefresh: false });
     if (loop == "My Loop"){
       this.setState({showFriends: false});
     }
@@ -125,6 +146,7 @@ class HomeInner extends React.Component<PropsInner, State> {
 
   showFriendsList = () => {
     this.setState({ showFriends: !this.state.showFriends });
+    this.setState({forceFeedRefresh: true});
   }
 
   // Renders memebers of current loop (sorry for bad name)
@@ -154,7 +176,6 @@ class HomeInner extends React.Component<PropsInner, State> {
   }
   // Renders selected loop
   renderLoopFeed() {
-    this.state.forceFeedRefresh = false;
     return (
     <FlatFeed
           feedGroup="loop"
@@ -171,10 +192,37 @@ class HomeInner extends React.Component<PropsInner, State> {
             >
               <Activity
                 {...props}
+                Header={
+                  <View style={{
+                    width: '100%',
+                    paddingTop: 5,
+                    paddingBottom: 15,
+                    paddingHorizontal: 15,
+                    flexDirection: 'row',
+                    backgroundColor: 'white'
+                  }}>
+    
+                    <Avatar 
+                      source={props.activity.actor.data.profileImage}
+                      size={40}
+                    />
+    
+                    <View style={{marginLeft: 10, maxHeight: 40, justifyContent: 'center',}}>
+                      <Text style={{
+                        fontSize: 16,
+                        fontWeight: 'bold',
+                      }}>{props.activity.actor.data.name}</Text>
+                      <Text style={{
+                        fontSize: 10,
+                        color: "#6F7E82"
+                      }}>{this.humanizeTimestamp(props.activity.time)}</Text>
+                    </View>
+    
+                  </View>
+                }
                 Footer={
-                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <LikeButton reactionKind="heart" {...props} />
-
+                  <View style={{ flexDirection: 'row', backgroundColor: 'white'}}>
+    
                     <ReactionToggleIcon
                       {...props}
                       activeIcon={happyclicked}
@@ -187,7 +235,7 @@ class HomeInner extends React.Component<PropsInner, State> {
                         props.onToggleReaction("music", props.activity, {},{});
                       } }
                     />
-
+    
                     <ReactionToggleIcon
                       {...props}
                       activeIcon={sadclicked}
@@ -212,7 +260,8 @@ class HomeInner extends React.Component<PropsInner, State> {
                         props.onToggleReaction("hearteyes", props.activity, {},{});
                       } }
                     />
-
+    
+                    <View style={{marginLeft: 'auto', marginRight: 15}}>
                     <ReactionIcon
                       icon={ReplyIcon}
                       labelSingle="comment"
@@ -220,6 +269,7 @@ class HomeInner extends React.Component<PropsInner, State> {
                       counts={props.activity.reaction_counts}
                       kind="comment"
                     />
+                    </View>
                   </View>
                 }
               />
@@ -231,7 +281,6 @@ class HomeInner extends React.Component<PropsInner, State> {
 
   // Renders user's timeline feed
   renderTimelineFeed() {
-    this.state.forceFeedRefresh = false;
     return (
       <FlatFeed
       feedGroup="timeline"
@@ -246,9 +295,79 @@ class HomeInner extends React.Component<PropsInner, State> {
         >
           <Activity
             {...props}
+            Header={
+              <View style={{
+                width: '100%',
+                paddingTop: 5,
+                paddingBottom: 15,
+                paddingHorizontal: 15,
+                flexDirection: 'row',
+                backgroundColor: 'white'
+              }}>
+
+                <Avatar 
+                  source={props.activity.actor.data.profileImage}
+                  size={40}
+                />
+
+                <View style={{marginLeft: 10, maxHeight: 40, justifyContent: 'center',}}>
+                  <Text style={{
+                    fontSize: 16,
+                    fontWeight: 'bold',
+                  }}>{props.activity.actor.data.name}</Text>
+                  <Text style={{
+                    fontSize: 10,
+                    color: "#6F7E82"
+                  }}>{this.humanizeTimestamp(props.activity.time)}</Text>
+                </View>
+
+                  {/* Checking if activity has loops param */}
+                  {props.activity.loops ?
+                  // If activity has less than 2 loops to tag
+                  props.activity.loops.length < 2 ?
+                  <View style={styles.loop_tag_box}
+                    horizontal={true}
+                    showsHorizontalScrollIndicator={false}
+                  >
+                  {  props.activity.loops.map(loop => {
+                      return (
+                        <View style={styles.loop_tag}>
+                          <Text style={styles.loop_tag_text}>{loop}</Text> 
+                        </View>
+                      );
+                    })}
+                  </View>
+                  : 
+                  // If activity has more than 1 loops to tag
+                  <View style={styles.loop_tag_box}
+                    horizontal={true}
+                    showsHorizontalScrollIndicator={false}
+                  >
+                    <View style={[styles.loop_tag, {backgroundColor: 'transparent', marginLeft: -3, padding: 0}]}>
+                      <Text style={{
+                        fontSize: 10.5,
+                        color: 'black',
+                        textAlign: 'center',
+                        textAlignVertical: 'center',
+                      }}>+{props.activity.loops.length-1} more</Text> 
+                    </View>
+                    <View style={styles.loop_tag}>
+                      <Text style={styles.loop_tag_text}>
+                        {props.activity.loops[0]}
+                      </Text> 
+                    </View>
+                  </View>
+                  :
+                  // If activity didn't have a loop param (old test posts - should never happen)
+                  <View style={[styles.loop_tag, {marginLeft: 'auto'}]}>
+                    <Text style={styles.loop_tag_text}>Loop name TBD</Text> 
+                  </View>
+                  }
+
+              </View>
+            }
             Footer={
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <LikeButton reactionKind="heart" {...props} />
+              <View style={{ flexDirection: 'row', backgroundColor: 'white'}}>
 
                 <ReactionToggleIcon
                   {...props}
@@ -288,6 +407,7 @@ class HomeInner extends React.Component<PropsInner, State> {
                   } }
                 />
 
+                <View style={{marginLeft: 'auto', marginRight: 15}}>
                 <ReactionIcon
                   icon={ReplyIcon}
                   labelSingle="comment"
@@ -295,6 +415,7 @@ class HomeInner extends React.Component<PropsInner, State> {
                   counts={props.activity.reaction_counts}
                   kind="comment"
                 />
+                </View>
               </View>
             }
           />
@@ -339,6 +460,12 @@ class HomeInner extends React.Component<PropsInner, State> {
   }
 
   render() {
+    // quick check for when user exits then returns home screen
+    if (this.state.currentLoopName != "My Loop" && 
+      !this.state.forceFeedRefresh &&
+      !this.state.showList) {
+      this.setState({forceFeedRefresh: true});
+    }
     return (
       <SafeAreaProvider>
       <SafeAreaView style={{flex: 1}} forceInset={{ top: 'always' }}>
@@ -352,6 +479,7 @@ class HomeInner extends React.Component<PropsInner, State> {
           showfriendsbutton={this.state.currentLoopName != "My Loop"}
           showfriends={this.state.showFriends}
           showFriendsList={this.showFriendsList}
+          loopid={this.state.currentLoopName == "My Loop" ? null : this.state.currentLoopId}
         />
 
         {/* Feed dependent on whether loop selected */}
@@ -513,4 +641,24 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     borderWidth: 1
   },
+  loop_tag_box: {
+    marginRight: 0,
+    marginLeft: 'auto',
+    flexDirection: 'row-reverse',
+    maxWidth: 250,
+    overflow: 'hidden'
+  },
+  loop_tag: {
+    height: 16,
+    paddingHorizontal: 8,
+    backgroundColor: "#009BCB",
+    borderRadius: 5,
+    marginRight: 3,
+  },
+  loop_tag_text: {
+    fontSize: 10.5,
+    color: 'white',
+    textAlign: 'center',
+    textAlignVertical: 'center',
+  }
 });
