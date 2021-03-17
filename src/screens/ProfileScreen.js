@@ -26,7 +26,7 @@ import {
   LikeButton,
   ReactionIcon,
   ReactionToggleIcon,
-} from 'expo-activity-feed';
+} from 'react-native-activity-feed';
 
 
 class ProfileScreen extends Component {
