@@ -37,7 +37,8 @@ class ProfileScreen extends Component {
         "Mario",
       ],
       addFriendPopup: false, // toggles add friend popup
-      friendName: ''
+      friendName: '',
+      showSignout: false,
     };
   }
 
@@ -113,6 +114,10 @@ class ProfileScreen extends Component {
     Alert.alert("remove "+name)
   }
 
+  toggleSignout = () => {
+    this.setState({showSignout: !this.state.showSignout});
+  }
+
   render() {
 
     // Dynamic border color on posts / friends buttons
@@ -131,6 +136,8 @@ class ProfileScreen extends Component {
           title="My Profile" 
           addfriend={this.toggleAddFriendPopup}
           addFriendOpen={this.state.addFriendPopup}
+          settings
+          signout={this.toggleSignout}
         />
 
         <ProfileHeader />
@@ -237,6 +244,10 @@ class ProfileScreen extends Component {
           {this.renderFriends()}
         </ScrollView> }
 
+        </View>
+
+        {/* Signout button component */}
+        {this.state.showSignout ?
         <Button
             style={localStyles.authButton}
             onPress={() => auth().signOut()}
@@ -249,8 +260,8 @@ class ProfileScreen extends Component {
                 color: '#BCBCBC',
                 fontSize: 12,
               }}>Sign out</Text>
-        </Button>
-        </View>
+        </Button> : null
+        }
 
         {
           this.state.addFriendPopup ?
@@ -393,10 +404,10 @@ const localStyles = StyleSheet.create({
     fontSize: 14,
     color: 'black',
     borderWidth: 1,
-    alignSelf: 'center',
-    marginTop: '97%',
     width: 100,
     height: 30,
+    marginTop: 80,
+    alignSelf: 'flex-end'
   },
   loop_tag_box: {
     marginRight: 0,

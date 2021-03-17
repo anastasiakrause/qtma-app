@@ -56,15 +56,26 @@ class NewPost extends React.Component {
         // removing
         } else {
             const idlist = this.state.selected_ids;
-            idlist.pop(id);
+            idlist.splice(idlist.indexOf(id), 1);
             this.setState({ selected_ids: idlist });
             this.state.selected_names = this.state.selected_names.filter(e=> e !== lName);
         }
         // console.log(this.state.selected_names.map(el=>'loop:' + el));// this.state.selected_ids);
     }
 
+    getRandomInt(max) {
+        return Math.floor(Math.random() * Math.floor(max));
+    }
+
     // renders all loops in this.state.loops
     renderLoops() {
+        // random loop tag colors
+        const colors = [
+            "#99E2FF",
+            "#EDAE49",
+            "#CC99FF",
+            "#FF9999"
+        ]
         // casting dict to a list
         var loopslist = []
         //for (var key in this.state.loops) {
@@ -79,7 +90,7 @@ class NewPost extends React.Component {
                 <TouchableOpacity 
                 style={[styles.loopbutton, 
                     this.state.selected_ids.includes(loop[0]) ? 
-                    {backgroundColor: '#FF9999'} : 
+                    {backgroundColor: colors[this.getRandomInt(4)]} : 
                     null]}
                 onPress={() => this.addSendLoop(loop[0], loop[1])}
                 >

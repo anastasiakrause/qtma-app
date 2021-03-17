@@ -15,6 +15,9 @@ import people from '../assets/people.png';
 import peopleo from '../assets/people-outline.png';
 import add from '../assets/person-add.png';
 import addo from '../assets/person-add-outline.png';
+import dots from '../assets/more-vertical.png';
+import bell from '../assets/bell.png';
+import bello from '../assets/bell-outline.png';
 
 
 class Topbar extends Component {
@@ -58,6 +61,16 @@ class Topbar extends Component {
                 </TouchableOpacity>
                 : null }
 
+                {!this.props.center ? <View style={{ flex: 1, flexDirection: 'row-reverse' }}>
+
+                {this.props.settings ? 
+                <TouchableOpacity 
+                    style={styles.friend_button} 
+                    onPress={() => this.props.signout()}>
+                    <Image source={dots} style={{ height: 25, width: 25, alignSelf: 'center',  }}/>
+                </TouchableOpacity>
+                : null }
+
                 {this.props.addfriend ? 
                 <TouchableOpacity 
                     style={styles.friend_button} 
@@ -73,6 +86,16 @@ class Topbar extends Component {
                     <Image source={this.props.showfriends ? people : peopleo} style={{ height: 25, width: 25, alignSelf: 'center',  }}/>
                 </TouchableOpacity>
                 : null }
+
+                {this.props.shownotifbutton ? 
+                <TouchableOpacity 
+                    style={styles.friend_button} 
+                    onPress={() => this.props.showNotifications()}>
+                    <Image source={this.props.shownotif ? bell : bello} style={{ height: 25, width: 25, alignSelf: 'center',  }}/>
+                </TouchableOpacity>
+                : null }
+
+                </View> : null}
 
             </View>
             </View>
@@ -133,7 +156,6 @@ const styles = StyleSheet.create({
         borderColor: 'black',
         alignContent: 'center',
         alignSelf: 'center',
-        marginLeft: 'auto',
-        marginRight: 20,
+        marginLeft: 10,
     },
 });

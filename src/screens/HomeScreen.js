@@ -25,6 +25,8 @@ import Navbar from '../components/Navbar';
 // Topbar
 import Topbar from '../components/Topbar';
 
+import NotificationScreen from '../screens/NotificationsScreen';
+
 // image imports
 import PostIcon from '../assets/post.png';
 import ReplyIcon from '../assets/reply.png';
@@ -68,6 +70,7 @@ class HomeInner extends React.Component<PropsInner, State> {
       addLoopPopup: false,
       loopName: '',
       forceFeedRefresh: false,
+      showNotifications: false,
     };
   }
 
@@ -279,8 +282,20 @@ class HomeInner extends React.Component<PropsInner, State> {
     )
   }
 
+  getRandomInt(max) {
+    return Math.floor(Math.random() * Math.floor(max));
+  }
+
   // Renders user's timeline feed
   renderTimelineFeed() {
+    // random loop tag colors
+    const colors = [
+      "#99E2FF",
+      "#EDAE49",
+      "#CC99FF",
+      "#FF9999",
+      "#009BCB"
+    ]
     return (
       <FlatFeed
       feedGroup="timeline"
@@ -331,7 +346,7 @@ class HomeInner extends React.Component<PropsInner, State> {
                   >
                   {  props.activity.loops.map(loop => {
                       return (
-                        <View style={styles.loop_tag}>
+                        <View style={[styles.loop_tag, {backgroundColor: colors[this.getRandomInt(5)]}]}>
                           <Text style={styles.loop_tag_text}>{loop}</Text> 
                         </View>
                       );
@@ -351,7 +366,7 @@ class HomeInner extends React.Component<PropsInner, State> {
                         textAlignVertical: 'center',
                       }}>+{props.activity.loops.length-1} more</Text> 
                     </View>
-                    <View style={styles.loop_tag}>
+                    <View style={[styles.loop_tag, {backgroundColor: colors[this.getRandomInt(5)]}]}>
                       <Text style={styles.loop_tag_text}>
                         {props.activity.loops[0]}
                       </Text> 
@@ -431,6 +446,10 @@ class HomeInner extends React.Component<PropsInner, State> {
     Alert.alert("remove "+name)
   }
 
+  toggleNotificationScreen = () => {
+    this.setState({ showNotifications: !this.state.showNotifications });
+  }
+
   addLoop = () => {
     // TODO: add loop by code
     const tokenEndpoint = 'https://us-central1-qtmaapptwenty.cloudfunctions.net/joinLoop';
@@ -471,23 +490,34 @@ class HomeInner extends React.Component<PropsInner, State> {
       <SafeAreaView style={{flex: 1}} forceInset={{ top: 'always' }}>
 
         <Topbar 
-          title={this.state.currentLoopName}
+          title={this.state.showNotifications ? "Notifications" : this.state.currentLoopName}
           navigation={this.props.navigation}
-          loopsdown
+          loopsdown={!this.state.showNotifications}
           showlist={this.showLoopsList}
           shown={this.state.showList}
           showfriendsbutton={this.state.currentLoopName != "My Loop"}
           showfriends={this.state.showFriends}
           showFriendsList={this.showFriendsList}
           loopid={this.state.currentLoopName == "My Loop" ? null : this.state.currentLoopId}
+          shownotifbutton={this.state.currentLoopName == "My Loop"}
+          showNotifications={this.toggleNotificationScreen}
+          shownotif={this.state.showNotifications}
         />
 
-        {/* Feed dependent on whether loop selected */}
-        { this.state.currentLoopName == 'My Loop' ?  this.renderTimelineFeed() : null}
-        { this.state.forceFeedRefresh ? this.renderLoopFeed() :
-         this.state.currentLoopName == 'My Loop' ? null : <View style = {{flex:1}}></View>
+        {this.state.showNotifications ?  
+          <View style={{flex: 1, backgroundColor: 'white'}}>
+            <NotificationScreen />
+          </View>
+        :
+          <>
+            {/* Feed dependent on whether loop selected */}
+            {this.state.currentLoopName == 'My Loop' ?  this.renderTimelineFeed() : null}
+            {this.state.forceFeedRefresh ? this.renderLoopFeed() :
+            this.state.currentLoopName == 'My Loop' ? null : <View style = {{flex:1}}></View>
+            }
+          </>
         }
-        
+
         {/* Toggleable friends list component */}
         {
           this.state.showFriends ? 
