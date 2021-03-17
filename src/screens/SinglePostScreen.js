@@ -200,9 +200,8 @@ export default class SinglePostScreen extends React.Component {
                   </View>
                 }
               />
-              <View style={styles.likesContainer}>
-                <LikeList activityId={props.activity.id} reactionKind="heart" />
-              </View>
+
+              <View style={{ flex: 1, backgroundColor: 'white' }}>
               <CommentList
                 activityId={props.activity.id}
                 infiniteScroll
@@ -211,11 +210,16 @@ export default class SinglePostScreen extends React.Component {
                   <React.Fragment>
                     <CommentItem
                       comment={comment}
-                      Footer={<LikeButton reaction={comment} {...props} />}
+                      styles={{
+                        container: {
+                          paddingVertical: 20,
+                        }
+                      }}
                     />
                   </React.Fragment>
                 )}
               />
+              </View>
 
               <View style={styles.sectionHeader} />
             </React.Fragment>
