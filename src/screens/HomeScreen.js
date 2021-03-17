@@ -267,13 +267,26 @@ class HomeInner extends React.Component<PropsInner, State> {
                       } }
                     />
     
-                    <View style={{marginLeft: 'auto', marginRight: 15}}>
+                    <View style={{marginLeft: 'auto', marginRight: 15, flexDirection: 'row'}}>
                     <ReactionIcon
                       icon={ReplyIcon}
                       labelSingle="comment"
                       labelPlural="comments"
                       counts={props.activity.reaction_counts}
                       kind="comment"
+                    />
+                    <ReactionToggleIcon
+                      {...props}
+                      activeIcon={bookmark}
+                      inactiveIcon={bookmarko}
+                      own_reactions={props.activity.own_reactions}
+                      counts={props.activity.reaction_counts}
+                      kind={'saved'}
+                      reactionKind="saved"
+                      onPress = { async (e) => {
+                        // TODO: edit this to do something w activity
+                        props.onToggleReaction("saved", props.activity, {},{});
+                      } }
                     />
                     </View>
                   </View>
@@ -439,10 +452,11 @@ class HomeInner extends React.Component<PropsInner, State> {
                     inactiveIcon={bookmarko}
                     own_reactions={props.activity.own_reactions}
                     counts={props.activity.reaction_counts}
-                    kind={'hearteyes'}
-                    reactionKind="hearteyes"
+                    kind={'saved'}
+                    reactionKind="saved"
                     onPress = { async (e) => {
-                      props.onToggleReaction("hearteyes", props.activity, {},{});
+                      // TODO: edit this to do something w activity
+                      props.onToggleReaction("saved", props.activity, {},{});
                     } }
                   />
                 </View>

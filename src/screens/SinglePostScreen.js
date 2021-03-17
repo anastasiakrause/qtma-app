@@ -28,6 +28,8 @@ import type { NavigationScreen } from 'expo-activity-feed';
 import Dayjs from 'dayjs';
 
 import ReplyIcon from '../assets/reply.png';
+import bookmark from '../assets/bookmark.png';
+import bookmarko from '../assets/bookmark-outline.png';
 
 // Topbar
 import Topbar from '../components/Topbar';
@@ -202,14 +204,27 @@ export default class SinglePostScreen extends React.Component {
                       } }
                     />
     
-                    <View style={{marginLeft: 'auto', marginRight: 15}}>
-                    <ReactionIcon
-                      icon={ReplyIcon}
-                      labelSingle="comment"
-                      labelPlural="comments"
-                      counts={props.activity.reaction_counts}
-                      kind="comment"
-                    />
+                    <View style={{marginLeft: 'auto', marginRight: 15, flexDirection: 'row'}}>
+                      <ReactionIcon
+                        icon={ReplyIcon}
+                        labelSingle="comment"
+                        labelPlural="comments"
+                        counts={props.activity.reaction_counts}
+                        kind="comment"
+                      />
+                      <ReactionToggleIcon
+                        {...props}
+                        activeIcon={bookmark}
+                        inactiveIcon={bookmarko}
+                        own_reactions={props.activity.own_reactions}
+                        counts={props.activity.reaction_counts}
+                        kind={'saved'}
+                        reactionKind="saved"
+                        onPress = { async (e) => {
+                          // TODO: edit this to do something w activity
+                          props.onToggleReaction("saved", props.activity, {},{});
+                        } }
+                      />
                     </View>
                   </View>
                 }
