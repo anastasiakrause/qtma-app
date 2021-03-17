@@ -275,7 +275,7 @@ class HomeInner extends React.Component<PropsInner, State> {
                       counts={props.activity.reaction_counts}
                       kind="comment"
                     />
-                    <ReactionToggleIcon
+                    <ReactionToggleIcon // SAVE POST BUTTON
                       {...props}
                       activeIcon={bookmark}
                       inactiveIcon={bookmarko}
@@ -446,7 +446,7 @@ class HomeInner extends React.Component<PropsInner, State> {
                     counts={props.activity.reaction_counts}
                     kind="comment"
                   />
-                  <ReactionToggleIcon
+                  <ReactionToggleIcon // SAVE POST BUTTON
                     {...props}
                     activeIcon={bookmark}
                     inactiveIcon={bookmarko}
