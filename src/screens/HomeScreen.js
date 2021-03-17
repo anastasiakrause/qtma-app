@@ -125,6 +125,7 @@ class HomeInner extends React.Component<PropsInner, State> {
 
   showFriendsList = () => {
     this.setState({ showFriends: !this.state.showFriends });
+    this.setState({forceFeedRefresh: true});
   }
 
   // Renders memebers of current loop (sorry for bad name)
@@ -339,6 +340,11 @@ class HomeInner extends React.Component<PropsInner, State> {
   }
 
   render() {
+    // quick check for when user exits then returns home screen
+    if (this.state.currentLoopName != "My Loop" && !this.state.forceFeedRefresh) {
+      this.setState({forceFeedRefresh: true});
+    }
+    console.log(this.state.forceFeedRefresh)
     return (
       <SafeAreaProvider>
       <SafeAreaView style={{flex: 1}} forceInset={{ top: 'always' }}>
