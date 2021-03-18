@@ -66,10 +66,7 @@ class HomeInner extends React.Component<PropsInner, State> {
       currentLoopName: 'My Loop', // Will contain current loop name
       currentLoopId: '', // Will contain current loop id to pass to Flatfeed
       showFriends: false,
-      loopMembers: [
-        "anastasiakrause",
-        "adamdolan"
-      ],
+      loopMembers: [],
       addLoopPopup: false,
       loopName: '',
       forceFeedRefresh: false,
@@ -109,6 +106,10 @@ class HomeInner extends React.Component<PropsInner, State> {
     this.props.navigation.navigate("Post", { activity });
   };
 
+  _onSaveActivity = activity => {
+    console.log(activity);
+  }
+
   showLoopsList = ( show ) => {
     // !show bc of some kinda weird state thing
     this.setState({ showList: !show });
@@ -120,6 +121,29 @@ class HomeInner extends React.Component<PropsInner, State> {
     this.setState({ forceFeedRefresh: false });
     if (loop == "My Loop"){
       this.setState({showFriends: false});
+    }
+    else {
+      const tokenEndpoint = 'https://us-central1-qtmaapptwenty.cloudfunctions.net/getLoopFollowers';
+      let data = {
+           method: 'POST',
+           headers: {
+           'Accept': 'application/json, text/plain, */*',
+           'Content-Type': 'application/json'
+           },
+           body: JSON.stringify ({
+             loopName : this.state.currentLoopName,
+           }) 
+       };
+  
+       fetch(tokenEndpoint, data) 
+        .then(response => {
+            if(response.ok) return response.json()
+            throw new Error('Network response was not ok');
+        }).then( (data) => {
+          this.state.loopMembers=data.followers;
+        }).catch( (error) => {
+            console.error(error);
+        });
     }
     this.showLoopsList( true );
   }
@@ -155,16 +179,14 @@ class HomeInner extends React.Component<PropsInner, State> {
     this.setState({forceFeedRefresh: true});
   }
 
-  // Renders memebers of current loop (sorry for bad name)
-  // TODO: Connect with getstream, Should update on loop change
-  // TODO: get data on all followers
+  // Renders memebers of current loop
   renderFriends() {
     return this.state.loopMembers.map(friend => {
          return (
             <View key={friend} style={styles.friend_box}>
               <UserBar
-                username={friend}
-                avatar={this.props.userData.profileImage}
+                username={friend.userName}
+                avatar={friend.userImage}
               />
               <TouchableOpacity 
                 style={styles.remove_button}
@@ -289,6 +311,10 @@ class HomeInner extends React.Component<PropsInner, State> {
                       reactionKind="saved"
                       onPress = { async (e) => {
                         // TODO: edit this to do something w activity
+                        // SHOULD WORK BUT NEED LOOP TO WAIVE READ/WRITE RESTRICTIONS                  
+                        await this.props.client
+                        .feed('saved', this.props.userId)
+                        .addActivity(props.activity);
                         props.onToggleReaction("saved", props.activity, {},{});
                       } }
                     />
@@ -460,6 +486,11 @@ class HomeInner extends React.Component<PropsInner, State> {
                     reactionKind="saved"
                     onPress = { async (e) => {
                       // TODO: edit this to do something w activity
+                      // SHOULD WORK BUT NEED LOOP TO WAIVE READ/WRITE RESTRICTIONS                  
+                      await this.props.client
+                        .feed('saved', this.props.userId)
+                        .addActivity(props.activity);
+
                       props.onToggleReaction("saved", props.activity, {},{});
                     } }
                   />
@@ -476,7 +507,7 @@ class HomeInner extends React.Component<PropsInner, State> {
   removeFriend = (name) => {
     // Onpress for when remove button is pressed
     // Name is name of friend
-    Alert.alert("remove "+name)
+    Alert.alert("remove "+ name)
   }
 
   toggleNotificationScreen = () => {
@@ -484,7 +515,6 @@ class HomeInner extends React.Component<PropsInner, State> {
   }
 
   addLoop = () => {
-    // TODO: add loop by code
     const tokenEndpoint = 'https://us-central1-qtmaapptwenty.cloudfunctions.net/joinLoop';
     let data = {
         method: 'POST',
@@ -502,7 +532,7 @@ class HomeInner extends React.Component<PropsInner, State> {
         if(response.ok) return response.json()
         throw new Error('Network response was not ok');
     }).then( () => {
-      Alert.alert("Added new loop "+ this.props.userData.loop_ids[this.state.loopName])
+      Alert.alert("Added new loop "+ this.props.userData.loop_ids[this.state.currentLoopName])
     }).catch( (error) => {
         console.error(error);
     });

@@ -126,7 +126,7 @@ class NewPost extends React.Component {
         </ScrollView>
 
         <Text style={styles.subhead}>Make your post:</Text>
-        {/* TODO: Connect this.state.selected_ids to update form */}
+        
         <StatusUpdateForm 
             feedGroup="user"
             height={200} 

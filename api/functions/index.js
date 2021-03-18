@@ -34,23 +34,20 @@ exports.userToken = functions.https.onRequest(async (request, response) => {
         name: userH,
         profileImage: 'https://bit.ly/3bh6wgq',
         loop_data: {},
+        friends: []
     });
+
     await userClient.feed('timeline').get({
         withReactionCounts: true,
         withOwnReactions: true,
         withRecentReactions: true,
     });
-    const userFeed = serverClient.feed('user', userH, id);
+    
+    // create user feed on server
+    await serverClient.feed('user', userH, id).get();
     // personal timeline feed follows user timeline
     await userClient.feed('timeline').follow('user', userH);
-    // Add the activity to the feed
-    // TODO: format schema for activity
-    await userFeed.addActivity({
-        actor: 'SU:' + userH,
-        tweet: 'Hello world',
-        verb: 'post',
-        object: "first post!",
-    });
+    
     response.status(200);
     response.type('jwt');
     response.setHeader("alg", "RS256");
@@ -58,7 +55,6 @@ exports.userToken = functions.https.onRequest(async (request, response) => {
     response.send({ "user_id": id });
 });
 
-// TODO: write to firebase {id:name}
 exports.createLoop = functions.https.onRequest(async (request, response) => {
     const serverClient = stream.connect(apiKey, appSecret, appId);
     const incomingData = request.body;
@@ -120,9 +116,107 @@ exports.joinLoop = functions.https.onRequest(async (request, response) => {
                 serverClient.user(userH).update(newUserData);
             }).then(function() {
                 response.status(200);
-                response.setHeader("type", "JSON");
-                response.send({"status": "success"});
             })
         }).catch (err => console.log(err)
     ); 
 });
+
+// WRITTEN WITHOUT TESTING
+exports.removeFromLoop = functions.https.onRequest(async (request, response) => {
+    const serverClient = stream.connect(apiKey, appSecret, appId);
+    const incomingData = request.body;
+    const userHandle = incomingData.userHandle;
+    const loopCode = incomingData.loopCode;
+
+    // create a following relationship between loop user creator and loop timeline
+    //const userFeed = serverClient.feed('user', userH);
+
+    // remove follow relationship
+    serverClient.feed('timeline', userHandle).unfollow('loop', loopName);
+
+    // get user information
+    const userData = await serverClient.user(userHandle).get();
+    let copyData = userData.data;
+    copyData.loop_ids
+    delete copyData.loop_ids.loopCode;
+    serverClient.user(userH).update(newUserData);
+
+    response.send(200);
+    
+});
+
+exports.getLoopFollowers = functions.https.onRequest(async (request, response) => {
+    const serverClient = stream.connect(apiKey, appSecret, appId);
+    const incomingData = request.body;
+    const loopName = incomingData.loopName;
+
+    let allFollowers = [];
+    const followers = await serverClient.feed('loop', loopName).followers();
+
+    for (const item of followers.results){
+        const userName = String(item.feed_id.slice(9));
+        const userData = await serverClient.user(userName).get();
+        const userImage = userData.data.profileImage;
+        const userObj = { userName: userName, userImage : userImage}; 
+        allFollowers.push(userObj);
+    };
+
+    response.status(200);
+    response.setHeader("type","JSON");
+    response.send({"followers": allFollowers});
+});
+
+exports.addFriend = functions.https.onRequest(async (request, response) => {
+    const serverClient = stream.connect(apiKey, appSecret, appId);
+    const incomingData = request.body;
+    const userHandle = incomingData.userHandle;
+    const userToAdd = incomingData.userToAdd;
+    // get avatar of userToAdd
+    const friendData = await serverClient.user(userToAdd).get();
+    const friendImage = friendData.data.profileImage;
+    const friendObj = { userName: userToAdd, userImage : friendImage};  
+
+    // get user data of current user and add their new friend to their friends list
+    const userData = await serverClient.user(userHandle).get();
+    let copyData = userData
+    copyData.data.friends.push(friendObj);
+    serverClient.user(userHandle).update(copyData.data);
+
+    response.status(200);
+});
+
+exports.getUserFriends = functions.https.onRequest(async (request, response) => {
+    const serverClient = stream.connect(apiKey, appSecret, appId);
+    const incomingData = request.body;
+    const userHandle = incomingData.userHandle;
+
+    const userData = await serverClient.user(userHandle).get();
+    const allFriends = userData.data.friends;
+
+    response.status(200);
+    response.setHeader("type","JSON");
+    response.send({"allFriends": allFriends});
+});
+
+// TODO: remove friend NEEDS TESTING
+exports.addFriend = functions.https.onRequest(async (request, response) => {
+    const serverClient = stream.connect(apiKey, appSecret, appId);
+    const incomingData = request.body;
+    const userHandle = incomingData.userHandle;
+    const removeFriend = incomingData.removeFriend;
+    
+    // get user data of current user and add their new friend to their friends list
+    const userData = await serverClient.user(userHandle).get();
+    let copyData = userData.data;
+
+    // filter out name of friend to be deleted from friend's list
+    copyData.friends = copyData.friends.filter(function( obj ) {
+        return obj.userName !== removeFriend;
+    });
+    serverClient.user(userHandle).update(copyData);
+
+    response.status(200);
+});
+
+
+

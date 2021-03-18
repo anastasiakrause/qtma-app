@@ -227,6 +227,10 @@ export default class SinglePostScreen extends React.Component {
                         reactionKind="saved"
                         onPress = { async (e) => {
                           // TODO: edit this to do something w activity
+                          // SHOULD WORK BUT NEED LOOP TO WAIVE READ/WRITE RESTRICTIONS                  
+                          await this.props.client
+                          .feed('saved', this.props.userId)
+                          .addActivity(props.activity);
                           props.onToggleReaction("saved", props.activity, {},{});
                         } }
                       />

@@ -22,9 +22,6 @@ import NewLoopScreen from '../screens/NewLoopScreen';
 import { STREAM_API_KEY, STREAM_APP_ID } from "@env";
 import AuthForm from '../screens/AuthForm';
 import { SafeAreaProvider } from 'react-native-safe-area-view';
-let TOKEN;
-
-// TODO: add screen navigation options as done with SinglePostScreen
 
 //===== Creating Navigation Stack =====//
 

@@ -26,6 +26,7 @@ import {
   LikeButton,
   ReactionIcon,
   ReactionToggleIcon,
+  UserBar,
 } from 'react-native-activity-feed';
 
 
@@ -35,15 +36,38 @@ class ProfileScreen extends Component {
     this.state = {
       show: 'feed', // 'feed' or 'friends'
       showSaved: false,
-      friends: [
-        "Steven",
-        "Jo Jo",
-        "Mario",
-      ],
+      friends: [],
       addFriendPopup: false, // toggles add friend popup
       friendName: '',
       showSignout: false,
     };
+  }
+  getUserFriends = () => {
+    const tokenEndpoint = 'https://us-central1-qtmaapptwenty.cloudfunctions.net/getUserFriends';
+    let data = {
+         method: 'POST',
+         headers: {
+         'Accept': 'application/json, text/plain, */*',
+         'Content-Type': 'application/json'
+         },
+         body: JSON.stringify ({
+           userHandle : 'anastasiakrause', // get current user variable
+         }) 
+     };
+
+    fetch(tokenEndpoint, data) 
+    .then(response => {
+        if(response.ok) return response.json()
+        throw new Error('Network response was not ok');
+    }).then( (data) => {
+      this.state.friends = data.allFriends;
+    }).catch( (error) => {
+        console.error(error);
+    });
+  }
+
+  async componentDidMount() {
+    this.getUserFriends();
   }
 
   humanizeTimestamp(timestamp) {
@@ -72,7 +96,7 @@ class ProfileScreen extends Component {
     this.setState({show: "feed"});
   }
   // switches active screen to friends list
-  gotoFriends = () => {
+  gotoFriends = () => {    
     this.setState({showSaved: false});
     this.setState({show: "friends"});
   }
@@ -82,13 +106,14 @@ class ProfileScreen extends Component {
   }
 
   // renders list of friends from "friends" state variable
-  // TODO: connect variable with GetStream
   renderFriends() {
     return this.state.friends.map(friend => {
          return (
             <View key={friend} style={localStyles.friend_box}>
-              <View style={localStyles.friend_circle}/>
-              <Text style={localStyles.friend_list}>{friend}</Text>
+               <UserBar
+                  username={friend.userName}
+                  avatar={friend.userImage}
+              />
               <TouchableOpacity 
                 style={localStyles.remove_button}
                 onPress={() => this.removeFriend(friend)}
@@ -114,8 +139,32 @@ class ProfileScreen extends Component {
 
   addFriend = () => {
     // Onpress for add friend button
-    Alert.alert("add "+this.state.friendName)
+    const tokenEndpoint = 'https://us-central1-qtmaapptwenty.cloudfunctions.net/addFriend';
+    let data = {
+         method: 'POST',
+         headers: {
+         'Accept': 'application/json, text/plain, */*',
+         'Content-Type': 'application/json'
+         },
+         body: JSON.stringify ({
+           userHandle : 'anastasiakrause', // GRAHAM: get current username
+           userToAdd : this.state.friendName
+         }) 
+     };
+
+    fetch(tokenEndpoint, data) 
+    .then(response => {
+        if(response.ok) return response.json()
+        throw new Error('Network response was not ok');
+    }).catch( (error) => {
+        console.error(error);
+    });
+
+    Alert.alert("add "+ this.state.friendName)
     this.toggleAddFriendPopup()
+    this.getUserFriends();
+    this.renderFriends();
+    console.log(this.state.friends);
   }
 
   removeFriend = (name) => {
