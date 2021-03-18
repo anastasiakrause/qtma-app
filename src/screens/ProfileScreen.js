@@ -40,7 +40,8 @@ class ProfileScreen extends Component {
       addFriendPopup: false, // toggles add friend popup
       friendName: '',
       showSignout: false,
-      refreshFriends: true
+      refreshFriends: true,
+      user: null,
     };
   }
 
@@ -53,7 +54,7 @@ class ProfileScreen extends Component {
          'Content-Type': 'application/json'
          },
          body: JSON.stringify ({
-           userHandle : 'anastasiakrause', // get current user variable
+           userHandle : this.state.user.client.userId, // get current user variable
          }) 
      };
 
@@ -66,10 +67,6 @@ class ProfileScreen extends Component {
     }).catch( (error) => {
         console.error(error);
     });
-  }
-
-  async componentDidMount() {
-    this.getUserFriends();
   }
 
   humanizeTimestamp(timestamp) {
@@ -99,6 +96,7 @@ class ProfileScreen extends Component {
   }
   // switches active screen to friends list
   gotoFriends = () => {    
+    this.getUserFriends();
     this.setState({showSaved: false});
     this.setState({show: "friends"});
   }
@@ -158,7 +156,7 @@ class ProfileScreen extends Component {
          'Content-Type': 'application/json'
          },
          body: JSON.stringify ({
-           userHandle : 'anastasiakrause', // GRAHAM: get current username
+           userHandle : this.state.user.client.userId, // GRAHAM: get current username
            userToAdd : this.state.friendName
          }) 
      };
@@ -175,7 +173,6 @@ class ProfileScreen extends Component {
     this.toggleAddFriendPopup()
     this.getUserFriends();
     this.setState({refreshFriends: true});
-    console.log(this.state.friends);
   }
 
   removeFriend = (name) => {
@@ -192,6 +189,12 @@ class ProfileScreen extends Component {
     return Math.floor(Math.random() * Math.floor(max));
   }
 
+  setUserData = ( user ) => {
+    if(!this.state.user){
+      this.setState({ user: user });
+    }
+    this.getUserFriends();
+  }
 
   render() {
 
@@ -226,7 +229,7 @@ class ProfileScreen extends Component {
           signout={this.toggleSignout}
         />
 
-        <ProfileHeader />
+        <ProfileHeader setuser={this.setUserData} />
 
         <View style={localStyles.profile_navbar}>
           <TouchableOpacity 

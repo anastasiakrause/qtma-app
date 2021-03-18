@@ -43,6 +43,7 @@ class ProfileHeaderInner extends React.Component<PropsInner, State> {
     let data = await this.props.user.profile();
     this.props.changedUserData();
     this.setState({ user: data });
+    this.props.setuser(data);
   }
 
   render() {
