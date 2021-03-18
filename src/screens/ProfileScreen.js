@@ -42,6 +42,7 @@ class ProfileScreen extends Component {
       showSignout: false,
     };
   }
+
   getUserFriends = () => {
     const tokenEndpoint = 'https://us-central1-qtmaapptwenty.cloudfunctions.net/getUserFriends';
     let data = {
@@ -110,19 +111,26 @@ class ProfileScreen extends Component {
     return this.state.friends.map(friend => {
          return (
             <View key={friend} style={localStyles.friend_box}>
-               <UserBar
+              {/* <UserBar
                   username={friend.userName}
                   avatar={friend.userImage}
-              />
+                  style={{
+                    avatar: {
+                      borderWidth: 1,
+                    }
+                  }}
+              /> */}
+              <Avatar source={friend.userImage} size={40}/>
+              <Text style={localStyles.friend_list}>{friend.userName}</Text>
               <TouchableOpacity 
                 style={localStyles.remove_button}
                 onPress={() => this.removeFriend(friend)}
               >
                 <Text style={{
                   fontSize: 10, 
-                color: 'white', 
-                textAlign: 'center', 
-                textAlignVertical: 'center'
+                  color: 'white', 
+                  textAlign: 'center', 
+                  textAlignVertical: 'center'
                 }}>
                   Remove
                 </Text>
@@ -504,7 +512,9 @@ const localStyles = StyleSheet.create({
     width: '100%',
     height: 45,
     paddingHorizontal: 20,
+    marginVertical: 10,
     flexDirection: 'row',
+    alignItems: 'center'
   },
   friend_circle: {
     width: 30,
@@ -514,9 +524,9 @@ const localStyles = StyleSheet.create({
     borderRadius: 200
   },
   friend_list: {
-    fontSize: 15,
+    fontSize: 16,
     marginVertical: 5,
-    marginLeft: 10,
+    marginLeft: 15,
     textAlignVertical: 'center',
     fontWeight: 'bold'
   },
