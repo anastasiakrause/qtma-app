@@ -199,7 +199,7 @@ exports.getUserFriends = functions.https.onRequest(async (request, response) => 
 });
 
 // TODO: remove friend NEEDS TESTING
-exports.addFriend = functions.https.onRequest(async (request, response) => {
+exports.removeFriend = functions.https.onRequest(async (request, response) => {
     const serverClient = stream.connect(apiKey, appSecret, appId);
     const incomingData = request.body;
     const userHandle = incomingData.userHandle;
@@ -217,6 +217,17 @@ exports.addFriend = functions.https.onRequest(async (request, response) => {
 
     response.status(200);
 });
+
+exports.addSavedPost = functions.https.onRequest(async (request, response) => {
+    const serverClient = stream.connect(apiKey, appSecret, appId);
+    const incomingData = request.body;
+    const userHandle = incomingData.userHandle;
+    const activityData = incomingData.activityData;
+    await serverClient.feed('saved', userHandle).addActivity(activityData);
+    response.status(200);
+})
+
+
 
 
 

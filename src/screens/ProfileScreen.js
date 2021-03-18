@@ -253,7 +253,7 @@ class ProfileScreen extends Component {
         {this.state.showSaved ? 
         // TODO: change to user saved posts feed
         <FlatFeed 
-          feedGroup="user" 
+          feedGroup="saved"
           Activity={(props) => (
             <Activity
               {...props}

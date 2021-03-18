@@ -9,7 +9,7 @@ import type {
     EnrichedReactionResponse,
   } from 'getstream';
   
-  import type { AppCtx } from 'expo-activity-feed';
+  import type { AppCtx } from 'react-native-activity-feed';
   
   export type UserData = {
     name: string,

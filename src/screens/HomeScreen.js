@@ -313,9 +313,10 @@ class HomeInner extends React.Component<PropsInner, State> {
                       reactionKind="saved"
                       onPress = { async (e) => {
                         // TODO: edit this to do something w activity
-                        // SHOULD WORK BUT NEED LOOP TO WAIVE READ/WRITE RESTRICTIONS                  
+                        // SHOULD WORK BUT NEED LOOP TO WAIVE READ/WRITE RESTRICTIONS
+                        console.log(props.activity);        
                         await this.props.client
-                        .feed('saved', this.props.userId)
+                        .feed('saved', props.activity.actor.data.name)
                         .addActivity(props.activity);
                         props.onToggleReaction("saved", props.activity, {},{});
                       } }
@@ -488,11 +489,12 @@ class HomeInner extends React.Component<PropsInner, State> {
                     reactionKind="saved"
                     onPress = { async (e) => {
                       // TODO: edit this to do something w activity
-                      // SHOULD WORK BUT NEED LOOP TO WAIVE READ/WRITE RESTRICTIONS                  
+                      // SHOULD WORK BUT NEED LOOP TO WAIVE READ/WRITE RESTRICTIONS    
+                      console.log(props.activity.actor.data.name);    
+                      console.log(props.activity);                  
                       await this.props.client
-                        .feed('saved', this.props.userId)
+                        .feed('saved', props.activity.actor.data.name)
                         .addActivity(props.activity);
-
                       props.onToggleReaction("saved", props.activity, {},{});
                     } }
                   />

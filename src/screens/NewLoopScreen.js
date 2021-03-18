@@ -3,18 +3,8 @@ import React, {Component} from 'react';
 import { View, Text, ScrollView, StyleSheet, TextInput, TouchableOpacity, Alert } from 'react-native';
 import SafeAreaView from 'react-native-safe-area-view';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { StreamApp } from "expo-activity-feed";
+import { StreamApp } from "react-native-activity-feed";
 import firestore from '@react-native-firebase/firestore';
-
-// api imports
-import {
-  Avatar,
-  FlatFeed,
-  Activity,
-  LikeButton,
-  ReactionIcon,
-  StatusUpdateForm
-} from 'expo-activity-feed';
 
 // Topbar
 import Topbar from '../components/Topbar';
