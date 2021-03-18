@@ -46,7 +46,6 @@ class ProfileScreen extends Component {
   }
 
   getUserFriends = () => {
-    console.log("get friends")
     const tokenEndpoint = 'https://us-central1-qtmaapptwenty.cloudfunctions.net/getUserFriends';
     let data = {
          method: 'POST',
@@ -64,7 +63,6 @@ class ProfileScreen extends Component {
         if(response.ok) return response.json()
         throw new Error('Network response was not ok');
     }).then( (data) => {
-      console.log(data)
       this.state.friends = data.allFriends;
     }).catch( (error) => {
         console.error(error);
@@ -175,7 +173,6 @@ class ProfileScreen extends Component {
     this.toggleAddFriendPopup()
     this.getUserFriends();
     this.setState({refreshFriends: true});
-    console.log(this.state.friends);
   }
 
   removeFriend = (name) => {
