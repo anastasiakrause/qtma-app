@@ -40,8 +40,10 @@ class ProfileScreen extends Component {
       addFriendPopup: false, // toggles add friend popup
       friendName: '',
       showSignout: false,
+      refreshFriends: true
     };
   }
+
   getUserFriends = () => {
     const tokenEndpoint = 'https://us-central1-qtmaapptwenty.cloudfunctions.net/getUserFriends';
     let data = {
@@ -110,19 +112,26 @@ class ProfileScreen extends Component {
     return this.state.friends.map(friend => {
          return (
             <View key={friend} style={localStyles.friend_box}>
-               <UserBar
+              {/* <UserBar
                   username={friend.userName}
                   avatar={friend.userImage}
-              />
+                  style={{
+                    avatar: {
+                      borderWidth: 1,
+                    }
+                  }}
+              /> */}
+              <Avatar source={friend.userImage} size={40}/>
+              <Text style={localStyles.friend_list}>{friend.userName}</Text>
               <TouchableOpacity 
                 style={localStyles.remove_button}
                 onPress={() => this.removeFriend(friend)}
               >
                 <Text style={{
                   fontSize: 10, 
-                color: 'white', 
-                textAlign: 'center', 
-                textAlignVertical: 'center'
+                  color: 'white', 
+                  textAlign: 'center', 
+                  textAlignVertical: 'center'
                 }}>
                   Remove
                 </Text>
@@ -135,6 +144,8 @@ class ProfileScreen extends Component {
   toggleAddFriendPopup = () => {
     // toggles add friend popup
     this.setState({addFriendPopup: !this.state.addFriendPopup})
+    this.setState({refreshFriends: this.state.addFriendPopup});
+    this.setState({show: !this.state.addFriendPopup ? 'friends' : 'feed'})
   }
 
   addFriend = () => {
@@ -163,7 +174,7 @@ class ProfileScreen extends Component {
     Alert.alert("add "+ this.state.friendName)
     this.toggleAddFriendPopup()
     this.getUserFriends();
-    this.renderFriends();
+    this.setState({refreshFriends: true});
     console.log(this.state.friends);
   }
 
@@ -403,9 +414,32 @@ class ProfileScreen extends Component {
             )}
           />
           :
-          <ScrollView style={{flex: 1, paddingTop: 0, backgroundColor: 'white'}}>
-            {this.renderFriends()}
-          </ScrollView> 
+          /* Signout button component */
+          this.state.addFriendPopup ? (
+            <View style={localStyles.add_friend_popup}>
+              <Text style={localStyles.aftext}>Add a Friend:</Text>
+              <TextInput 
+                style={localStyles.afinput}
+                onChangeText={text => this.setState({friendName: text})}
+              />
+              <View style={localStyles.afbbox}>
+                <TouchableOpacity onPress={this.toggleAddFriendPopup}>
+                  <Text 
+                    style={localStyles.afbut}>Cancel</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => this.addFriend()}>
+                  <Text 
+                    style={[localStyles.afbut, {backgroundColor: '#99E2FF'}]}>Add</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          ) : (
+            this.state.refreshFriends ?
+            <ScrollView style={{flex: 1, paddingTop: 0, backgroundColor: 'white'}}>
+              {this.renderFriends()}
+            </ScrollView> 
+            : null 
+          )
         }
 
         </View>
@@ -425,29 +459,6 @@ class ProfileScreen extends Component {
                 fontSize: 12,
               }}>Sign out</Text>
         </Button> : null
-        }
-
-        {
-          this.state.addFriendPopup ?
-          <View style={localStyles.add_friend_popup}>
-            <Text style={localStyles.aftext}>Add a Friend:</Text>
-            <TextInput 
-              style={localStyles.afinput}
-              onChangeText={text => this.setState({friendName: text})}
-            />
-            <View style={localStyles.afbbox}>
-              <TouchableOpacity onPress={this.toggleAddFriendPopup}>
-                <Text 
-                  style={localStyles.afbut}>Cancel</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.addFriend()}>
-                <Text 
-                  style={[localStyles.afbut, {backgroundColor: '#FF9999'}]}>Add</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-          :
-          null
         }
 
         <Navbar navigation={this.props.navigation} profsc/>
@@ -504,7 +515,9 @@ const localStyles = StyleSheet.create({
     width: '100%',
     height: 45,
     paddingHorizontal: 20,
+    marginVertical: 10,
     flexDirection: 'row',
+    alignItems: 'center'
   },
   friend_circle: {
     width: 30,
@@ -514,9 +527,9 @@ const localStyles = StyleSheet.create({
     borderRadius: 200
   },
   friend_list: {
-    fontSize: 15,
+    fontSize: 16,
     marginVertical: 5,
-    marginLeft: 10,
+    marginLeft: 15,
     textAlignVertical: 'center',
     fontWeight: 'bold'
   },
@@ -529,18 +542,19 @@ const localStyles = StyleSheet.create({
     borderRadius: 5,
   },
   add_friend_popup: {
-    position: 'absolute',
-    width: "80%",
     alignSelf: 'center',
-    marginTop: '25%',
+    flex: 1,
+    margin: '5%',
     backgroundColor: 'white',
-    borderRadius: 25,
-    borderWidth: 1,
     padding: 20,
+    alignContent: 'center',
+    justifyContent: 'center',
+    borderColor: '#99E2FF'
   },
   aftext: {
     fontWeight: 'bold',
     fontSize: 16,
+    textAlign: 'center'
   },
   afinput: {
     borderBottomWidth: 1,
@@ -549,6 +563,7 @@ const localStyles = StyleSheet.create({
   },
   afbbox: {
     flexDirection: 'row',
+    width: 240,
     justifyContent: 'space-around',
     marginTop: 25,
   },

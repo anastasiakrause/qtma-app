@@ -129,9 +129,37 @@ class NewPost extends React.Component {
         
         <StatusUpdateForm 
             feedGroup="user"
-            height={200} 
+            height={220}
             modifyActivityData = {(data) => ({...data, to: this.state.selected_names.map(el => 'loop:' + el), loops: this.state.selected_names})}
             onSuccess={() => this.gotoHome()}
+            styles={{
+                container: {
+                    height: 220,
+                },
+                newPostContainer: {             // global container
+                    flexDirection: 'column'
+                },
+                textInput: {                    // text input container
+                    minHeight: 150,
+                    minWidth: '100%',
+                    flex: 1,
+                },
+                actionPanel: {                  // send and image button box
+                    flexDirection: 'column',
+                    marginTop: 10,
+                    alignItems: 'flex-start',
+                },
+                actionPanelBlur: {             // send and image button box
+                    flexDirection: 'column',
+                    alignItems: 'flex-start',
+                },
+                image: {                        // image button
+                    margin: 0,
+                },
+                submitImage: {                  // send button
+                    marginLeft: 3,
+                }
+            }}
         />
 
         </View>

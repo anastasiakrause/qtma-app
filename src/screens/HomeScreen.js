@@ -184,10 +184,12 @@ class HomeInner extends React.Component<PropsInner, State> {
     return this.state.loopMembers.map(friend => {
          return (
             <View key={friend} style={styles.friend_box}>
-              <UserBar
+              {/* <UserBar
                 username={friend.userName}
                 avatar={friend.userImage}
-              />
+              /> */}
+              <Avatar source={friend.userImage} size={40}/>
+              <Text style={styles.friend_list}>{friend.userName}</Text>
               <TouchableOpacity 
                 style={styles.remove_button}
                 onPress={() => this.removeFriend(friend)}
@@ -587,6 +589,7 @@ class HomeInner extends React.Component<PropsInner, State> {
           <View style={{
             position: 'absolute',
             marginTop: 130, // topbar height + top margin (ios fix)
+            // marginTop: 75, // android
             backgroundColor: 'white',
             height: '100%',
             width: '100%',
@@ -618,44 +621,44 @@ class HomeInner extends React.Component<PropsInner, State> {
             marginTop: 75, // topbar height + top margin
             paddingBottom: 10,
           }}>
-            <TouchableOpacity 
-              style={{
-                width: '100%',
-                marginBottom: 15,
-              }}
-              onPress={() => this.setState({addLoopPopup: true})}
-            >
-              <Text style={[styles.loop_list_item, {color: "#BCBCBC"}]}>Join a new Loop +</Text>
-            </TouchableOpacity>
-            {this.renderLoops()}
+            {/* Add new loop popup - copied from add friend popup in profile screen */}
+            {/* Sets the state variable loopName */}
+            {this.state.addLoopPopup ? (
+              <View style={styles.add_friend_popup}>
+                <Text style={styles.aftext}>Enter Loop code:</Text>
+                <TextInput 
+                  style={styles.afinput}
+                  onChangeText={text => this.setState({loopName: text})}
+                />
+                <View style={styles.afbbox}>
+                  <TouchableOpacity onPress={() => this.setState({addLoopPopup: false})}>
+                    <Text 
+                      style={styles.afbut}>Cancel</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={() => this.addLoop()}>
+                    <Text 
+                      style={[styles.afbut, {backgroundColor: '#FF9999'}]}>Add</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            ) : (
+              <>
+              <TouchableOpacity 
+                style={{
+                  width: '100%',
+                  marginBottom: 15,
+                }}
+                onPress={() => this.setState({addLoopPopup: true})}
+              >
+                <Text style={[styles.loop_list_item, {color: "#BCBCBC"}]}>Join a new Loop +</Text>
+              </TouchableOpacity>
+              {this.renderLoops()} 
+              </>
+            )
+            }
           </ScrollView>  
 
           </>
-          :
-          null
-        }
-
-        {/* Add new loop popup - copied from add friend popup in profile screen */}
-        {/* Sets the state variable loopName */}
-        {
-          this.state.addLoopPopup ?
-          <View style={styles.add_friend_popup}>
-            <Text style={styles.aftext}>Enter Loop code:</Text>
-            <TextInput 
-              style={styles.afinput}
-              onChangeText={text => this.setState({loopName: text})}
-            />
-            <View style={styles.afbbox}>
-              <TouchableOpacity onPress={() => this.setState({addLoopPopup: false})}>
-                <Text 
-                  style={styles.afbut}>Cancel</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.addLoop()}>
-                <Text 
-                  style={[styles.afbut, {backgroundColor: '#FF9999'}]}>Add</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
           :
           null
         }
@@ -679,6 +682,8 @@ const styles = StyleSheet.create({
     height: 55, // ios adjustment
     paddingHorizontal: 25, // ios adjustment
     flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   friend_circle: {
     width: 30,
@@ -690,7 +695,7 @@ const styles = StyleSheet.create({
   friend_list: {
     fontSize: 15,
     marginVertical: 5,
-    marginLeft: 10,
+    marginLeft: 15,
     textAlignVertical: 'center',
     fontWeight: 'bold'
   },
@@ -703,18 +708,15 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   add_friend_popup: {
-    position: 'absolute',
-    width: "80%",
+    flex: 1,
+    paddingVertical: 30,
     alignSelf: 'center',
-    marginTop: '25%',
     backgroundColor: 'white',
-    borderRadius: 25,
-    borderWidth: 1,
-    padding: 20,
   },
   aftext: {
     fontWeight: 'bold',
     fontSize: 16,
+    textAlign: 'center'
   },
   afinput: {
     borderBottomWidth: 1,
@@ -722,6 +724,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   afbbox: {
+    width: 240,
     flexDirection: 'row',
     justifyContent: 'space-around',
     marginTop: 25,
