@@ -184,10 +184,12 @@ class HomeInner extends React.Component<PropsInner, State> {
     return this.state.loopMembers.map(friend => {
          return (
             <View key={friend} style={styles.friend_box}>
-              <UserBar
+              {/* <UserBar
                 username={friend.userName}
                 avatar={friend.userImage}
-              />
+              /> */}
+              <Avatar source={friend.userImage} size={40}/>
+              <Text style={styles.friend_list}>{friend.userName}</Text>
               <TouchableOpacity 
                 style={styles.remove_button}
                 onPress={() => this.removeFriend(friend)}
@@ -587,6 +589,7 @@ class HomeInner extends React.Component<PropsInner, State> {
           <View style={{
             position: 'absolute',
             marginTop: 130, // topbar height + top margin (ios fix)
+            // marginTop: 75, // android
             backgroundColor: 'white',
             height: '100%',
             width: '100%',
@@ -679,6 +682,8 @@ const styles = StyleSheet.create({
     height: 55, // ios adjustment
     paddingHorizontal: 25, // ios adjustment
     flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   friend_circle: {
     width: 30,
@@ -690,7 +695,7 @@ const styles = StyleSheet.create({
   friend_list: {
     fontSize: 15,
     marginVertical: 5,
-    marginLeft: 10,
+    marginLeft: 15,
     textAlignVertical: 'center',
     fontWeight: 'bold'
   },
