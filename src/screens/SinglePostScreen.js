@@ -13,7 +13,8 @@ import {
   CommentItem,
   LikeList,
   ReactionToggleIcon,
-  Avatar
+  Avatar,
+  ReactionList
 } from 'react-native-activity-feed';
 
 import happyclicked from '../assets/HappyClicked.png';
@@ -104,7 +105,7 @@ export default class SinglePostScreen extends React.Component {
           activity={activity}
           feedGroup={feedGroup}
           userId={userId}
-          options={{ withOwnChildren: true }}
+          options={{ withOwnChildren: true , withOwnReactions: true}}
           navigation={this.props.navigation}
           Activity={(props) => (
             <React.Fragment>
@@ -230,10 +231,33 @@ export default class SinglePostScreen extends React.Component {
                           props.onToggleReaction("saved", props.activity, {},{});
                         } }
                       />
+
                     </View>
+
+                    
+                    
                   </View>
+                 
                 }
               />
+
+              <ReactionList
+                activityId={props.activity.id}
+                reactionKind={'hearteyes'}
+                styles={{
+                  container: { padding: 12, paddingLeft: 15, paddingRight: 15 },
+                }}
+                flatListProps={{ horizontal: true }}
+                Reaction={({ reaction }) => (
+                  <Avatar
+                    source={reaction.user.data.profileImage}
+                    size={25}
+                    noShadow
+                  />
+                )}
+                noPagination
+              >
+              </ReactionList>
 
               <View style={{ flex: 1, backgroundColor: 'white' }}>
               <CommentList
