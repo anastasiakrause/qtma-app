@@ -563,7 +563,7 @@ const localStyles = StyleSheet.create({
   },
   afbbox: {
     flexDirection: 'row',
-    width: '70%',
+    width: 240,
     justifyContent: 'space-around',
     marginTop: 25,
   },
