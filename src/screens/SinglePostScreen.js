@@ -227,8 +227,7 @@ export default class SinglePostScreen extends React.Component {
                         kind={'saved'}
                         reactionKind="saved"
                         onPress = { async (e) => {
-                          // TODO: edit this to do something w activity
-                          // SHOULD WORK BUT NEED LOOP TO WAIVE READ/WRITE RESTRICTIONS                  
+                          // TODO: ensure this works             
                           await this.props.client
                           .feed('saved', this.props.userId)
                           .addActivity(props.activity);

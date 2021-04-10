@@ -116,6 +116,7 @@ exports.joinLoop = functions.https.onRequest(async (request, response) => {
                 serverClient.user(userH).update(newUserData);
             }).then(function() {
                 response.status(200);
+                response.send("success");
             })
         }).catch (err => console.log(err)
     ); 
@@ -137,12 +138,11 @@ exports.removeFromLoop = functions.https.onRequest(async (request, response) => 
     // get user information
     const userData = await serverClient.user(userHandle).get();
     let copyData = userData.data;
-    copyData.loop_ids
     delete copyData.loop_ids.loopCode;
     serverClient.user(userH).update(newUserData);
 
     response.send(200);
-    
+    response.send("success");
 });
 
 exports.getLoopFollowers = functions.https.onRequest(async (request, response) => {
@@ -183,6 +183,7 @@ exports.addFriend = functions.https.onRequest(async (request, response) => {
     serverClient.user(userHandle).update(copyData.data);
 
     response.status(200);
+    response.send("success");
 });
 
 exports.getUserFriends = functions.https.onRequest(async (request, response) => {
@@ -216,6 +217,7 @@ exports.removeFriend = functions.https.onRequest(async (request, response) => {
     serverClient.user(userHandle).update(copyData);
 
     response.status(200);
+    response.send("success");
 });
 
 exports.addSavedPost = functions.https.onRequest(async (request, response) => {
@@ -225,6 +227,7 @@ exports.addSavedPost = functions.https.onRequest(async (request, response) => {
     const activityData = incomingData.activityData;
     await serverClient.feed('saved', userHandle).addActivity(activityData);
     response.status(200);
+    response.send("success");
 })
 
 

@@ -94,13 +94,13 @@ class Navbar extends Component {
                     style={localstyles.postButton}
                     onPress={() => this.toNewPost()}
                     >
-                    <Text style={localstyles.buttonText}>New Post!</Text>
+                    <Text style={localstyles.buttonText}>Post</Text>
                     </TouchableOpacity>
                     <TouchableOpacity 
                     style={localstyles.loopButton}
                     onPress={() => this.toNewLoop()}
                     >
-                    <Text style={localstyles.buttonText}>~New Loop~</Text>
+                    <Text style={localstyles.buttonText}>Loop</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -156,7 +156,7 @@ const localstyles = StyleSheet.create({
     creation_menu: {
         position: 'absolute',
         width: '100%',
-        bottom: 60,
+        bottom: 90,
         backgroundColor: 'white',
         alignContent: 'space-around',
     },

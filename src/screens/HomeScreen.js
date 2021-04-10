@@ -119,7 +119,7 @@ class HomeInner extends React.Component<PropsInner, State> {
     this.state.currentLoopId = loop[0];
     this.state.currentLoopName = loop[1];
     this.setState({ forceFeedRefresh: false });
-    if (loop == "My Loop"){
+    if (loop[0] == "My Loop"){
       this.setState({showFriends: false});
     }
     else {
@@ -315,9 +315,6 @@ class HomeInner extends React.Component<PropsInner, State> {
                         // TODO: edit this to do something w activity
                         // SHOULD WORK BUT NEED LOOP TO WAIVE READ/WRITE RESTRICTIONS
                         console.log(props.activity);        
-                        await this.props.client
-                        .feed('saved', props.activity.actor.data.name)
-                        .addActivity(props.activity);
                         props.onToggleReaction("saved", props.activity, {},{});
                       } }
                     />
@@ -492,9 +489,6 @@ class HomeInner extends React.Component<PropsInner, State> {
                       // SHOULD WORK BUT NEED LOOP TO WAIVE READ/WRITE RESTRICTIONS    
                       console.log(props.activity.actor.data.name);    
                       console.log(props.activity);                  
-                      await this.props.client
-                        .feed('saved', props.activity.actor.data.name)
-                        .addActivity(props.activity);
                       props.onToggleReaction("saved", props.activity, {},{});
                     } }
                   />
@@ -621,7 +615,7 @@ class HomeInner extends React.Component<PropsInner, State> {
             width: '100%',
             maxHeight: '70%',
             marginTop: 75, // topbar height + top margin
-            paddingBottom: 10,
+            paddingBottom: 30,
           }}>
             {/* Add new loop popup - copied from add friend popup in profile screen */}
             {/* Sets the state variable loopName */}
